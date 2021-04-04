@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">hse_mooc</string>
+    <!-- TODO: Remove or change this placeholder text -->s
+    <string name="auth_i_already_have_an_account"><u>I already have an account</u></string>
+    <string name="auth_mooc_desc">MOOC is a developing platform for finding massive open online courses. Join us and find something special just for you!</string>
+</resources>
