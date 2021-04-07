@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.auth
+package ru.andrewkir.hse_mooc.flows.auth
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

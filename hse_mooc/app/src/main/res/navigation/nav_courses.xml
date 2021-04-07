@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_courses"
+    app:startDestination="@id/coursesFragment">
+
+    <fragment
+        android:id="@+id/coursesFragment"
+        android:name="ru.andrewkir.hse_mooc.flows.courses.CoursesFragment"
+        android:label="fragment_courses"
+        tools:layout="@layout/fragment_courses" />
+</navigation>

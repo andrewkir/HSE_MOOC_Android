@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/authFragment"
-        android:name="ru.andrewkir.hse_mooc.auth.AuthFragment"
+        android:name="ru.andrewkir.hse_mooc.flows.auth.LoginFragment"
         android:label="fragment_auth"
-        tools:layout="@layout/fragment_auth" />
+        tools:layout="@layout/fragment_login" />
 </navigation>

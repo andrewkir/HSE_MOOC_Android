@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.auth
+package ru.andrewkir.hse_mooc.flows.auth
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,7 +13,10 @@ class AuthFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_auth, container, false)
+        val view = inflater.inflate(R.layout.fragment_auth, container, false)
+
+
+
+        return view
     }
 }

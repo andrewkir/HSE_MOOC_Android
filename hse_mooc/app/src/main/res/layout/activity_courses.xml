@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".flows.auth.AuthActivity">
+    tools:context=".flows.courses.CoursesActivity">
 
     <fragment
-        android:id="@+id/fragment"
+        android:id="@+id/fragment2"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,5 +16,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/nav_auth" />
+        app:navGraph="@navigation/nav_courses" />
 </androidx.constraintlayout.widget.ConstraintLayout>
