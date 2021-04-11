@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import ru.andrewkir.hse_mooc.R
+import ru.andrewkir.hse_mooc.databinding.FragmentAuthBinding
 
 
 class AuthFragment : Fragment() {
@@ -13,10 +15,12 @@ class AuthFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_auth, container, false)
+        val binding = FragmentAuthBinding.inflate(inflater, container, false)
 
+        binding.alreadyHaveAnAccount.setOnClickListener {
+            Navigation.findNavController(binding.root).navigate(R.id.action_auth_to_login)
+        }
 
-
-        return view
+        return binding.root
     }
 }

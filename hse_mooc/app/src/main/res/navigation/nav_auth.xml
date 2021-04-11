@@ -7,7 +7,20 @@
 
     <fragment
         android:id="@+id/authFragment"
-        android:name="ru.andrewkir.hse_mooc.flows.auth.LoginFragment"
+        android:name="ru.andrewkir.hse_mooc.flows.auth.AuthFragment"
         android:label="fragment_auth"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_auth" >
+        <action
+            android:id="@+id/action_auth_to_login"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="ru.andrewkir.hse_mooc.flows.auth.LoginFragment"
+        tools:layout="@layout/fragment_login"
+        android:label="LoginFragment" />
 </navigation>
