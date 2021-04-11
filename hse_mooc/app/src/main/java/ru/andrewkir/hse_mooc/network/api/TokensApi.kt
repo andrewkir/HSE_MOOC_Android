@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.network
+package ru.andrewkir.hse_mooc.network.api
 
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

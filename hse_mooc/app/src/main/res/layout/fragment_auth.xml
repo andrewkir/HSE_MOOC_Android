@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".flows.auth.AuthFragment">
+    tools:context=".flows.auth.ui.AuthFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -85,7 +85,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/loginButton"
+                android:id="@+id/createAccountButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"

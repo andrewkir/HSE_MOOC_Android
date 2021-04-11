@@ -1,12 +1,12 @@
-package ru.andrewkir.hse_mooc.flows.auth
+package ru.andrewkir.hse_mooc.flows.courses.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ru.andrewkir.hse_mooc.R
 
-class AuthActivity : AppCompatActivity() {
+class CoursesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_auth)
+        setContentView(R.layout.activity_courses)
     }
 }

@@ -7,8 +7,8 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 import ru.andrewkir.hse_mooc.common.BaseRepository
+import ru.andrewkir.hse_mooc.network.api.TokensApi
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
-import ru.andrewkir.hse_mooc.network.responses.TokensResponse
 import ru.andrewkir.hse_mooc.repository.UserPrefsManager
 
 class JWTAuthenticator(
@@ -25,6 +25,8 @@ class JWTAuthenticator(
                 protectedApiCall { tokensApi.refreshAccessToken(refreshToken!!) }
                 ) {
                 is ApiResponse.OnSuccessResponse -> {
+
+                    //TODO разобраться что возвращает refresh
                     prefsManager.saveAccessToken(
                         tokensResponse.value.access_token
                     )

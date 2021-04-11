@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/coursesFragment"
-        android:name="ru.andrewkir.hse_mooc.flows.courses.CoursesFragment"
+        android:name="ru.andrewkir.hse_mooc.flows.courses.ui.CoursesFragment"
         android:label="fragment_courses"
         tools:layout="@layout/fragment_courses" />
 </navigation>

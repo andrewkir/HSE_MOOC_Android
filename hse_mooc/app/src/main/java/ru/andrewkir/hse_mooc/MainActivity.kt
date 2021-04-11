@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import ru.andrewkir.hse_mooc.flows.auth.AuthActivity
+import ru.andrewkir.hse_mooc.flows.auth.ui.AuthActivity
 import ru.andrewkir.hse_mooc.repository.UserPrefsManager
 
 class MainActivity : AppCompatActivity() {
@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         val prefs = UserPrefsManager(this)
         Toast.makeText(this, prefs.obtainAccessToken(), Toast.LENGTH_SHORT).show()
 
-        finish()
         startActivity(Intent(this, AuthActivity::class.java))
+        finish()
     }
 }

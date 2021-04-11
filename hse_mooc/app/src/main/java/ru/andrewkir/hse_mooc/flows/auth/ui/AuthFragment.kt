@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.flows.auth
+package ru.andrewkir.hse_mooc.flows.auth.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -18,7 +18,11 @@ class AuthFragment : Fragment() {
         val binding = FragmentAuthBinding.inflate(inflater, container, false)
 
         binding.alreadyHaveAnAccount.setOnClickListener {
-            Navigation.findNavController(binding.root).navigate(R.id.action_auth_to_login)
+            Navigation.findNavController(binding.root).navigate(R.id.auth_to_login)
+        }
+
+        binding.createAccountButton.setOnClickListener {
+            Navigation.findNavController(binding.root).navigate(R.id.auth_to_register)
         }
 
         return binding.root

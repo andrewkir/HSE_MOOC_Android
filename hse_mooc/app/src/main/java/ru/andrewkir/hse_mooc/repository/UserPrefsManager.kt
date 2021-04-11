@@ -45,4 +45,10 @@ class UserPrefsManager(
     fun obtainRefreshToken(): String? {
         return prefs.getString(REFRESH_TOKEN, null)
     }
+
+    fun clearTokens() {
+        val editor = prefs.edit()
+        editor.clear()
+        editor.apply()
+    }
 }

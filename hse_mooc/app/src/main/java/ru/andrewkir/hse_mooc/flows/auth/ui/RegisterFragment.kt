@@ -1,6 +1,5 @@
-package ru.andrewkir.hse_mooc.flows.auth
+package ru.andrewkir.hse_mooc.flows.auth.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,16 +7,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
+import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.startActivityClearBackStack
-import ru.andrewkir.hse_mooc.flows.courses.CoursesActivity
-import ru.andrewkir.hse_mooc.databinding.FragmentLoginBinding
-import ru.andrewkir.hse_mooc.network.AuthApi
+import ru.andrewkir.hse_mooc.flows.courses.ui.CoursesActivity
+import ru.andrewkir.hse_mooc.databinding.FragmentRegisterBinding
+import ru.andrewkir.hse_mooc.flows.auth.AuthRepository
+import ru.andrewkir.hse_mooc.flows.auth.AuthViewModel
+import ru.andrewkir.hse_mooc.network.api.AuthApi
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
-import ru.andrewkir.hse_mooc.repository.AuthRepository
-import ru.andrewkir.hse_mooc.repository.UserPrefsManager
 
-class LoginFragment : BaseFragment<AuthViewModel, AuthRepository, FragmentLoginBinding>() {
+class RegisterFragment : BaseFragment<AuthViewModel, AuthRepository, FragmentRegisterBinding>() {
 
     override fun provideViewModelClass(): Class<AuthViewModel> = AuthViewModel::class.java
 
@@ -26,19 +27,20 @@ class LoginFragment : BaseFragment<AuthViewModel, AuthRepository, FragmentLoginB
             apiProvider.provideApi(
                 AuthApi::class.java,
                 requireContext(),
-                userPrefsManager.obtainAccessToken()
+                null,
+                null
             )
         )
 
     override fun provideBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentLoginBinding = FragmentLoginBinding.inflate(inflater, container, false)
+    ): FragmentRegisterBinding = FragmentRegisterBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupLoginButton()
+        setupButtons()
         adjustButtonToText()
         setupInputs()
         subscribeToLoginResult()
@@ -60,12 +62,16 @@ class LoginFragment : BaseFragment<AuthViewModel, AuthRepository, FragmentLoginB
         }
     }
 
-    private fun setupLoginButton() {
+    private fun setupButtons() {
         bind.loginButton.setOnClickListener {
             bind.progressBar.visibility = View.VISIBLE
             val login = bind.loginTextInput.editText?.text.toString()
             val password = bind.passwordTextInput.editText?.text.toString()
             viewModel.login(login, password)
+        }
+
+        bind.loginTextView.setOnClickListener {
+            Navigation.findNavController(bind.root).navigate(R.id.register_to_login)
         }
     }
 
@@ -91,4 +97,6 @@ class LoginFragment : BaseFragment<AuthViewModel, AuthRepository, FragmentLoginB
             }
         })
     }
+
+    
 }
