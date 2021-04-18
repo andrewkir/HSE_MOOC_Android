@@ -5,5 +5,4 @@ import ru.andrewkir.hse_mooc.common.BaseViewModel
 
 class CoursesViewModel(
     repository: BaseRepository
-): BaseViewModel(repository) {
-}
+): BaseViewModel(repository)

@@ -64,7 +64,7 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="62dp"
+                android:layout_marginTop="24dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="MOOC"
                 android:textColor="@color/black"
@@ -105,8 +105,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Login"
-                    android:inputType="textPersonName"
+                    android:hint="Login or Email"
+                    android:inputType="textPersonName|textEmailAddress"
                     android:singleLine="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,7 +152,8 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="24dp"
-                android:backgroundTint="@color/black"
+                android:backgroundTint="@color/button_state_colors"
+                android:textColor="@color/button_text_state_colors"
                 android:paddingLeft="60dp"
                 android:paddingTop="20dp"
                 android:paddingRight="60dp"

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -14,13 +15,17 @@ import ru.andrewkir.hse_mooc.common.startActivityClearBackStack
 import ru.andrewkir.hse_mooc.flows.courses.ui.CoursesActivity
 import ru.andrewkir.hse_mooc.databinding.FragmentRegisterBinding
 import ru.andrewkir.hse_mooc.flows.auth.AuthRepository
-import ru.andrewkir.hse_mooc.flows.auth.AuthViewModel
+import ru.andrewkir.hse_mooc.flows.auth.LoginViewModel
+import ru.andrewkir.hse_mooc.flows.auth.RegisterViewModel
 import ru.andrewkir.hse_mooc.network.api.AuthApi
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 
-class RegisterFragment : BaseFragment<AuthViewModel, AuthRepository, FragmentRegisterBinding>() {
+class RegisterFragment :
+    BaseFragment<RegisterViewModel, AuthRepository, FragmentRegisterBinding>() {
 
-    override fun provideViewModelClass(): Class<AuthViewModel> = AuthViewModel::class.java
+    //TODO SAVE EDIT TEXT STATE
+
+    override fun provideViewModelClass(): Class<RegisterViewModel> = RegisterViewModel::class.java
 
     override fun provideRepository(): AuthRepository =
         AuthRepository(
@@ -37,9 +42,54 @@ class RegisterFragment : BaseFragment<AuthViewModel, AuthRepository, FragmentReg
         container: ViewGroup?
     ): FragmentRegisterBinding = FragmentRegisterBinding.inflate(inflater, container, false)
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("EDIT_TEXT_EMAIL", bind.emailTextInput.editText!!.text.toString())
+        outState.putString("EDIT_TEXT_USERNAME", bind.loginTextInput.editText!!.text.toString())
+        outState.putString("EDIT_TEXT_PASSWORD", bind.passwordTextInput.editText!!.text.toString())
+        outState.putString(
+            "EDIT_TEXT_PASSWORD2",
+            bind.passwordSecondTextInput.editText!!.text.toString()
+        )
+    }
+
+    private fun restoreSavedState(savedInstanceState: Bundle?) {
+        savedInstanceState?.let {
+            bind.emailTextInput.editText!!.setText(
+                savedInstanceState.getString(
+                    "EDIT_TEXT_EMAIL",
+                    ""
+                )
+            )
+
+            bind.loginTextInput.editText!!.setText(
+                savedInstanceState.getString(
+                    "EDIT_TEXT_USERNAME",
+                    ""
+                )
+            )
+            bind.passwordTextInput.editText!!.setText(
+                savedInstanceState.getString(
+                    "EDIT_TEXT_PASSWORD",
+                    ""
+                )
+            )
+
+            bind.passwordSecondTextInput.editText!!.setText(
+                savedInstanceState.getString(
+                    "EDIT_TEXT_PASSWORD2",
+                    ""
+                )
+            )
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        restoreSavedState(savedInstanceState)
+
+        subscribeToLoading()
         setupButtons()
         adjustButtonToText()
         setupInputs()
@@ -50,24 +100,38 @@ class RegisterFragment : BaseFragment<AuthViewModel, AuthRepository, FragmentReg
 
     private fun adjustButtonToText() {
         bind.apply {
-            loginButton.isClickable = loginTextInput.editText!!.text.isNotBlank() &&
-                    passwordTextInput.editText!!.text.isNotBlank()
+            registerButton.isEnabled = emailTextInput.editText!!.text.isNotBlank() &&
+                    loginTextInput.editText!!.text.isNotBlank() &&
+                    passwordTextInput.editText!!.text.isNotBlank() &&
+                    passwordSecondTextInput.editText!!.text.isNotBlank() &&
+                    passwordTextInput.editText!!.text.toString() == passwordSecondTextInput.editText!!.text.toString()
+
         }
     }
 
     private fun setupInputs() {
         bind.apply {
+            emailTextInput.editText!!.addTextChangedListener { adjustButtonToText() }
             loginTextInput.editText!!.addTextChangedListener { adjustButtonToText() }
             passwordTextInput.editText!!.addTextChangedListener { adjustButtonToText() }
+            passwordSecondTextInput.editText!!.addTextChangedListener { adjustButtonToText() }
+
+            passwordSecondTextInput.editText!!.addTextChangedListener {
+                if (passwordTextInput.editText!!.text.toString() != passwordSecondTextInput.editText!!.text.toString()) {
+                    passwordSecondTextInput.error = "Пароли не совпадают"
+                } else {
+                    passwordSecondTextInput.error = ""
+                }
+            }
         }
     }
 
     private fun setupButtons() {
-        bind.loginButton.setOnClickListener {
-            bind.progressBar.visibility = View.VISIBLE
-            val login = bind.loginTextInput.editText?.text.toString()
-            val password = bind.passwordTextInput.editText?.text.toString()
-            viewModel.login(login, password)
+        bind.registerButton.setOnClickListener {
+            val email = bind.emailTextInput.editText!!.text.toString()
+            val login = bind.loginTextInput.editText!!.text.toString()
+            val password = bind.passwordTextInput.editText!!.text.toString()
+            viewModel.register(email, login, password)
         }
 
         bind.loginTextView.setOnClickListener {
@@ -76,27 +140,39 @@ class RegisterFragment : BaseFragment<AuthViewModel, AuthRepository, FragmentReg
     }
 
     private fun subscribeToLoginResult() {
-        viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
-            bind.progressBar.visibility = View.INVISIBLE
+        viewModel.registerResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResponse.OnSuccessResponse -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "${it.value.access_token}\n${it.value.refresh_token}",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-
-                    userPrefsManager.saveAccessToken(it.value.access_token)
-                    userPrefsManager.saveRefreshToken(it.value.refresh_token)
+                    Toast.makeText(requireContext(), it.value.string(), Toast.LENGTH_SHORT).show()
                     requireActivity().startActivityClearBackStack(CoursesActivity::class.java)
                 }
                 is ApiResponse.OnErrorResponse -> {
-                    Toast.makeText(requireContext(), "Nah", Toast.LENGTH_SHORT).show()
+                    if (it.isNetworkFailure)
+                        Toast.makeText(
+                            requireContext(),
+                            "Проверьте подключение к интернету",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    else Toast.makeText(requireContext(), it.body?.string(), Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         })
     }
 
-    
+    private fun subscribeToLoading() {
+        viewModel.loading.observe(viewLifecycleOwner, Observer {
+            enableInputsAndButtons(!it)
+            bind.progressBar.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        })
+    }
+
+    private fun enableInputsAndButtons(isEnabled: Boolean) {
+        bind.registerButton.isEnabled = isEnabled
+        bind.loginTextInput.isEnabled = isEnabled
+        bind.emailTextInput.isEnabled = isEnabled
+        bind.passwordTextInput.isEnabled = isEnabled
+        bind.passwordSecondTextInput.isEnabled = isEnabled
+        bind.loginTextView.isEnabled = isEnabled
+    }
 }

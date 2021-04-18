@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +16,8 @@ import ru.andrewkir.hse_mooc.network.ApiProvider
 import ru.andrewkir.hse_mooc.network.api.AuthApi
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 import ru.andrewkir.hse_mooc.repository.UserPrefsManager
+import java.lang.Compiler.disable
+
 
 abstract class BaseFragment<viewModel : BaseViewModel, repo : BaseRepository, viewBinding : ViewBinding> :
     Fragment() {
@@ -43,24 +46,27 @@ abstract class BaseFragment<viewModel : BaseViewModel, repo : BaseRepository, vi
     fun userLogout() = lifecycleScope.launch {
         val refreshToken = userPrefsManager.obtainRefreshToken()
         val api = apiProvider.provideApi(AuthApi::class.java, requireContext(), null, refreshToken)
-        when(val response = viewModel.logoutUser(api)){
-            is ApiResponse.OnSuccessResponse ->{
+        when (val response = viewModel.logoutUser(api)) {
+            is ApiResponse.OnSuccessResponse -> {
                 userPrefsManager.clearTokens()
                 requireActivity().startActivityClearBackStack(AuthActivity::class.java)
             }
-            is ApiResponse.OnErrorResponse ->{
-                if(response.isNetworkFailure){
-                    Toast.makeText(requireContext(), "Please check internet connection", Toast.LENGTH_SHORT).show()
+            is ApiResponse.OnErrorResponse -> {
+                if (response.isNetworkFailure) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Please check internet connection",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
     }
+
 
     abstract fun provideViewModelClass(): Class<viewModel>
 
     abstract fun provideRepository(): repo
 
     abstract fun provideBinding(inflater: LayoutInflater, container: ViewGroup?): viewBinding
-
-
 }

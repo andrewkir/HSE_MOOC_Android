@@ -29,5 +29,5 @@ fun Fragment.handleApiError(
     error: ApiResponse.OnErrorResponse,
     retry: (() -> Unit)? = null
 ) {
-
+    //TODO
 }

@@ -10,7 +10,7 @@ import ru.andrewkir.hse_mooc.network.api.TokensApi
 
 class ApiProvider {
     companion object {
-        private const val BASE_URL = "https://vk.com/"
+        private const val BASE_URL = "https://mooc.ij.je/"
     }
 
     fun <Api> provideApi(
@@ -49,7 +49,6 @@ class ApiProvider {
                         it.addHeader("Accept", "application/json")
                         if (accessToken != null)
                             it.addHeader("Authorization", "Bearer $accessToken")
-                        //TODO к каждому запросу добавлять accessToken
                         if (refreshToken != null)
                             it.addHeader("x-refresh-token", "$refreshToken")
                     }.build()

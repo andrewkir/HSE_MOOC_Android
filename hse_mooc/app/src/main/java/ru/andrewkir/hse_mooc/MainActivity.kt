@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import ru.andrewkir.hse_mooc.flows.auth.ui.AuthActivity
+import ru.andrewkir.hse_mooc.flows.courses.ui.CoursesActivity
 import ru.andrewkir.hse_mooc.repository.UserPrefsManager
 
 class MainActivity : AppCompatActivity() {
@@ -13,9 +14,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val prefs = UserPrefsManager(this)
-        Toast.makeText(this, prefs.obtainAccessToken(), Toast.LENGTH_SHORT).show()
-
-        startActivity(Intent(this, AuthActivity::class.java))
+        if (prefs.obtainAccessToken() != null) {
+            startActivity(Intent(this, CoursesActivity::class.java))
+        } else {
+            startActivity(Intent(this, AuthActivity::class.java))
+        }
         finish()
     }
 }
