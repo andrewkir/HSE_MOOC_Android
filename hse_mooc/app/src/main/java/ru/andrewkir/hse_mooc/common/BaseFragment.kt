@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import kotlinx.coroutines.launch
+import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.flows.auth.ui.AuthActivity
 import ru.andrewkir.hse_mooc.network.ApiProvider
 import ru.andrewkir.hse_mooc.network.api.AuthApi
@@ -26,7 +27,6 @@ abstract class BaseFragment<viewModel : BaseViewModel, repo : BaseRepository, vi
     protected lateinit var viewModel: viewModel
 
     protected var apiProvider = ApiProvider()
-
     protected lateinit var userPrefsManager: UserPrefsManager
 
     override fun onCreateView(
@@ -55,7 +55,7 @@ abstract class BaseFragment<viewModel : BaseViewModel, repo : BaseRepository, vi
                 if (response.isNetworkFailure) {
                     Toast.makeText(
                         requireContext(),
-                        "Please check internet connection",
+                        getString(R.string.base_network_error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

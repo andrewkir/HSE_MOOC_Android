@@ -3,11 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_courses"
-    app:startDestination="@id/coursesFragment">
+    app:startDestination="@id/main">
 
-    <fragment
-        android:id="@+id/coursesFragment"
+    <save_state_fragment
+        android:id="@+id/main"
         android:name="ru.andrewkir.hse_mooc.flows.courses.ui.CoursesFragment"
         android:label="fragment_courses"
         tools:layout="@layout/fragment_courses" />
+    <save_state_fragment
+        android:id="@+id/search"
+        android:name="ru.andrewkir.hse_mooc.flows.courses.ui.CoursesSearchFragment"
+        android:label="CoursesSearchFragment" />
 </navigation>

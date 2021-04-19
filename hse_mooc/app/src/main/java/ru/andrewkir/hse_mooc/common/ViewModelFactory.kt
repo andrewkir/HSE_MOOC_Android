@@ -1,5 +1,6 @@
 package ru.andrewkir.hse_mooc.common
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.andrewkir.hse_mooc.flows.auth.LoginViewModel
@@ -14,6 +15,7 @@ class ViewModelFactory(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        Log.d("DESTROYED", "new view model ${modelClass.name}")
         return when {
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> LoginViewModel(repository as AuthRepository) as T
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> RegisterViewModel(repository as AuthRepository) as T
