@@ -3,7 +3,9 @@ package ru.andrewkir.hse_mooc.common
 import android.app.Activity
 import android.content.Intent
 import android.view.View
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 

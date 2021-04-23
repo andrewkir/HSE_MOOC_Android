@@ -1,5 +1,7 @@
 package ru.andrewkir.hse_mooc.flows.courses.ui.adapters
 
+import android.content.Context
+import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,15 +9,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.andrewkir.hse_mooc.R
+import ru.andrewkir.hse_mooc.network.responses.Course
 
 class SearchCoursesRecyclerAdapter(
-    private val onCourseClick: ((String) -> Unit)? = null
+    private val context: Context,
+    private val onCourseClick: ((Course) -> Unit)? = null
 ) :
     RecyclerView.Adapter<SearchCoursesRecyclerAdapter.ViewHolder>() {
 
 
-    var data: List<String> = emptyList()
+    var data: List<Course> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -53,7 +60,15 @@ class SearchCoursesRecyclerAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.courseTitle?.text = data[position]
+        viewHolder.courseTitle?.text = data[position].courseName
+        viewHolder.courseDescription?.text = data[position].shortDescription
+
+        viewHolder.courseCost?.text = if(data[position].price == "0") "Бесплатно" else data[position].price
+
+        Glide.with(context)
+            .load(data[position].previewImageLink)
+            .transform(CenterCrop(), RoundedCorners(25))
+            .into(viewHolder.courseImage!!)
 
         viewHolder.cardView?.setOnClickListener { onCourseClick?.invoke(data[position]) }
     }
