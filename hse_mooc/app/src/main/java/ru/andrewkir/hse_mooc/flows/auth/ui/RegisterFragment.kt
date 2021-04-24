@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
+import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.common.startActivityClearBackStack
 import ru.andrewkir.hse_mooc.flows.courses.ui.CoursesActivity
 import ru.andrewkir.hse_mooc.databinding.FragmentRegisterBinding
@@ -146,15 +147,8 @@ class RegisterFragment :
                     Toast.makeText(requireContext(), it.value.string(), Toast.LENGTH_SHORT).show()
                     requireActivity().startActivityClearBackStack(CoursesActivity::class.java)
                 }
-                is ApiResponse.OnErrorResponse -> {
-                    if (it.isNetworkFailure)
-                        Toast.makeText(
-                            requireContext(),
-                            "Проверьте подключение к интернету",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    else Toast.makeText(requireContext(), it.body?.string(), Toast.LENGTH_SHORT)
-                        .show()
+                is ApiResponse.OnErrorResponse -> handleApiError(it) {
+                    if (bind.registerButton.isEnabled) bind.registerButton.performClick()
                 }
             }
         })

@@ -3,10 +3,11 @@ package ru.andrewkir.hse_mooc.common
 import android.app.Activity
 import android.content.Intent
 import android.view.View
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import org.json.JSONException
+import org.json.JSONObject
+import ru.andrewkir.hse_mooc.flows.auth.ui.LoginFragment
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 
 fun <activity : Activity> Activity.startActivityClearBackStack(activityClass: Class<activity>) {
@@ -16,20 +17,47 @@ fun <activity : Activity> Activity.startActivityClearBackStack(activityClass: Cl
     }
 }
 
-fun View.createSnackBarWithAction(msg: String, buttonText: String, action: (() -> Unit)? = null) {
-    val snackbar = Snackbar.make(this, msg, Snackbar.LENGTH_LONG)
-    action?.let { thatAction ->
-        snackbar.setAction(buttonText) {
-            thatAction()
-        }
-    }
-    snackbar.show()
-}
-
-
 fun Fragment.handleApiError(
     error: ApiResponse.OnErrorResponse,
     retry: (() -> Unit)? = null
 ) {
-    //TODO
+    if (error.isNetworkFailure) {
+        requireView().createRetrySnackbar(
+            "Проверьте интернет подключение",
+            retry
+        )
+        return
+    }
+
+    val parsedError = try {
+        if (error.body == null) ""
+        else {
+            val jsonObj = JSONObject(error.body.string())
+            jsonObj.getString("error")
+        }
+    } catch (ex: JSONException) {
+        ""
+    }
+
+    if (error.code == 401) {
+        if (this is LoginFragment) {
+            if (parsedError.isNotEmpty()) requireView().createRetrySnackbar(parsedError)
+            else requireView().createRetrySnackbar("Попробуйте ещё раз")
+        } else (this as BaseFragment<*, *, *>).userLogout()
+
+        return
+    }
+
+    if (parsedError.isNotEmpty()) requireView().createRetrySnackbar(parsedError)
+    else requireView().createRetrySnackbar(error.body?.string().toString())
+}
+
+fun View.createRetrySnackbar(msg: String, retry: (() -> Unit)? = null) {
+    val snack = Snackbar.make(this, msg, Snackbar.LENGTH_LONG)
+    retry?.let {
+        snack.setAction("Повторить") {
+            it()
+        }
+    }
+    snack.show()
 }

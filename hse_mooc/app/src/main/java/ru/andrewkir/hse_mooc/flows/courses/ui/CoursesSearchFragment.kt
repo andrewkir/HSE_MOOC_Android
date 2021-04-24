@@ -9,18 +9,23 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.andrewkir.hse_mooc.common.BaseFragment
+import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursesBinding
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursesSearchBinding
 import ru.andrewkir.hse_mooc.flows.courses.CoursesRepository
 import ru.andrewkir.hse_mooc.flows.courses.CoursesViewModel
 import ru.andrewkir.hse_mooc.flows.courses.ui.adapters.SearchCoursesRecyclerAdapter
+import ru.andrewkir.hse_mooc.flows.courses.ui.adapters.SearchScrollListener
 import ru.andrewkir.hse_mooc.network.api.CoursesApi
+import ru.andrewkir.hse_mooc.network.responses.Course
 
 class CoursesSearchFragment :
     BaseFragment<CoursesViewModel, CoursesRepository, FragmentCoursesSearchBinding>() {
 
     private lateinit var recyclerAdapter: SearchCoursesRecyclerAdapter
-
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private var currentPage = 1
+    private var isLoading = true
 
     override fun provideViewModelClass() = CoursesViewModel::class.java
 
@@ -44,39 +49,65 @@ class CoursesSearchFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         bind.swipeRefresh.isRefreshing = true
+
+        viewModel.init()
 
         recyclerAdapter = SearchCoursesRecyclerAdapter(requireContext()) {
             Toast.makeText(requireContext(), it.courseName, Toast.LENGTH_SHORT).show()
         }
+        linearLayoutManager = LinearLayoutManager(requireContext())
 
         subscribeToCourses()
+        subscribeToError()
 
         bind.searchCoursesRecyclerView.run {
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = linearLayoutManager
             adapter = recyclerAdapter
-        }
+            addOnScrollListener(
+                object : SearchScrollListener(linearLayoutManager) {
+                    override fun loadMoreItems() {
+                        isLoading = true
+                        viewModel.nextPage()
+                    }
 
-        viewModel.fetchCourses()
+                    override fun isLastPage(): Boolean {
+                        return false
+                    }
+
+                    override fun isLoading(): Boolean {
+                        return isLoading
+                    }
+                }
+            )
+        }
 
         bind.swipeRefresh.run {
             setOnRefreshListener {
-                viewModel.fetchCourses()
+                viewModel.refreshCourses()
             }
         }
     }
 
-    private fun fillList(): List<String> {
-        val data = mutableListOf<String>()
-        (0..30).forEach { i -> data.add("$i element") }
-        return data
-    }
-
     private fun subscribeToCourses() {
         viewModel.coursesLiveData.observe(viewLifecycleOwner, Observer {
+            if (it.isEmpty()) recyclerAdapter.removeLoading()
+            recyclerAdapter.addLoading()
+            recyclerAdapter.data = it
             bind.swipeRefresh.isRefreshing = false
-            recyclerAdapter.data = it.courses
+            isLoading = false
+        })
+    }
+
+    private fun subscribeToError() {
+        viewModel.errorLiveData.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                handleApiError(it) {
+                    if(bind.swipeRefresh.isRefreshing) viewModel.refreshCourses()
+                    if(isLoading) viewModel.nextPage()
+                    viewModel.init()
+                }
+            }
         })
     }
 }
