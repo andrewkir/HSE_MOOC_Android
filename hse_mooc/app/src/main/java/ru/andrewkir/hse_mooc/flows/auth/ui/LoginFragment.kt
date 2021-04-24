@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
@@ -13,7 +12,7 @@ import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.common.startActivityClearBackStack
-import ru.andrewkir.hse_mooc.flows.courses.ui.CoursesActivity
+import ru.andrewkir.hse_mooc.flows.courses.CoursesActivity
 import ru.andrewkir.hse_mooc.databinding.FragmentLoginBinding
 import ru.andrewkir.hse_mooc.flows.auth.AuthRepository
 import ru.andrewkir.hse_mooc.flows.auth.LoginViewModel
@@ -28,9 +27,7 @@ class LoginFragment : BaseFragment<LoginViewModel, AuthRepository, FragmentLogin
         AuthRepository(
             apiProvider.provideApi(
                 AuthApi::class.java,
-                requireContext(),
-                null,
-                null
+                requireContext()
             )
         )
 
@@ -113,13 +110,6 @@ class LoginFragment : BaseFragment<LoginViewModel, AuthRepository, FragmentLogin
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResponse.OnSuccessResponse -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "${it.value.access_token}\n${it.value.refresh_token}",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-
                     userPrefsManager.saveAccessToken(it.value.access_token)
                     userPrefsManager.saveRefreshToken(it.value.refresh_token)
                     requireActivity().startActivityClearBackStack(CoursesActivity::class.java)

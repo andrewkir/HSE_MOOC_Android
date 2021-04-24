@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import ru.andrewkir.hse_mooc.flows.auth.LoginViewModel
 import ru.andrewkir.hse_mooc.flows.auth.AuthRepository
 import ru.andrewkir.hse_mooc.flows.auth.RegisterViewModel
-import ru.andrewkir.hse_mooc.flows.courses.CoursesRepository
-import ru.andrewkir.hse_mooc.flows.courses.CoursesViewModel
+import ru.andrewkir.hse_mooc.flows.courses.main.CoursesMainRepository
+import ru.andrewkir.hse_mooc.flows.courses.main.CoursesMainViewModel
+import ru.andrewkir.hse_mooc.flows.courses.search.CoursesSearchRepository
+import ru.andrewkir.hse_mooc.flows.courses.search.CoursesSearchViewModel
 
 class ViewModelFactory(
     private val repository: BaseRepository
@@ -19,7 +21,8 @@ class ViewModelFactory(
         return when {
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> LoginViewModel(repository as AuthRepository) as T
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> RegisterViewModel(repository as AuthRepository) as T
-            modelClass.isAssignableFrom(CoursesViewModel::class.java) -> CoursesViewModel(repository as CoursesRepository) as T
+            modelClass.isAssignableFrom(CoursesSearchViewModel::class.java) -> CoursesSearchViewModel(repository as CoursesSearchRepository) as T
+            modelClass.isAssignableFrom(CoursesMainViewModel::class.java) -> CoursesMainViewModel(repository as CoursesMainRepository) as T
             else -> throw IllegalArgumentException("Provide correct viewModel class")
         }
     }

@@ -14,4 +14,7 @@ interface CoursesApi : BaseApi {
         @Query("pageNumber") pageNumber: Int,
         @Query("searchQuery") searchQuery: String = ""
     ): CoursesResponse
+    
+    @POST("/auth/auth-test")
+    suspend fun testAuth(): ResponseBody
 }

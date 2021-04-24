@@ -1,7 +1,6 @@
-package ru.andrewkir.hse_mooc.flows.courses.ui
+package ru.andrewkir.hse_mooc.flows.courses.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,32 +9,28 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.handleApiError
-import ru.andrewkir.hse_mooc.databinding.FragmentCoursesBinding
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursesSearchBinding
-import ru.andrewkir.hse_mooc.flows.courses.CoursesRepository
-import ru.andrewkir.hse_mooc.flows.courses.CoursesViewModel
-import ru.andrewkir.hse_mooc.flows.courses.ui.adapters.SearchCoursesRecyclerAdapter
-import ru.andrewkir.hse_mooc.flows.courses.ui.adapters.SearchScrollListener
+import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchCoursesRecyclerAdapter
+import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchScrollListener
 import ru.andrewkir.hse_mooc.network.api.CoursesApi
-import ru.andrewkir.hse_mooc.network.responses.Course
 
 class CoursesSearchFragment :
-    BaseFragment<CoursesViewModel, CoursesRepository, FragmentCoursesSearchBinding>() {
+    BaseFragment<CoursesSearchViewModel, CoursesSearchRepository, FragmentCoursesSearchBinding>() {
 
     private lateinit var recyclerAdapter: SearchCoursesRecyclerAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
     private var currentPage = 1
     private var isLoading = true
+    private var query = ""
 
-    override fun provideViewModelClass() = CoursesViewModel::class.java
+    override fun provideViewModelClass() = CoursesSearchViewModel::class.java
 
-    override fun provideRepository(): CoursesRepository {
-        return CoursesRepository(
+    override fun provideRepository(): CoursesSearchRepository {
+        return CoursesSearchRepository(
             apiProvider.provideApi(
                 CoursesApi::class.java,
                 requireContext(),
-                userPrefsManager.obtainAccessToken(),
-                userPrefsManager.obtainRefreshToken()
+                userPrefsManager.obtainAccessToken()
             )
         )
     }
@@ -48,10 +43,6 @@ class CoursesSearchFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        bind.swipeRefresh.isRefreshing = true
-
-        viewModel.init()
 
         recyclerAdapter = SearchCoursesRecyclerAdapter(requireContext()) {
             Toast.makeText(requireContext(), it.courseName, Toast.LENGTH_SHORT).show()
@@ -87,12 +78,18 @@ class CoursesSearchFragment :
                 viewModel.refreshCourses()
             }
         }
+
+        bind.searchButton.setOnClickListener {
+            query = bind.searchEditText.text.toString()
+            viewModel.initCourses(query)
+        }
     }
 
     private fun subscribeToCourses() {
         viewModel.coursesLiveData.observe(viewLifecycleOwner, Observer {
-            if (it.isEmpty()) recyclerAdapter.removeLoading()
-            recyclerAdapter.addLoading()
+            if (it.isEmpty() || recyclerAdapter.data.size == it.size) recyclerAdapter.removeLoading()
+            else recyclerAdapter.addLoading()
+
             recyclerAdapter.data = it
             bind.swipeRefresh.isRefreshing = false
             isLoading = false
@@ -103,9 +100,9 @@ class CoursesSearchFragment :
         viewModel.errorLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 handleApiError(it) {
-                    if(bind.swipeRefresh.isRefreshing) viewModel.refreshCourses()
-                    if(isLoading) viewModel.nextPage()
-                    viewModel.init()
+                    if (bind.swipeRefresh.isRefreshing) viewModel.refreshCourses()
+                    if (isLoading) viewModel.nextPage()
+                    viewModel.initCourses(query)
                 }
             }
         })

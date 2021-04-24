@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -13,10 +12,9 @@ import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.common.startActivityClearBackStack
-import ru.andrewkir.hse_mooc.flows.courses.ui.CoursesActivity
+import ru.andrewkir.hse_mooc.flows.courses.CoursesActivity
 import ru.andrewkir.hse_mooc.databinding.FragmentRegisterBinding
 import ru.andrewkir.hse_mooc.flows.auth.AuthRepository
-import ru.andrewkir.hse_mooc.flows.auth.LoginViewModel
 import ru.andrewkir.hse_mooc.flows.auth.RegisterViewModel
 import ru.andrewkir.hse_mooc.network.api.AuthApi
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
@@ -24,17 +22,13 @@ import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 class RegisterFragment :
     BaseFragment<RegisterViewModel, AuthRepository, FragmentRegisterBinding>() {
 
-    //TODO SAVE EDIT TEXT STATE
-
     override fun provideViewModelClass(): Class<RegisterViewModel> = RegisterViewModel::class.java
 
     override fun provideRepository(): AuthRepository =
         AuthRepository(
             apiProvider.provideApi(
                 AuthApi::class.java,
-                requireContext(),
-                null,
-                null
+                requireContext()
             )
         )
 
@@ -94,6 +88,7 @@ class RegisterFragment :
         setupButtons()
         adjustButtonToText()
         setupInputs()
+        subscribeToRegisterResult()
         subscribeToLoginResult()
 
         bind.progressBar.visibility = View.INVISIBLE
@@ -140,16 +135,30 @@ class RegisterFragment :
         }
     }
 
-    private fun subscribeToLoginResult() {
+    private fun subscribeToRegisterResult() {
         viewModel.registerResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResponse.OnSuccessResponse -> {
-                    Toast.makeText(requireContext(), it.value.string(), Toast.LENGTH_SHORT).show()
-                    requireActivity().startActivityClearBackStack(CoursesActivity::class.java)
+                    val login = bind.loginTextInput.editText!!.text.toString()
+                    val password = bind.passwordTextInput.editText!!.text.toString()
+                    viewModel.loginByUsername(login, password)
                 }
                 is ApiResponse.OnErrorResponse -> handleApiError(it) {
                     if (bind.registerButton.isEnabled) bind.registerButton.performClick()
                 }
+            }
+        })
+    }
+
+    private fun subscribeToLoginResult() {
+        viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is ApiResponse.OnSuccessResponse -> {
+                    userPrefsManager.saveAccessToken(it.value.access_token)
+                    userPrefsManager.saveRefreshToken(it.value.refresh_token)
+                    requireActivity().startActivityClearBackStack(CoursesActivity::class.java)
+                }
+                is ApiResponse.OnErrorResponse -> handleApiError(it)
             }
         })
     }

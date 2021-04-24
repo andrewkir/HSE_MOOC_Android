@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.flows.courses.ui.adapters
+package ru.andrewkir.hse_mooc.flows.courses.search.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

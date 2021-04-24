@@ -7,6 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.andrewkir.hse_mooc.BuildConfig
 import ru.andrewkir.hse_mooc.network.api.TokensApi
+import ru.andrewkir.hse_mooc.repository.UserPrefsManager
 
 class ApiProvider {
     companion object {
@@ -16,13 +17,12 @@ class ApiProvider {
     fun <Api> provideApi(
         api: Class<Api>,
         context: Context,
-        accessToken: String?,
-        refreshToken: String?
+        accessToken: String? = null
     ): Api {
         val authenticator = JWTAuthenticator(context, provideTokensApi())
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(provideOkHTPPClient(authenticator, accessToken, refreshToken))
+            .client(provideOkHTPPClient(authenticator, accessToken))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(api)
@@ -39,8 +39,7 @@ class ApiProvider {
 
     private fun provideOkHTPPClient(
         authenticator: JWTAuthenticator? = null,
-        accessToken: String? = null,
-        refreshToken: String? = null
+        accessToken: String? = null
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
@@ -49,19 +48,17 @@ class ApiProvider {
                         it.addHeader("Accept", "application/json")
                         if (accessToken != null)
                             it.addHeader("Authorization", "Bearer $accessToken")
-                        if (refreshToken != null)
-                            it.addHeader("x-refresh-token", "$refreshToken")
                     }.build()
                 )
             }
             .also { client ->
-                if (authenticator != null && refreshToken == null) {
-                    client.authenticator(authenticator)
-                }
                 if (BuildConfig.DEBUG) {
                     val logging = HttpLoggingInterceptor()
                     logging.setLevel(HttpLoggingInterceptor.Level.BODY)
                     client.addInterceptor(logging)
+                }
+                if (authenticator != null) {
+                    client.authenticator(authenticator)
                 }
             }.build()
     }

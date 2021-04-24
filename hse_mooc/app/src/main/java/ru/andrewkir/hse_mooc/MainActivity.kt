@@ -3,9 +3,8 @@ package ru.andrewkir.hse_mooc
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import ru.andrewkir.hse_mooc.flows.auth.ui.AuthActivity
-import ru.andrewkir.hse_mooc.flows.courses.ui.CoursesActivity
+import ru.andrewkir.hse_mooc.flows.courses.CoursesActivity
 import ru.andrewkir.hse_mooc.repository.UserPrefsManager
 
 class MainActivity : AppCompatActivity() {

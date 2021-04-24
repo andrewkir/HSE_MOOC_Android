@@ -1,22 +1,17 @@
-package ru.andrewkir.hse_mooc.flows.courses
+package ru.andrewkir.hse_mooc.flows.courses.search
 
-import android.util.Log
-import androidx.datastore.preferences.protobuf.Api
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
-import ru.andrewkir.hse_mooc.common.BaseRepository
 import ru.andrewkir.hse_mooc.common.BaseViewModel
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 import ru.andrewkir.hse_mooc.network.responses.Course
-import ru.andrewkir.hse_mooc.network.responses.CoursesResponse
 
 
-class CoursesViewModel(
-    private val repository: CoursesRepository
-) : BaseViewModel(repository) {
+class CoursesSearchViewModel(
+    private val searchRepository: CoursesSearchRepository
+) : BaseViewModel(searchRepository) {
 
     private val mutableCourses = arrayListOf<Course>()
     private val mutableCoursesLiveData: MutableLiveData<List<Course>> = MutableLiveData()
@@ -28,13 +23,20 @@ class CoursesViewModel(
         get() = mutableError
 
     private var page = 1
+    private var query = ""
+    private var isLastPage = false
 
+    private fun fetchCourses(query: String, currentPage: Int) {
+        if (isLastPage) return
 
-    private fun fetchCourses(currentPage: Int) {
         mutableError.value = null
         viewModelScope.launch {
-            when (val result = repository.getCoursesFromServer(currentPage)) {
+            when (val result = searchRepository.getCoursesFromServer(query, currentPage)) {
                 is ApiResponse.OnSuccessResponse -> {
+                    if (result.value.courses.isEmpty()) {
+                        page--
+                        isLastPage = true
+                    }
                     mutableCourses.addAll(result.value.courses)
                     mutableCoursesLiveData.value = mutableCourses
                 }
@@ -46,21 +48,27 @@ class CoursesViewModel(
         }
     }
 
-    fun init() {
-        if (mutableCoursesLiveData.value == null) {
-            fetchCourses(1)
+    fun initCourses(searchQuery: String) {
+        if (searchQuery != query) {
+            query = searchQuery
+            refreshCourses()
+        } else if (mutableCoursesLiveData.value == null) {
+            refreshCourses()
         }
     }
 
     fun nextPage() {
         page++
-        fetchCourses(page)
+        fetchCourses(query, page)
     }
 
     fun refreshCourses() {
         mutableError.value = null
+        page = 1
+        isLastPage = false
+
         viewModelScope.launch {
-            when (val result = repository.getCoursesFromServer(1)) {
+            when (val result = searchRepository.getCoursesFromServer(query, 1)) {
                 is ApiResponse.OnSuccessResponse -> {
                     mutableCourses.clear()
                     mutableCourses.addAll(result.value.courses)

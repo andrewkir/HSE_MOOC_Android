@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.flows.courses.ui
+package ru.andrewkir.hse_mooc.flows.courses
 
 import android.annotation.SuppressLint
 import android.os.Bundle

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".flows.courses.ui.CoursesActivity">
+    tools:context=".flows.courses.CoursesActivity">
 
     <fragment
         android:id="@+id/coursesNavHost"

@@ -25,8 +25,6 @@ class JWTAuthenticator(
                 protectedApiCall { tokensApi.refreshAccessToken(refreshToken!!) }
                 ) {
                 is ApiResponse.OnSuccessResponse -> {
-
-                    //TODO разобраться что возвращает refresh
                     prefsManager.saveAccessToken(
                         tokensResponse.value.access_token
                     )
