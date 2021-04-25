@@ -22,12 +22,19 @@ class CoursesSearchViewModel(
     val errorLiveData: LiveData<ApiResponse.OnErrorResponse>
         get() = mutableError
 
+    private val isLastPage: MutableLiveData<Boolean> = MutableLiveData()
+    val isLastPageLiveData: LiveData<Boolean>
+        get() = isLastPage
+
+    init {
+        isLastPage.value = true
+    }
+
     private var page = 1
     private var query = ""
-    private var isLastPage = false
 
     private fun fetchCourses(query: String, currentPage: Int) {
-        if (isLastPage) return
+        if (isLastPage.value!!) return
 
         mutableError.value = null
         viewModelScope.launch {
@@ -35,7 +42,7 @@ class CoursesSearchViewModel(
                 is ApiResponse.OnSuccessResponse -> {
                     if (result.value.courses.isEmpty()) {
                         page--
-                        isLastPage = true
+                        isLastPage.value = true
                     }
                     mutableCourses.addAll(result.value.courses)
                     mutableCoursesLiveData.value = mutableCourses
@@ -65,12 +72,12 @@ class CoursesSearchViewModel(
     fun refreshCourses() {
         mutableError.value = null
         page = 1
-        isLastPage = false
 
         viewModelScope.launch {
             when (val result = searchRepository.getCoursesFromServer(query, 1)) {
                 is ApiResponse.OnSuccessResponse -> {
                     mutableCourses.clear()
+                    isLastPage.value = result.value.courses.isEmpty() || result.value.courses.size < 10
                     mutableCourses.addAll(result.value.courses)
                     mutableCoursesLiveData.value = mutableCourses
                 }

@@ -44,15 +44,62 @@ class CoursesSearchFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupRecyclerView()
+        subscribeToCourses()
+        subscribeToError()
+        subscribeToLastPage()
+
+        if (viewModel.coursesLiveData.value.isNullOrEmpty()) bind.swipeRefresh.isRefreshing = true
+        viewModel.initCourses("")
+
+        bind.swipeRefresh.run {
+            setOnRefreshListener {
+                viewModel.refreshCourses()
+            }
+        }
+
+        bind.searchButton.setOnClickListener {
+            linearLayoutManager.smoothScrollToPosition(bind.searchCoursesRecyclerView, null, 0)
+            query = bind.searchEditText.text.toString()
+            viewModel.initCourses(query)
+        }
+    }
+
+    private fun subscribeToCourses() {
+        viewModel.coursesLiveData.observe(viewLifecycleOwner, Observer {
+            recyclerAdapter.data = it
+            bind.swipeRefresh.isRefreshing = false
+            isLoading = false
+        })
+    }
+
+    private fun subscribeToError() {
+        viewModel.errorLiveData.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                handleApiError(it) {
+                    if (bind.swipeRefresh.isRefreshing) viewModel.refreshCourses()
+                    if (isLoading) viewModel.nextPage()
+                    viewModel.initCourses(query)
+                }
+            }
+        })
+    }
+
+    private fun subscribeToLastPage() {
+        viewModel.isLastPageLiveData.observe(viewLifecycleOwner, Observer {
+            if (it) recyclerAdapter.removeLoading()
+            else recyclerAdapter.addLoading()
+        })
+    }
+
+    private fun setupRecyclerView() {
         recyclerAdapter = SearchCoursesRecyclerAdapter(requireContext()) {
             Toast.makeText(requireContext(), it.courseName, Toast.LENGTH_SHORT).show()
         }
         linearLayoutManager = LinearLayoutManager(requireContext())
 
-        subscribeToCourses()
-        subscribeToError()
-
         bind.searchCoursesRecyclerView.run {
+            overScrollMode = View.OVER_SCROLL_NEVER
             layoutManager = linearLayoutManager
             adapter = recyclerAdapter
             addOnScrollListener(
@@ -72,39 +119,5 @@ class CoursesSearchFragment :
                 }
             )
         }
-
-        bind.swipeRefresh.run {
-            setOnRefreshListener {
-                viewModel.refreshCourses()
-            }
-        }
-
-        bind.searchButton.setOnClickListener {
-            query = bind.searchEditText.text.toString()
-            viewModel.initCourses(query)
-        }
-    }
-
-    private fun subscribeToCourses() {
-        viewModel.coursesLiveData.observe(viewLifecycleOwner, Observer {
-            if (it.isEmpty() || recyclerAdapter.data.size == it.size) recyclerAdapter.removeLoading()
-            else recyclerAdapter.addLoading()
-
-            recyclerAdapter.data = it
-            bind.swipeRefresh.isRefreshing = false
-            isLoading = false
-        })
-    }
-
-    private fun subscribeToError() {
-        viewModel.errorLiveData.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                handleApiError(it) {
-                    if (bind.swipeRefresh.isRefreshing) viewModel.refreshCourses()
-                    if (isLoading) viewModel.nextPage()
-                    viewModel.initCourses(query)
-                }
-            }
-        })
     }
 }
