@@ -6,7 +6,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.andrewkir.hse_mooc.common.BaseViewModel
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
-import ru.andrewkir.hse_mooc.network.responses.Course
+import ru.andrewkir.hse_mooc.network.responses.Categories.CategoriesResponse
+import ru.andrewkir.hse_mooc.network.responses.CoursesSearch.Course
 
 
 class CoursesSearchViewModel(
@@ -26,12 +27,16 @@ class CoursesSearchViewModel(
     val isLastPageLiveData: LiveData<Boolean>
         get() = isLastPage
 
+    val categoryResponse: MutableLiveData<ApiResponse<CategoriesResponse>> = MutableLiveData()
+
+
     init {
         isLastPage.value = true
     }
 
     private var page = 1
     private var query = ""
+    private var isFirstInit = true
 
     private fun fetchCourses(query: String, currentPage: Int) {
         if (isLastPage.value!!) return
@@ -56,11 +61,18 @@ class CoursesSearchViewModel(
     }
 
     fun initCourses(searchQuery: String) {
-        if (searchQuery != query) {
-            query = searchQuery
+        //TODO разделить на методы и пофиксить
+        if (isFirstInit){
+            isFirstInit = false
             refreshCourses()
-        } else if (mutableCoursesLiveData.value == null) {
-            refreshCourses()
+        }
+        else {
+            if (searchQuery != query) {
+                query = searchQuery
+                refreshCourses()
+            } else if (mutableCoursesLiveData.value == null) {
+                refreshCourses()
+            }
         }
     }
 
@@ -77,7 +89,8 @@ class CoursesSearchViewModel(
             when (val result = searchRepository.getCoursesFromServer(query, 1)) {
                 is ApiResponse.OnSuccessResponse -> {
                     mutableCourses.clear()
-                    isLastPage.value = result.value.courses.isEmpty() || result.value.courses.size < 10
+                    isLastPage.value =
+                        result.value.courses.isEmpty() || result.value.courses.size < 10
                     mutableCourses.addAll(result.value.courses)
                     mutableCoursesLiveData.value = mutableCourses
                 }
@@ -85,6 +98,12 @@ class CoursesSearchViewModel(
                     mutableError.value = result
                 }
             }
+        }
+    }
+
+    fun getCategories() {
+        viewModelScope.launch {
+            categoryResponse.value = searchRepository.getCategories()
         }
     }
 }

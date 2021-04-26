@@ -11,4 +11,8 @@ class CoursesSearchRepository(
     suspend fun getCoursesFromServer(query: String, currentPage: Int) = protectedApiCall {
         coursesApi.getCourses(10, currentPage, query)
     }
+
+    suspend fun getCategories() = protectedApiCall {
+        coursesApi.getCategories()
+    }
 }

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:animateLayoutChanges="true"
     android:layout_height="match_parent">
 
     <EditText
@@ -28,15 +29,41 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/searchEditText" />
 
+
+    <Button
+        android:id="@+id/expandButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="@+id/searchButton"
+        app:layout_constraintStart_toStartOf="@+id/searchButton"
+        app:layout_constraintTop_toBottomOf="@+id/searchButton" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expandButton"
+        app:singleLine="false">
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Сбросить" />
+    </com.google.android.material.chip.ChipGroup>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchEditText">
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchCoursesRecyclerView"

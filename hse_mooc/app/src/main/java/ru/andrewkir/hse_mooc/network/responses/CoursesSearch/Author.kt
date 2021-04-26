@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.network.responses
+package ru.andrewkir.hse_mooc.network.responses.CoursesSearch
 
 data class Author(
     val icon: String,

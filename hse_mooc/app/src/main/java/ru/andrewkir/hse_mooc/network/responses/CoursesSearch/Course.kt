@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.network.responses
+package ru.andrewkir.hse_mooc.network.responses.CoursesSearch
 
 data class Course(
     val author: Author,
@@ -9,7 +9,7 @@ data class Course(
     val id: String,
     val link: String,
     val previewImageLink: String,
-    val price: String,
+    val price: Price,
     val shortDescription: String,
     val vendor: String
 )

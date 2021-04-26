@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.andrewkir.hse_mooc.R
-import ru.andrewkir.hse_mooc.network.responses.Course
+import ru.andrewkir.hse_mooc.network.responses.CoursesSearch.Course
 
 class SearchCoursesRecyclerAdapter(
     private val context: Context,
@@ -63,7 +63,7 @@ class SearchCoursesRecyclerAdapter(
                 viewHolder.courseDescription?.text = data[position].shortDescription
 
                 viewHolder.courseCost?.text =
-                    if (data[position].price == "0") "Бесплатно" else data[position].price
+                    if (data[position].price.amount == 0.0) "Бесплатно" else data[position].price.amount.toString()
 
                 Glide.with(context)
                     .load(data[position].previewImageLink)

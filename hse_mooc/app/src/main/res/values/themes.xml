@@ -18,4 +18,6 @@
     <style name="round_image_background" parent="">
         <item name="cornerSize">10%</item>
     </style>
+
+    <style name="CustomChipChoice" parent="@style/Widget.MaterialComponents.Chip.Choice" />
 </resources>

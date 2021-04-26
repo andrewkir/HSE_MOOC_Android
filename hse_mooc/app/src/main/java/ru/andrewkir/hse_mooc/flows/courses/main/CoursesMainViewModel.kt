@@ -7,8 +7,6 @@ import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import ru.andrewkir.hse_mooc.common.BaseViewModel
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
-import ru.andrewkir.hse_mooc.network.responses.Course
-import ru.andrewkir.hse_mooc.network.responses.LoginResponse
 
 
 class CoursesMainViewModel(

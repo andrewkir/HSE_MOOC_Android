@@ -7,12 +7,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipDrawable
+import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursesSearchBinding
 import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchCoursesRecyclerAdapter
 import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchScrollListener
 import ru.andrewkir.hse_mooc.network.api.CoursesApi
+import ru.andrewkir.hse_mooc.network.responses.ApiResponse
+
 
 class CoursesSearchFragment :
     BaseFragment<CoursesSearchViewModel, CoursesSearchRepository, FragmentCoursesSearchBinding>() {
@@ -48,9 +53,11 @@ class CoursesSearchFragment :
         subscribeToCourses()
         subscribeToError()
         subscribeToLastPage()
+        subscribeToCategories()
 
         if (viewModel.coursesLiveData.value.isNullOrEmpty()) bind.swipeRefresh.isRefreshing = true
-        viewModel.initCourses("")
+        viewModel.initCourses()
+        viewModel.getCategories()
 
         bind.swipeRefresh.run {
             setOnRefreshListener {
@@ -62,6 +69,11 @@ class CoursesSearchFragment :
             linearLayoutManager.smoothScrollToPosition(bind.searchCoursesRecyclerView, null, 0)
             query = bind.searchEditText.text.toString()
             viewModel.initCourses(query)
+        }
+
+        bind.expandButton.setOnClickListener {
+            if (bind.chipGroup.visibility == View.GONE) bind.chipGroup.visibility = View.VISIBLE
+            else bind.chipGroup.visibility = View.GONE
         }
     }
 
@@ -119,5 +131,29 @@ class CoursesSearchFragment :
                 }
             )
         }
+    }
+
+    private fun subscribeToCategories() {
+        viewModel.categoryResponse.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is ApiResponse.OnSuccessResponse -> {
+                    for (i in it.value) {
+                        val chip = Chip(requireContext())
+                        val drawable = ChipDrawable.createFromAttributes(
+                            requireContext(),
+                            null,
+                            0,
+                            R.style.CustomChipChoice
+                        )
+                        chip.setChipDrawable(drawable)
+                        chip.text = i.name.ru
+                        chip.setOnClickListener {
+                            Toast.makeText(requireContext(), i.name.ru, Toast.LENGTH_SHORT).show()
+                        }
+                        bind.chipGroup.addView(chip)
+                    }
+                }
+            }
+        })
     }
 }
