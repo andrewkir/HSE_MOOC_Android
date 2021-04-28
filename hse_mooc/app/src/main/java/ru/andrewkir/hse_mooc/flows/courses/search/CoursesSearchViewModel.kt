@@ -20,7 +20,8 @@ class CoursesSearchViewModel(
         get() = mutableCoursesLiveData
 
     private val mutableError: MutableLiveData<ApiResponse.OnErrorResponse> = MutableLiveData()
-    val errorLiveData: LiveData<ApiResponse.OnErrorResponse>
+
+    val errorLiveData: LiveData<ApiResponse.OnErrorResponse?>
         get() = mutableError
 
     private val isLastPage: MutableLiveData<Boolean> = MutableLiveData()
@@ -29,7 +30,6 @@ class CoursesSearchViewModel(
 
     val categoryResponse: MutableLiveData<ApiResponse<CategoriesResponse>> = MutableLiveData()
 
-
     init {
         isLastPage.value = true
     }
@@ -37,14 +37,17 @@ class CoursesSearchViewModel(
     private var page = 1
     private var query = ""
     private var isFirstInit = true
+    var categories = mutableSetOf<Int>()
 
     private fun fetchCourses(query: String, currentPage: Int) {
         if (isLastPage.value!!) return
 
         mutableError.value = null
         viewModelScope.launch {
-            when (val result = searchRepository.getCoursesFromServer(query, currentPage)) {
+            when (val result = searchRepository.getCoursesFromServer(query, currentPage, categories.joinToString(","))) {
                 is ApiResponse.OnSuccessResponse -> {
+                    mutableError.value = null
+
                     if (result.value.courses.isEmpty()) {
                         page--
                         isLastPage.value = true
@@ -60,19 +63,21 @@ class CoursesSearchViewModel(
         }
     }
 
-    fun initCourses(searchQuery: String) {
-        //TODO разделить на методы и пофиксить
+    fun initCourses() {
         if (isFirstInit){
             isFirstInit = false
             refreshCourses()
         }
-        else {
-            if (searchQuery != query) {
-                query = searchQuery
-                refreshCourses()
-            } else if (mutableCoursesLiveData.value == null) {
-                refreshCourses()
-            }
+    }
+
+    fun searchCourses(searchQuery: String, categoriesQuery: Set<Int> = setOf()){
+        if (searchQuery != query || !(categoriesQuery.containsAll(categories) && categories.containsAll(categoriesQuery))) {
+            query = searchQuery
+            categories = categoriesQuery.toMutableSet()
+
+            refreshCourses()
+        } else if (mutableCoursesLiveData.value == null) {
+            refreshCourses()
         }
     }
 
@@ -86,8 +91,10 @@ class CoursesSearchViewModel(
         page = 1
 
         viewModelScope.launch {
-            when (val result = searchRepository.getCoursesFromServer(query, 1)) {
+            when (val result = searchRepository.getCoursesFromServer(query, 1, categories.joinToString(","))) {
                 is ApiResponse.OnSuccessResponse -> {
+                    mutableError.value = null
+
                     mutableCourses.clear()
                     isLastPage.value =
                         result.value.courses.isEmpty() || result.value.courses.size < 10

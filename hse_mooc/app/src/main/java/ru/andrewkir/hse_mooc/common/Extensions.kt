@@ -1,8 +1,12 @@
 package ru.andrewkir.hse_mooc.common
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
+import android.net.Uri
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import org.json.JSONException
@@ -10,11 +14,17 @@ import org.json.JSONObject
 import ru.andrewkir.hse_mooc.flows.auth.ui.LoginFragment
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 
+
 fun <activity : Activity> Activity.startActivityClearBackStack(activityClass: Class<activity>) {
     Intent(this, activityClass).also {
         it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(it)
     }
+}
+
+fun Fragment.openLink(link: String){
+    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+    this.startActivity(browserIntent)
 }
 
 fun Fragment.handleApiError(
@@ -61,3 +71,8 @@ fun View.createRetrySnackbar(msg: String, retry: (() -> Unit)? = null) {
     }
     snack.show()
 }
+
+val Int.dp: Int
+    get() = (this / Resources.getSystem().displayMetrics.density).toInt()
+val Int.px: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()

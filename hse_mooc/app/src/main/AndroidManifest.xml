@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hse_mooc">
-        <activity android:name="ru.andrewkir.hse_mooc.flows.courses.CoursesActivity"></activity>
+        <activity
+            android:name="ru.andrewkir.hse_mooc.flows.courses.CoursesActivity"
+            android:hardwareAccelerated="true" />
         <activity android:name="ru.andrewkir.hse_mooc.flows.auth.ui.AuthActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -12,7 +12,8 @@ interface CoursesApi : BaseApi {
     suspend fun getCourses(
         @Query("pageSize") pageSize: Int,
         @Query("pageNumber") pageNumber: Int,
-        @Query("searchQuery") searchQuery: String = ""
+        @Query("searchQuery") searchQuery: String = "",
+        @Query("categories") categories: String = ""
     ): CoursesResponse
     
     @POST("/auth/auth-test")

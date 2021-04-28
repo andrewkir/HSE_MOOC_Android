@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import ru.andrewkir.hse_mooc.R
+import ru.andrewkir.hse_mooc.common.dp
+import ru.andrewkir.hse_mooc.common.px
 import ru.andrewkir.hse_mooc.network.responses.CoursesSearch.Course
 
 class SearchCoursesRecyclerAdapter(
@@ -67,6 +70,7 @@ class SearchCoursesRecyclerAdapter(
 
                 Glide.with(context)
                     .load(data[position].previewImageLink)
+                    .apply(RequestOptions().override(88.px, 88.px))
                     .transform(CenterCrop(), RoundedCorners(25))
                     .into(viewHolder.courseImage!!)
 

@@ -1,9 +1,12 @@
 package ru.andrewkir.hse_mooc.flows.courses.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +15,7 @@ import com.google.android.material.chip.ChipDrawable
 import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.handleApiError
+import ru.andrewkir.hse_mooc.common.openLink
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursesSearchBinding
 import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchCoursesRecyclerAdapter
 import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchScrollListener
@@ -27,6 +31,8 @@ class CoursesSearchFragment :
     private var currentPage = 1
     private var isLoading = true
     private var query = ""
+
+    private var checkedChipsIds = mutableSetOf<Int>()
 
     override fun provideViewModelClass() = CoursesSearchViewModel::class.java
 
@@ -50,31 +56,16 @@ class CoursesSearchFragment :
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
+        setupListeners()
         subscribeToCourses()
         subscribeToError()
         subscribeToLastPage()
         subscribeToCategories()
 
         if (viewModel.coursesLiveData.value.isNullOrEmpty()) bind.swipeRefresh.isRefreshing = true
+
         viewModel.initCourses()
         viewModel.getCategories()
-
-        bind.swipeRefresh.run {
-            setOnRefreshListener {
-                viewModel.refreshCourses()
-            }
-        }
-
-        bind.searchButton.setOnClickListener {
-            linearLayoutManager.smoothScrollToPosition(bind.searchCoursesRecyclerView, null, 0)
-            query = bind.searchEditText.text.toString()
-            viewModel.initCourses(query)
-        }
-
-        bind.expandButton.setOnClickListener {
-            if (bind.chipGroup.visibility == View.GONE) bind.chipGroup.visibility = View.VISIBLE
-            else bind.chipGroup.visibility = View.GONE
-        }
     }
 
     private fun subscribeToCourses() {
@@ -91,7 +82,7 @@ class CoursesSearchFragment :
                 handleApiError(it) {
                     if (bind.swipeRefresh.isRefreshing) viewModel.refreshCourses()
                     if (isLoading) viewModel.nextPage()
-                    viewModel.initCourses(query)
+                    viewModel.searchCourses(query)
                 }
             }
         })
@@ -106,6 +97,7 @@ class CoursesSearchFragment :
 
     private fun setupRecyclerView() {
         recyclerAdapter = SearchCoursesRecyclerAdapter(requireContext()) {
+            openLink(it.link)
             Toast.makeText(requireContext(), it.courseName, Toast.LENGTH_SHORT).show()
         }
         linearLayoutManager = LinearLayoutManager(requireContext())
@@ -133,12 +125,64 @@ class CoursesSearchFragment :
         }
     }
 
+    private fun setupListeners(){
+        bind.swipeRefresh.run {
+            setOnRefreshListener {
+                viewModel.refreshCourses()
+            }
+        }
+
+        bind.searchButton.setOnClickListener {
+            performSearch()
+            if(bind.chipGroup.visibility == View.VISIBLE) bind.chipGroup.visibility = View.GONE
+        }
+
+        bind.searchEditText.setOnEditorActionListener { v, actionId, event ->
+            if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                if(bind.chipGroup.visibility == View.VISIBLE) bind.chipGroup.visibility = View.GONE
+                performSearch()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
+
+        bind.expandButton.setOnClickListener {
+            if (bind.chipGroup.visibility == View.GONE) bind.chipGroup.visibility = View.VISIBLE
+            else bind.chipGroup.visibility = View.GONE
+        }
+    }
+
+    private fun performSearch(){
+        bind.swipeRefresh.isRefreshing = true
+        bind.searchEditText.clearFocus()
+        val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(bind.searchEditText.windowToken, 0)
+
+        linearLayoutManager.smoothScrollToPosition(bind.searchCoursesRecyclerView, null, 0)
+        query = bind.searchEditText.text.toString()
+        viewModel.searchCourses(query, checkedChipsIds)
+    }
+
     private fun subscribeToCategories() {
         viewModel.categoryResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResponse.OnSuccessResponse -> {
-                    for (i in it.value) {
+                    if (viewModel.categories.isNotEmpty()) checkedChipsIds =
+                        viewModel.categories.toMutableSet()
+
+                    bind.chipGroup.removeAllViews()
+                    val removeAllChip = Chip(requireContext())
+                    removeAllChip.id = View.generateViewId()
+                    removeAllChip.text = "Сбросить"
+                    removeAllChip.setOnClickListener {
+                        bind.chipGroup.clearCheck()
+                        checkedChipsIds.clear()
+                    }
+                    bind.chipGroup.addView(removeAllChip)
+
+                    for (category in it.value) {
                         val chip = Chip(requireContext())
+                        chip.id = View.generateViewId()
                         val drawable = ChipDrawable.createFromAttributes(
                             requireContext(),
                             null,
@@ -146,10 +190,12 @@ class CoursesSearchFragment :
                             R.style.CustomChipChoice
                         )
                         chip.setChipDrawable(drawable)
-                        chip.text = i.name.ru
+                        chip.text = category.name.ru
                         chip.setOnClickListener {
-                            Toast.makeText(requireContext(), i.name.ru, Toast.LENGTH_SHORT).show()
+                            if (chip.isChecked) checkedChipsIds.add(category.id)
+                            else checkedChipsIds.remove(category.id)
                         }
+                        if (checkedChipsIds.contains(category.id)) chip.isChecked = true
                         bind.chipGroup.addView(chip)
                     }
                 }
