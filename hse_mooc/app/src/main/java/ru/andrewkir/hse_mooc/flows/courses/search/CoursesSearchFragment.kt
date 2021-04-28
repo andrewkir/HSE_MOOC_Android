@@ -61,8 +61,7 @@ class CoursesSearchFragment :
         subscribeToError()
         subscribeToLastPage()
         subscribeToCategories()
-
-        if (viewModel.coursesLiveData.value.isNullOrEmpty()) bind.swipeRefresh.isRefreshing = true
+        subscribeToLoading()
 
         viewModel.initCourses()
         viewModel.getCategories()
@@ -71,7 +70,6 @@ class CoursesSearchFragment :
     private fun subscribeToCourses() {
         viewModel.coursesLiveData.observe(viewLifecycleOwner, Observer {
             recyclerAdapter.data = it
-            bind.swipeRefresh.isRefreshing = false
             isLoading = false
         })
     }
@@ -153,12 +151,12 @@ class CoursesSearchFragment :
     }
 
     private fun performSearch(){
-        bind.swipeRefresh.isRefreshing = true
         bind.searchEditText.clearFocus()
         val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(bind.searchEditText.windowToken, 0)
 
         linearLayoutManager.smoothScrollToPosition(bind.searchCoursesRecyclerView, null, 0)
+
         query = bind.searchEditText.text.toString()
         viewModel.searchCourses(query, checkedChipsIds)
     }
@@ -200,6 +198,12 @@ class CoursesSearchFragment :
                     }
                 }
             }
+        })
+    }
+
+    private fun subscribeToLoading(){
+        viewModel.loading.observe(viewLifecycleOwner, Observer{
+            bind.swipeRefresh.isRefreshing = it
         })
     }
 }

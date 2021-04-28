@@ -44,6 +44,7 @@ class CoursesSearchViewModel(
 
         mutableError.value = null
         viewModelScope.launch {
+            mutableLoading.value = true
             when (val result = searchRepository.getCoursesFromServer(query, currentPage, categories.joinToString(","))) {
                 is ApiResponse.OnSuccessResponse -> {
                     mutableError.value = null
@@ -60,6 +61,7 @@ class CoursesSearchViewModel(
                     mutableError.value = result
                 }
             }
+            mutableLoading.value = false
         }
     }
 
@@ -91,6 +93,7 @@ class CoursesSearchViewModel(
         page = 1
 
         viewModelScope.launch {
+            mutableLoading.value = true
             when (val result = searchRepository.getCoursesFromServer(query, 1, categories.joinToString(","))) {
                 is ApiResponse.OnSuccessResponse -> {
                     mutableError.value = null
@@ -105,6 +108,7 @@ class CoursesSearchViewModel(
                     mutableError.value = result
                 }
             }
+            mutableLoading.value = false
         }
     }
 
