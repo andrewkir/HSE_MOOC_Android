@@ -11,12 +11,11 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import ru.andrewkir.hse_mooc.R
-import ru.andrewkir.hse_mooc.common.dp
-import ru.andrewkir.hse_mooc.common.px
 import ru.andrewkir.hse_mooc.network.responses.CoursesSearch.Course
+import java.text.DecimalFormat
+import java.util.*
 
 class SearchCoursesRecyclerAdapter(
     private val context: Context,
@@ -63,15 +62,26 @@ class SearchCoursesRecyclerAdapter(
         when (viewHolder.itemViewType) {
             COURSE_VIEW -> {
                 (viewHolder as CourseViewHolder).courseTitle?.text = data[position].courseName
-                viewHolder.courseDescription?.text = data[position].shortDescription
 
-                viewHolder.courseCost?.text =
-                    if (data[position].price.amount == 0.0) "Бесплатно" else data[position].price.amount.toString()
+                viewHolder.courseAuthor?.text = data[position].author.name
 
+                viewHolder.courseDescription?.text =
+                    if (data[position].shortDescription.isNotBlank()) data[position].shortDescription else data[position].description
+
+                if (data[position].price.amount != 0.0) {
+                    val currency = Currency.getInstance(data[position].price.currency)
+                    val symbol: String = currency.getSymbol(Locale("ru", "RU"))
+                    val format = DecimalFormat("0.#")
+                    viewHolder.courseCost?.text =
+                        format.format(data[position].price.amount) + " $symbol"
+                } else {
+                    viewHolder.courseCost?.text = "Бесплатно"
+                }
                 Glide.with(context)
                     .load(data[position].previewImageLink)
-                    .apply(RequestOptions().override(88.px, 88.px))
-                    .transform(CenterCrop(), RoundedCorners(25))
+                    //.apply(RequestOptions().override(88.px, 88.px))
+                    //.transform(CenterCrop(), RoundedCorners(25)) TODO убрать
+                    .transform(CenterCrop(), GranularRoundedCorners(25f, 25f, 0f, 0f))
                     .into(viewHolder.courseImage!!)
 
                 viewHolder.cardView?.setOnClickListener { onCourseClick?.invoke(data[position]) }
@@ -100,6 +110,7 @@ class SearchCoursesRecyclerAdapter(
     inner class CourseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var courseTitle: TextView? = null
         var courseDescription: TextView? = null
+        var courseAuthor: TextView? = null
 
         var courseRank: TextView? = null
         var courseCost: TextView? = null
@@ -111,6 +122,7 @@ class SearchCoursesRecyclerAdapter(
         init {
             courseTitle = view.findViewById(R.id.rawCourseSearchTitle)
             courseDescription = view.findViewById(R.id.rawCourseSearchDescription)
+            courseAuthor = view.findViewById(R.id.rawCourseAuthorName)
 
             courseRank = view.findViewById(R.id.rawCourseSearchRating)
             courseCost = view.findViewById(R.id.rawCourseSearchCost)

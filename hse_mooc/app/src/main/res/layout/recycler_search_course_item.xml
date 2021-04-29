@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardViewCoursesSearch"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="240dp"
 
     android:layout_marginStart="24dp"
     android:layout_marginTop="8dp"
@@ -22,77 +22,92 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/rawCourseSearchImageView"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:scaleType="centerCrop"
+        <TextView
+            android:id="@+id/rawCourseAuthorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            tools:text="HSE"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:elevation="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/designer" />
+            app:layout_constraintTop_toTopOf="@+id/frameImageView" />
+
+        <FrameLayout
+            android:id="@+id/frameImageView"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/rawCourseSearchImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:foreground="@drawable/course_image_overlay"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/designer" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/rawCourseSearchDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="by HSE"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:ellipsize="end"
+            android:maxLines="4"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rawCourseSearchImageView" />
+            app:layout_constraintTop_toBottomOf="@+id/rawCourseSearchRating" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/rawCourseSearchTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="24dp"
-            android:orientation="vertical"
-
-            app:layout_constraintBottom_toBottomOf="@+id/rawCourseSearchImageView"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_medium"
+            android:maxLines="3"
+            android:text="C++ course"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/frameImageView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/rawCourseSearchImageView"
-            app:layout_constraintTop_toTopOf="@+id/rawCourseSearchImageView"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintStart_toStartOf="@+id/frameImageView" />
 
-            <TextView
-                android:id="@+id/rawCourseSearchTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:text="C++ course"
-                android:textSize="18sp" />
+        <TextView
+            android:id="@+id/rawCourseSearchCost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="FREE"
+            android:textAlignment="textEnd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameImageView" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/rawCourseSearchRating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="4.5 (120)" />
-
-                <TextView
-                    android:id="@+id/rawCourseSearchCost"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="FREE"
-                    android:textAlignment="textEnd" />
-            </LinearLayout>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/rawCourseSearchRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:text="4.5 (120)"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameImageView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
