@@ -9,7 +9,7 @@ class CoursesSearchRepository(
 ) : BaseRepository() {
 
     suspend fun getCoursesFromServer(query: String, currentPage: Int, categories: String = "") = protectedApiCall {
-        coursesApi.getCourses(10, currentPage, query, categories)
+        coursesApi.getCourses(30, currentPage, query, categories)
     }
 
     suspend fun getCategories() = protectedApiCall {

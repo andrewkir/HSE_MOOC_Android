@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 abstract class SearchScrollListener(private var layoutManager: LinearLayoutManager): RecyclerView.OnScrollListener() {
-    private val PAGE_SIZE = 10
+    private val PAGE_SIZE = 30
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)

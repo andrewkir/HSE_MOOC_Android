@@ -100,7 +100,7 @@ class CoursesSearchViewModel(
 
                     mutableCourses.clear()
                     isLastPage.value =
-                        result.value.courses.isEmpty() || result.value.courses.size < 10
+                        result.value.courses.isEmpty() || result.value.courses.size < 30
                     mutableCourses.addAll(result.value.courses)
                     mutableCoursesLiveData.value = mutableCourses
                 }

@@ -13,8 +13,10 @@
         android:theme="@style/Theme.Hse_mooc">
         <activity
             android:name="ru.andrewkir.hse_mooc.flows.courses.CoursesActivity"
-            android:hardwareAccelerated="true" />
+             />
         <activity android:name="ru.andrewkir.hse_mooc.flows.auth.ui.AuthActivity" />
+        <activity android:name="ru.andrewkir.hse_mooc.flows.courses.course.CourseActivity" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

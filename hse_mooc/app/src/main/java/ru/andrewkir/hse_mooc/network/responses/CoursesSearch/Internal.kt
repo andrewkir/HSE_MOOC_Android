@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Price(
-    val amount: Double,
-    val currency: String
-): Parcelable
+data class Internal(
+    val averageScore: Double,
+    val countReviews: Int
+) : Parcelable

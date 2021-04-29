@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
+import com.bumptech.glide.request.RequestOptions
+import per.wsj.library.AndRatingBar
 import ru.andrewkir.hse_mooc.R
+import ru.andrewkir.hse_mooc.common.px
 import ru.andrewkir.hse_mooc.network.responses.CoursesSearch.Course
 import java.text.DecimalFormat
 import java.util.*
@@ -77,11 +80,27 @@ class SearchCoursesRecyclerAdapter(
                 } else {
                     viewHolder.courseCost?.text = "Бесплатно"
                 }
+
+                when {
+                    data[position].rating.external.countReviews != 0 -> {
+                        viewHolder.courseRating?.rating =
+                            data[position].rating.external.averageScore.toFloat()
+                        viewHolder.courseRatingCount?.text =
+                            "(${data[position].rating.external.countReviews})"
+                    }
+                    data[position].rating.internal.countReviews != 0 -> {
+                        viewHolder.courseRating?.rating =
+                            data[position].rating.internal.averageScore.toFloat()
+                        viewHolder.courseRatingCount?.text =
+                            "(${data[position].rating.internal.countReviews})"
+                    }
+                }
+
                 Glide.with(context)
                     .load(data[position].previewImageLink)
-                    //.apply(RequestOptions().override(88.px, 88.px))
-                    //.transform(CenterCrop(), RoundedCorners(25)) TODO убрать
+                    .apply(RequestOptions().override(350.px, 120.px))
                     .transform(CenterCrop(), GranularRoundedCorners(25f, 25f, 0f, 0f))
+                    .placeholder(R.drawable.course_image_overlay)
                     .into(viewHolder.courseImage!!)
 
                 viewHolder.cardView?.setOnClickListener { onCourseClick?.invoke(data[position]) }
@@ -112,7 +131,8 @@ class SearchCoursesRecyclerAdapter(
         var courseDescription: TextView? = null
         var courseAuthor: TextView? = null
 
-        var courseRank: TextView? = null
+        var courseRating: AndRatingBar? = null
+        var courseRatingCount: TextView? = null
         var courseCost: TextView? = null
 
         var courseImage: ImageView? = null
@@ -124,7 +144,8 @@ class SearchCoursesRecyclerAdapter(
             courseDescription = view.findViewById(R.id.rawCourseSearchDescription)
             courseAuthor = view.findViewById(R.id.rawCourseAuthorName)
 
-            courseRank = view.findViewById(R.id.rawCourseSearchRating)
+            courseRating = view.findViewById(R.id.rawCourseSearchRating)
+            courseRatingCount = view.findViewById(R.id.rawCourseSearchRatingCount)
             courseCost = view.findViewById(R.id.rawCourseSearchCost)
 
             courseImage = view.findViewById(R.id.rawCourseSearchImageView)

@@ -46,11 +46,11 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:scaleType="centerCrop"
                 android:id="@+id/rawCourseSearchImageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:foreground="@drawable/course_image_overlay"
-                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/designer" />
         </FrameLayout>
 
@@ -98,16 +98,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/frameImageView" />
 
-        <TextView
+        <per.wsj.library.AndRatingBar
             android:id="@+id/rawCourseSearchRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="128dp"
+            android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            android:text="4.5 (120)"
+            android:rating="0"
+            app:starColor="#F5C344"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/frameImageView" />
+
+        <TextView
+            android:id="@+id/rawCourseSearchRatingCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="(0)"
+            app:layout_constraintBottom_toBottomOf="@+id/rawCourseSearchRating"
+            app:layout_constraintStart_toEndOf="@+id/rawCourseSearchRating"
+            app:layout_constraintTop_toTopOf="@+id/rawCourseSearchRating" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,6 +1,7 @@
 package ru.andrewkir.hse_mooc.flows.courses.search
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import ru.andrewkir.hse_mooc.R
@@ -17,6 +19,7 @@ import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.common.openLink
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursesSearchBinding
+import ru.andrewkir.hse_mooc.flows.courses.course.CourseActivity
 import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchCoursesRecyclerAdapter
 import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchScrollListener
 import ru.andrewkir.hse_mooc.network.api.CoursesApi
@@ -31,6 +34,7 @@ class CoursesSearchFragment :
     private var currentPage = 1
     private var isLoading = true
     private var query = ""
+    private var lastPage = true
 
     private var checkedChipsIds = mutableSetOf<Int>()
 
@@ -88,15 +92,21 @@ class CoursesSearchFragment :
 
     private fun subscribeToLastPage() {
         viewModel.isLastPageLiveData.observe(viewLifecycleOwner, Observer {
-            if (it) recyclerAdapter.removeLoading()
-            else recyclerAdapter.addLoading()
+            if (it) {
+                recyclerAdapter.removeLoading()
+                lastPage = true
+            } else {
+                recyclerAdapter.addLoading()
+                lastPage = false
+            }
         })
     }
 
     private fun setupRecyclerView() {
         recyclerAdapter = SearchCoursesRecyclerAdapter(requireContext()) {
-            openLink(it.link)
-            Toast.makeText(requireContext(), it.courseName, Toast.LENGTH_SHORT).show()
+            val intent = Intent(requireContext(), CourseActivity::class.java)
+            intent.putExtra("COURSE_ITEM", it)
+            startActivity(intent)
         }
         linearLayoutManager = LinearLayoutManager(requireContext())
 
@@ -112,7 +122,7 @@ class CoursesSearchFragment :
                     }
 
                     override fun isLastPage(): Boolean {
-                        return false
+                        return lastPage
                     }
 
                     override fun isLoading(): Boolean {
@@ -123,7 +133,7 @@ class CoursesSearchFragment :
         }
     }
 
-    private fun setupListeners(){
+    private fun setupListeners() {
         bind.swipeRefresh.run {
             setOnRefreshListener {
                 viewModel.refreshCourses()
@@ -132,12 +142,12 @@ class CoursesSearchFragment :
 
         bind.searchButton.setOnClickListener {
             performSearch()
-            if(bind.chipGroup.visibility == View.VISIBLE) bind.chipGroup.visibility = View.GONE
+            if (bind.chipGroup.visibility == View.VISIBLE) bind.chipGroup.visibility = View.GONE
         }
 
         bind.searchEditText.setOnEditorActionListener { v, actionId, event ->
-            if(actionId == EditorInfo.IME_ACTION_SEARCH){
-                if(bind.chipGroup.visibility == View.VISIBLE) bind.chipGroup.visibility = View.GONE
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (bind.chipGroup.visibility == View.VISIBLE) bind.chipGroup.visibility = View.GONE
                 performSearch()
                 return@setOnEditorActionListener true
             }
@@ -150,9 +160,10 @@ class CoursesSearchFragment :
         }
     }
 
-    private fun performSearch(){
+    private fun performSearch() {
         bind.searchEditText.clearFocus()
-        val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(bind.searchEditText.windowToken, 0)
 
         linearLayoutManager.smoothScrollToPosition(bind.searchCoursesRecyclerView, null, 0)
@@ -201,8 +212,8 @@ class CoursesSearchFragment :
         })
     }
 
-    private fun subscribeToLoading(){
-        viewModel.loading.observe(viewLifecycleOwner, Observer{
+    private fun subscribeToLoading() {
+        viewModel.loading.observe(viewLifecycleOwner, Observer {
             bind.swipeRefresh.isRefreshing = it
         })
     }
