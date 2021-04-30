@@ -82,7 +82,7 @@ class CoursesSearchFragment :
         viewModel.errorLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 handleApiError(it) {
-                    if (bind.swipeRefresh.isRefreshing) viewModel.refreshCourses()
+                    if (bind.swipeRefresh.isRefreshing) viewModel.refreshCourses(checkedChipsIds)
                     if (isLoading) viewModel.nextPage()
                     viewModel.searchCourses(query)
                 }
@@ -136,7 +136,7 @@ class CoursesSearchFragment :
     private fun setupListeners() {
         bind.swipeRefresh.run {
             setOnRefreshListener {
-                viewModel.refreshCourses()
+                viewModel.refreshCourses(checkedChipsIds)
             }
         }
 

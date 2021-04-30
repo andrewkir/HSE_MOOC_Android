@@ -66,7 +66,7 @@ class SearchCoursesRecyclerAdapter(
             COURSE_VIEW -> {
                 (viewHolder as CourseViewHolder).courseTitle?.text = data[position].courseName
 
-                viewHolder.courseAuthor?.text = data[position].author.name
+                viewHolder.courseVendor?.text = data[position].vendor.name
 
                 viewHolder.courseDescription?.text =
                     if (data[position].shortDescription.isNotBlank()) data[position].shortDescription else data[position].description
@@ -129,7 +129,7 @@ class SearchCoursesRecyclerAdapter(
     inner class CourseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var courseTitle: TextView? = null
         var courseDescription: TextView? = null
-        var courseAuthor: TextView? = null
+        var courseVendor: TextView? = null
 
         var courseRating: AndRatingBar? = null
         var courseRatingCount: TextView? = null
@@ -142,7 +142,7 @@ class SearchCoursesRecyclerAdapter(
         init {
             courseTitle = view.findViewById(R.id.rawCourseSearchTitle)
             courseDescription = view.findViewById(R.id.rawCourseSearchDescription)
-            courseAuthor = view.findViewById(R.id.rawCourseAuthorName)
+            courseVendor = view.findViewById(R.id.rawCourseVendor)
 
             courseRating = view.findViewById(R.id.rawCourseSearchRating)
             courseRatingCount = view.findViewById(R.id.rawCourseSearchRatingCount)

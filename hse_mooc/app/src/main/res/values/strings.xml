@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">hse_mooc</string>
 
-    <string name="auth_i_already_have_an_account"><u>I already have an account</u></string>
-    <string name="auth_i_dont_have_an_account">Don’t have an account? <u>Register</u></string>
-    <string name="auth_mooc_desc">MOOC is a developing platform for finding massive open online courses. Join us and find something special just for you!</string>
+    <string name="auth_i_already_have_an_account"><u>У меня уже есть аккаунт</u></string>
+    <string name="auth_i_dont_have_an_account">Ещё нет аккаунта? <u>Зарегистрируйтесь</u></string>
+    <string name="auth_mooc_desc">MOOC - это развивающаяся платформа для поиска массовых открытых онлайн-курсов. Присоединяйтесь к нам и найдите что-то особенное именно для вас!</string>
 
-    <string name="base_network_error">Please check internet connection</string>
+    <string name="base_network_error">Проверьте интернет соединение</string>
 </resources>

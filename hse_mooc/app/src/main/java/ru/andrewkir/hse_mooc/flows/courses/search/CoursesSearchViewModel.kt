@@ -45,7 +45,11 @@ class CoursesSearchViewModel(
         mutableError.value = null
         viewModelScope.launch {
             mutableLoading.value = true
-            when (val result = searchRepository.getCoursesFromServer(query, currentPage, categories.joinToString(","))) {
+            when (val result = searchRepository.getCoursesFromServer(
+                query,
+                currentPage,
+                categories.joinToString(",")
+            )) {
                 is ApiResponse.OnSuccessResponse -> {
                     mutableError.value = null
 
@@ -66,14 +70,17 @@ class CoursesSearchViewModel(
     }
 
     fun initCourses() {
-        if (isFirstInit){
+        if (isFirstInit) {
             isFirstInit = false
             refreshCourses()
         }
     }
 
-    fun searchCourses(searchQuery: String, categoriesQuery: Set<Int> = setOf()){
-        if (searchQuery != query || !(categoriesQuery.containsAll(categories) && categories.containsAll(categoriesQuery))) {
+    fun searchCourses(searchQuery: String, categoriesQuery: Set<Int> = setOf()) {
+        if (searchQuery != query || !(categoriesQuery.containsAll(categories) && categories.containsAll(
+                categoriesQuery
+            ))
+        ) {
             query = searchQuery
             categories = categoriesQuery.toMutableSet()
 
@@ -88,16 +95,18 @@ class CoursesSearchViewModel(
         fetchCourses(query, page)
     }
 
-    fun refreshCourses() {
+    fun refreshCourses(categoriesQuery: Set<Int>? = null) {
+        if (categoriesQuery != null) categories = categoriesQuery.toMutableSet()
+
         mutableError.value = null
         page = 1
 
         viewModelScope.launch {
             mutableLoading.value = true
-            when (val result = searchRepository.getCoursesFromServer(query, 1, categories.joinToString(","))) {
+            when (val result =
+                searchRepository.getCoursesFromServer(query, 1, categories.joinToString(","))) {
                 is ApiResponse.OnSuccessResponse -> {
                     mutableError.value = null
-
                     mutableCourses.clear()
                     isLastPage.value =
                         result.value.courses.isEmpty() || result.value.courses.size < 30

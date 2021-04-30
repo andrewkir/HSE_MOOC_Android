@@ -27,7 +27,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Welcome,"
+                android:text="Привет,"
                 android:textAlignment="viewStart"
                 android:textColor="@color/black"
                 android:textSize="36sp"
@@ -42,7 +42,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Let’s create new account!"
+                android:text="давайте создадим новую учетную запись!"
                 android:textAlignment="viewStart"
                 android:textColor="#9B9A9A"
                 android:textSize="25sp"
@@ -72,7 +72,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/roboto_light"
-                android:text="To use our app you have to create an account, it’ll only take few moments"
+                android:text="Чтобы использовать наше приложение, вам нужно создать учетную запись, это займет всего несколько минут."
                 android:textAlignment="viewStart"
                 android:textColor="@color/black"
                 android:textSize="14sp"
@@ -118,7 +118,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Login"
+                    android:hint="Логин"
                     android:inputType="textPersonName"
                     android:singleLine="false" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -140,7 +140,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
+                    android:hint="Пароль"
                     android:inputType="textPassword"
                     android:singleLine="false" />
 
@@ -171,7 +171,7 @@
                 android:paddingTop="20dp"
                 android:paddingRight="60dp"
                 android:paddingBottom="20dp"
-                android:text="Sign up"
+                android:text="регистрация"
                 android:textSize="18sp"
                 app:cornerRadius="15dp"
                 app:layout_constraintBottom_toTopOf="@+id/loginTextView"
@@ -211,7 +211,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
+                    android:hint="Повторите пароль"
                     android:inputType="textPassword"
                     android:singleLine="false" />
 

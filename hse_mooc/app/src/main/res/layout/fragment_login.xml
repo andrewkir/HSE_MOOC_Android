@@ -36,7 +36,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Welcome,"
+                android:text="Привет,"
                 android:textAlignment="viewStart"
                 android:textColor="@color/black"
                 android:textSize="36sp"
@@ -51,7 +51,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Sign in to continue!"
+                android:text="для продолжения необходимо войти в профиль"
                 android:textAlignment="viewStart"
                 android:textColor="#9B9A9A"
                 android:textSize="25sp"
@@ -81,7 +81,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/roboto_light"
-                android:text="We use JWT-tokens for authorization, so you don't have to worry about the safety of your data."
+                android:text="Мы используем JWT-токены для авторизации, поэтому вам не нужно беспокоиться о сохранности ваших данных."
                 android:textAlignment="viewStart"
                 android:textColor="@color/black"
                 android:textSize="14sp"
@@ -105,7 +105,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Login or Email"
+                    android:hint="Логин или Email"
                     android:inputType="textPersonName|textEmailAddress"
                     android:singleLine="false" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -127,7 +127,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
+                    android:hint="Пароль"
                     android:inputType="textPassword"
                     android:singleLine="false" />
 
@@ -158,7 +158,7 @@
                 android:paddingTop="20dp"
                 android:paddingRight="60dp"
                 android:paddingBottom="20dp"
-                android:text="Sign in"
+                android:text="Войти"
                 android:textSize="18sp"
                 app:cornerRadius="15dp"
                 app:layout_constraintBottom_toTopOf="@+id/registerTextView"

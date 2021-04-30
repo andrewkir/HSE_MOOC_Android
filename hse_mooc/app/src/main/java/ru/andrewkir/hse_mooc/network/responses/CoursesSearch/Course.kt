@@ -17,5 +17,5 @@ data class Course(
     val price: Price,
     val rating: Rating,
     val shortDescription: String,
-    val vendor: String
+    val vendor: Vendor
 ): Parcelable

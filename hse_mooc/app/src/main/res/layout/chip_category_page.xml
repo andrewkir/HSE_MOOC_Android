@@ -7,5 +7,5 @@
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
     app:ensureMinTouchTargetSize="false"
-    style="@style/Widget.MaterialComponents.Chip.Choice"
+    style="@style/Widget.MaterialComponents.Chip.Action"
     android:textAppearance="?android:attr/textAppearance" />
