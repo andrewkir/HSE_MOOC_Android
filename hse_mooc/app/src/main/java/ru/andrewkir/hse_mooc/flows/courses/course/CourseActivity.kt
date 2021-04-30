@@ -17,14 +17,14 @@ class CourseActivity : AppCompatActivity() {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            statusBarColor = Color.TRANSPARENT
+            statusBarColor = Color.parseColor("#20111111")
         }
 
         val item = intent.getParcelableExtra<Course>("COURSE_ITEM")!!
 
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.fragment_container_view, CourseFragment.newInstance(item))
+            .replace(R.id.fragment_container_view, CourseFragment.newInstance(item))
             .commit()
     }
 }

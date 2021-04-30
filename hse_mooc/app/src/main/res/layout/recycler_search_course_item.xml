@@ -99,6 +99,7 @@
             app:layout_constraintTop_toBottomOf="@+id/frameImageView" />
 
         <per.wsj.library.AndRatingBar
+            android:isIndicator="true"
             android:id="@+id/rawCourseSearchRating"
             android:layout_width="128dp"
             android:layout_height="25dp"
