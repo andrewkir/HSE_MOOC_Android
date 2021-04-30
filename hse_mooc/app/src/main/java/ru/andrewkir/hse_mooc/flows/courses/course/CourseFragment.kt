@@ -121,7 +121,7 @@ class CourseFragment :
                         false
                     ) as Chip
                 chip.id = View.generateViewId()
-                chip.text = "Категория $category"
+                chip.text = category.name.ru
                 chip.setOnClickListener {
 
                 }

@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Course(
     val author: Author,
-    val categories: List<Int>,
+    val categories: List<Category>,
     val courseLanguages: List<String>,
     val courseName: String,
     val description: String,
