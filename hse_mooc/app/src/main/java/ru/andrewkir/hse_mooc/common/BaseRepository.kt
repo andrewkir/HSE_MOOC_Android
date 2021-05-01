@@ -30,8 +30,6 @@ abstract class BaseRepository {
     }
 
     suspend fun userLogout(api: AuthApi): ApiResponse<ResponseBody> {
-        //return protectedApiCall { api.logout() }
-        //TODO реальный выход из приложения
-        return ApiResponse.OnSuccessResponse("Logout".toResponseBody())
+        return protectedApiCall { api.logout() }
     }
 }

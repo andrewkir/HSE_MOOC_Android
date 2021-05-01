@@ -26,6 +26,7 @@
 
     <string name="search_bar_text">Поисковой запрос</string>
     <string name="search_chip_reset">Сбросить</string>
+
     <string name="course_page_category">Категории</string>
     <string name="course_page_language">Язык:</string>
     <string name="course_page_cost">Цена:</string>
@@ -35,4 +36,7 @@
     <string name="course_page_internal_rating">Внутренний рейтинг</string>
     <string name="course_page_description">Описание:</string>
     <string name="course_page_button">Перейти на страницу курса</string>
+    <string name="bottom_menu_search">Поиск</string>
+    <string name="bottom_menu_main">Главная</string>
+    <string name="bottom_menu_profile">Профиль</string>
 </resources>

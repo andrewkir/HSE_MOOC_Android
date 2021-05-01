@@ -45,22 +45,12 @@ abstract class BaseFragment<viewModel : BaseViewModel, repo : BaseRepository, vi
 
     fun userLogout() = lifecycleScope.launch {
         val refreshToken = userPrefsManager.obtainRefreshToken()
-        val api = apiProvider.provideApi(AuthApi::class.java, requireContext())
-        when (val response = viewModel.logoutUser(api)) {
-            is ApiResponse.OnSuccessResponse -> {
-                userPrefsManager.clearTokens()
-                requireActivity().startActivityClearBackStack(AuthActivity::class.java)
-            }
-            is ApiResponse.OnErrorResponse -> {
-                if (response.isNetworkFailure) {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.base_network_error),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
+        val api = apiProvider.provideApi(AuthApi::class.java, requireContext(), null, refreshToken)
+
+        viewModel.logoutUser(api)
+
+        userPrefsManager.clearTokens()
+        requireActivity().startActivityClearBackStack(AuthActivity::class.java)
     }
 
 

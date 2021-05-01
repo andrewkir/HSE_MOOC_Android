@@ -17,12 +17,13 @@ class ApiProvider {
     fun <Api> provideApi(
         api: Class<Api>,
         context: Context,
-        accessToken: String? = null
+        accessToken: String? = null,
+        refreshToken: String? = null
     ): Api {
         val authenticator = JWTAuthenticator(context, provideTokensApi())
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(provideOkHTPPClient(authenticator, accessToken))
+            .client(provideOkHTPPClient(authenticator, accessToken, refreshToken))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(api)
@@ -39,15 +40,26 @@ class ApiProvider {
 
     private fun provideOkHTPPClient(
         authenticator: JWTAuthenticator? = null,
-        accessToken: String? = null
+        accessToken: String? = null,
+        refreshToken: String? = null
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
                 chain.proceed(
                     chain.request().newBuilder().also {
                         it.addHeader("Accept", "application/json")
-                        if (accessToken != null)
-                            it.addHeader("Authorization", "Bearer $accessToken")
+                        if (accessToken != null) {
+                            it.addHeader(
+                                "Authorization",
+                                "Bearer $accessToken"
+                            )
+                        }
+                        if (refreshToken != null) {
+                            it.addHeader(
+                                "x-refresh-token",
+                                "$refreshToken"
+                            )
+                        }
                     }.build()
                 )
             }
