@@ -6,4 +6,33 @@
     <string name="auth_mooc_desc">MOOC - это развивающаяся платформа для поиска массовых открытых онлайн-курсов. Присоединяйтесь к нам и найдите что-то особенное именно для вас!</string>
 
     <string name="base_network_error">Проверьте интернет соединение</string>
+    <string name="mooc">MOOC</string>
+
+    <string name="register_title_first">Привет,</string>
+    <string name="register_title_second">давайте создадим новую учетную запись!</string>
+    <string name="register_content_describe">Чтобы использовать наше приложение, вам нужно создать учетную запись, это займет всего несколько минут.</string>
+    <string name="register_email_input">Email</string>
+    <string name="register_login_input">Логин</string>
+    <string name="register_password_input">Пароль</string>
+    <string name="register_second_password_input">Повторите пароль</string>
+    <string name="register_button">регистрация</string>
+
+    <string name="login_title_first">Привет,</string>
+    <string name="login_title_second">для продолжения необходимо войти в профиль</string>
+    <string name="login_description">Мы используем JWT-токены для авторизации, поэтому вам не нужно беспокоиться о сохранности ваших данных.</string>
+    <string name="login_email_input">Логин или Email</string>
+    <string name="login_password_input">Пароль</string>
+    <string name="login_button">Войти</string>
+
+    <string name="search_bar_text">Поисковой запрос</string>
+    <string name="search_chip_reset">Сбросить</string>
+    <string name="course_page_category">Категории</string>
+    <string name="course_page_language">Язык:</string>
+    <string name="course_page_cost">Цена:</string>
+    <string name="course_page_platform">Платформа</string>
+    <string name="course_page_author">Автор</string>
+    <string name="course_page_rating">Рейтинг</string>
+    <string name="course_page_internal_rating">Внутренний рейтинг</string>
+    <string name="course_page_description">Описание:</string>
+    <string name="course_page_button">Перейти на страницу курса</string>
 </resources>

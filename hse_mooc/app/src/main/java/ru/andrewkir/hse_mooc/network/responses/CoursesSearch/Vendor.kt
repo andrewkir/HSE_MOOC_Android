@@ -7,5 +7,6 @@ import kotlinx.android.parcel.Parcelize
 data class Vendor (
     val id: String,
     val name: String,
-    val icon: String
+    val icon: String,
+    val link: String
 ): Parcelable

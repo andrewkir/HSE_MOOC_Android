@@ -1,9 +1,11 @@
 package ru.andrewkir.hse_mooc.flows.courses.course
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_course_page.*
@@ -66,6 +68,7 @@ class CourseFragment :
         setupInteractButtons()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupCourseInfo() {
         course.let {
             bind.courseName.text = it.courseName
@@ -95,6 +98,9 @@ class CourseFragment :
                 .load(it.vendor.icon)
                 .placeholder(R.drawable.designer)
                 .into(bind.courseVendorIcon)
+            bind.courseVendor.setOnClickListener { _ ->
+                openLink(it.vendor.link)
+            }
 
             bind.courseAuthor.text = it.author.name
             Glide.with(requireContext())
@@ -112,7 +118,7 @@ class CourseFragment :
 
             bind.courseDescription.text = it.description
 
-            categoryHeaderText.text = if(it.categories.size > 1) "Категории" else "Категория"
+            categoryHeaderText.text = if (it.categories.size > 1) "Категории" else "Категория"
             for (category in it.categories) {
                 val chip =
                     this.layoutInflater.inflate(
@@ -130,9 +136,9 @@ class CourseFragment :
         }
     }
 
-    private fun setupInteractButtons(){
+    private fun setupInteractButtons() {
         bind.likeButton.setOnClickListener {
-            if(isLiked) {
+            if (isLiked) {
                 isLiked = false
                 bind.likeButton.setImageResource(R.drawable.ic_favorite)
             } else {
@@ -142,7 +148,7 @@ class CourseFragment :
         }
 
         bind.alreadySawButton.setOnClickListener {
-            if(isViewed) {
+            if (isViewed) {
                 isViewed = false
                 bind.alreadySawButton.setImageResource(R.drawable.ic_visibility_off)
             } else {
