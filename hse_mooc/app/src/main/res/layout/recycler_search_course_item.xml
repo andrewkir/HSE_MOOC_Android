@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardViewCoursesSearch"
     android:layout_width="match_parent"
-    android:layout_height="240dp"
+    android:layout_height="248dp"
 
     android:layout_marginStart="24dp"
     android:layout_marginTop="8dp"
@@ -30,12 +30,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            tools:text="HSE"
+            android:elevation="10dp"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:elevation="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/frameImageView" />
+            app:layout_constraintTop_toTopOf="@+id/frameImageView"
+            tools:text="HSE" />
 
         <FrameLayout
             android:id="@+id/frameImageView"
@@ -46,11 +46,11 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:scaleType="centerCrop"
                 android:id="@+id/rawCourseSearchImageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:foreground="@drawable/course_image_overlay"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/designer" />
         </FrameLayout>
 
@@ -99,16 +99,16 @@
             app:layout_constraintTop_toBottomOf="@+id/frameImageView" />
 
         <per.wsj.library.AndRatingBar
-            android:isIndicator="true"
             android:id="@+id/rawCourseSearchRating"
             android:layout_width="128dp"
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:isIndicator="true"
             android:rating="0"
-            app:starColor="#F5C344"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameImageView" />
+            app:layout_constraintTop_toBottomOf="@+id/frameImageView"
+            app:starColor="#F5C344" />
 
         <TextView
             android:id="@+id/rawCourseSearchRatingCount"
