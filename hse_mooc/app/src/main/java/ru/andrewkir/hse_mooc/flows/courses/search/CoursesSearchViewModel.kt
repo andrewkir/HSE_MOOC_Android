@@ -7,16 +7,16 @@ import kotlinx.coroutines.launch
 import ru.andrewkir.hse_mooc.common.BaseViewModel
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 import ru.andrewkir.hse_mooc.network.responses.Categories.CategoriesResponse
-import ru.andrewkir.hse_mooc.network.responses.CoursesSearch.Course
+import ru.andrewkir.hse_mooc.network.responses.CoursesPreview.CoursePreview
 
 
 class CoursesSearchViewModel(
     private val searchRepository: CoursesSearchRepository
 ) : BaseViewModel(searchRepository) {
 
-    private val mutableCourses = arrayListOf<Course>()
-    private val mutableCoursesLiveData: MutableLiveData<List<Course>> = MutableLiveData()
-    val coursesLiveData: LiveData<List<Course>>
+    private val mutableCourses = arrayListOf<CoursePreview>()
+    private val mutableCoursesLiveData: MutableLiveData<List<CoursePreview>> = MutableLiveData()
+    val coursesLiveData: LiveData<List<CoursePreview>>
         get() = mutableCoursesLiveData
 
     private val mutableError: MutableLiveData<ApiResponse.OnErrorResponse> = MutableLiveData()

@@ -1,15 +1,16 @@
-package ru.andrewkir.hse_mooc.network.responses.CoursesSearch
+package ru.andrewkir.hse_mooc.network.responses.CoursesPreview
 
-import android.os.Parcelable
+
 import kotlinx.android.parcel.Parcelize
+import android.os.Parcelable
 
 @Parcelize
-data class Course(
+data class CoursePreview(
     val author: Author,
     val categories: List<Category>,
+    val countViews: Int,
     val courseLanguages: List<String>,
     val courseName: String,
-    val description: String,
     val duration: String,
     val id: String,
     val link: String,
@@ -18,4 +19,4 @@ data class Course(
     val rating: Rating,
     val shortDescription: String,
     val vendor: Vendor
-): Parcelable
+) : Parcelable

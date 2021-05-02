@@ -4,20 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import kotlinx.coroutines.launch
-import ru.andrewkir.hse_mooc.R
-import ru.andrewkir.hse_mooc.flows.auth.ui.AuthActivity
+import ru.andrewkir.hse_mooc.flows.auth.AuthActivity
 import ru.andrewkir.hse_mooc.network.ApiProvider
 import ru.andrewkir.hse_mooc.network.api.AuthApi
-import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 import ru.andrewkir.hse_mooc.repository.UserPrefsManager
-import java.lang.Compiler.disable
 
 
 abstract class BaseFragment<viewModel : BaseViewModel, repo : BaseRepository, viewBinding : ViewBinding> :

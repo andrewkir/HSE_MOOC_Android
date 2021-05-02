@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".flows.auth.ui.AuthFragment">
+    tools:context=".flows.auth.AuthFragment">
 
     <ScrollView
         android:id="@+id/scrollView2"

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/authFragment"
-        android:name="ru.andrewkir.hse_mooc.flows.auth.ui.AuthFragment"
+        android:name="ru.andrewkir.hse_mooc.flows.auth.AuthFragment"
         android:label="fragment_auth"
         tools:layout="@layout/fragment_auth">
         <action
@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="ru.andrewkir.hse_mooc.flows.auth.ui.RegisterFragment"
+        android:name="ru.andrewkir.hse_mooc.flows.auth.register.RegisterFragment"
         android:label="fragment_auth"
         tools:layout="@layout/fragment_register">
         <action
@@ -44,7 +44,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="ru.andrewkir.hse_mooc.flows.auth.ui.LoginFragment"
+        android:name="ru.andrewkir.hse_mooc.flows.auth.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action

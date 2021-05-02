@@ -1,10 +1,11 @@
-package ru.andrewkir.hse_mooc.network.responses.CoursesSearch
+package ru.andrewkir.hse_mooc.network.responses.Course
 
-import android.os.Parcelable
+
 import kotlinx.android.parcel.Parcelize
+import android.os.Parcelable
 
 @Parcelize
 data class Price(
     val amount: Double,
     val currency: String
-): Parcelable
+) : Parcelable

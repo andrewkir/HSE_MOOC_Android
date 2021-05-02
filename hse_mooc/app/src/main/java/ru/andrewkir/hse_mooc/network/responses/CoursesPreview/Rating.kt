@@ -1,10 +1,11 @@
-package ru.andrewkir.hse_mooc.network.responses.CoursesSearch
+package ru.andrewkir.hse_mooc.network.responses.CoursesPreview
 
-import android.os.Parcelable
+
 import kotlinx.android.parcel.Parcelize
+import android.os.Parcelable
 
 @Parcelize
 data class Rating(
     val `external`: External,
     val `internal`: Internal
-): Parcelable
+) : Parcelable

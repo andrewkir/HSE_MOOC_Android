@@ -34,13 +34,4 @@ class AuthRepository(
     ) = protectedApiCall {
         api.register(RegisterRequest(email, username, password))
     }
-
-//    suspend fun login(
-//        username: String,
-//        password: String
-//    ): ApiResponse.OnSuccessResponse<LoginResponse> {
-//        delay(500)
-//        return ApiResponse.OnSuccessResponse(LoginResponse("sample access token", "sample refresh token"))
-//    }
-
 }

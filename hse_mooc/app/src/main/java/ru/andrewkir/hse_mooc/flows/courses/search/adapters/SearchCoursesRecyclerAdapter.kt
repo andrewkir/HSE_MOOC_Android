@@ -16,13 +16,14 @@ import com.bumptech.glide.request.RequestOptions
 import per.wsj.library.AndRatingBar
 import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.px
-import ru.andrewkir.hse_mooc.network.responses.CoursesSearch.Course
+import ru.andrewkir.hse_mooc.network.responses.Course.Course
+import ru.andrewkir.hse_mooc.network.responses.CoursesPreview.CoursePreview
 import java.text.DecimalFormat
 import java.util.*
 
 class SearchCoursesRecyclerAdapter(
     private val context: Context,
-    private val onCourseClick: ((Course) -> Unit)? = null
+    private val onCourseClick: ((CoursePreview) -> Unit)? = null
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -34,7 +35,7 @@ class SearchCoursesRecyclerAdapter(
         const val LOADING_VIEW = 1
     }
 
-    var data: List<Course> = listOf()
+    var data: List<CoursePreview> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -68,8 +69,7 @@ class SearchCoursesRecyclerAdapter(
 
                 viewHolder.courseVendor?.text = data[position].vendor.name
 
-                viewHolder.courseDescription?.text =
-                    if (data[position].shortDescription.isNotBlank()) data[position].shortDescription else data[position].description
+                viewHolder.courseDescription?.text = data[position].shortDescription
 
                 if (data[position].price.amount != 0.0) {
                     val currency = Currency.getInstance(data[position].price.currency)

@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.flows.auth.ui
+package ru.andrewkir.hse_mooc.flows.auth
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

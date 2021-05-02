@@ -1,10 +1,9 @@
-package ru.andrewkir.hse_mooc.flows.auth.ui
+package ru.andrewkir.hse_mooc.flows.auth.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -15,7 +14,6 @@ import ru.andrewkir.hse_mooc.common.startActivityClearBackStack
 import ru.andrewkir.hse_mooc.flows.courses.CoursesActivity
 import ru.andrewkir.hse_mooc.databinding.FragmentLoginBinding
 import ru.andrewkir.hse_mooc.flows.auth.AuthRepository
-import ru.andrewkir.hse_mooc.flows.auth.LoginViewModel
 import ru.andrewkir.hse_mooc.network.api.AuthApi
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 

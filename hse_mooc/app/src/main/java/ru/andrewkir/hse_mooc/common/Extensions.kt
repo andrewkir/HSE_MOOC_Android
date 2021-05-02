@@ -1,17 +1,17 @@
 package ru.andrewkir.hse_mooc.common
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
 import android.view.View
-import androidx.core.content.ContextCompat
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import org.json.JSONException
 import org.json.JSONObject
-import ru.andrewkir.hse_mooc.flows.auth.ui.LoginFragment
+import ru.andrewkir.hse_mooc.R
+import ru.andrewkir.hse_mooc.flows.auth.login.LoginFragment
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 
 
@@ -22,7 +22,7 @@ fun <activity : Activity> Activity.startActivityClearBackStack(activityClass: Cl
     }
 }
 
-fun Fragment.openLink(link: String){
+fun Fragment.openLink(link: String) {
     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
     this.startActivity(browserIntent)
 }
@@ -33,7 +33,7 @@ fun Fragment.handleApiError(
 ) {
     if (error.isNetworkFailure) {
         requireView().createRetrySnackbar(
-            "Проверьте интернет подключение",
+            getString(R.string.check_internet),
             retry
         )
         return
@@ -53,8 +53,10 @@ fun Fragment.handleApiError(
         if (this is LoginFragment) {
             if (parsedError.isNotEmpty()) requireView().createRetrySnackbar(parsedError)
             else requireView().createRetrySnackbar("Попробуйте ещё раз")
-        } else (this as BaseFragment<*, *, *>).userLogout()
-
+        } else {
+            Toast.makeText(requireContext(), "Необходимо повторить вход", Toast.LENGTH_SHORT).show()
+            (this as BaseFragment<*, *, *>).userLogout()
+        }
         return
     }
 

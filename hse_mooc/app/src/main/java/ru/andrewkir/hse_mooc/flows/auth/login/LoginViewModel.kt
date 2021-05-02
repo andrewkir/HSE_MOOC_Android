@@ -1,11 +1,11 @@
-package ru.andrewkir.hse_mooc.flows.auth
+package ru.andrewkir.hse_mooc.flows.auth.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.andrewkir.hse_mooc.common.BaseViewModel
+import ru.andrewkir.hse_mooc.flows.auth.AuthRepository
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 import ru.andrewkir.hse_mooc.network.responses.LoginResponse
 
