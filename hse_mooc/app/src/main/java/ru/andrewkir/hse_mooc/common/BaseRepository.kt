@@ -1,5 +1,6 @@
 package ru.andrewkir.hse_mooc.common
 
+import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
@@ -20,6 +21,9 @@ abstract class BaseRepository {
                 when (ex) {
                     is HttpException -> {
                         ApiResponse.OnErrorResponse(false, ex.code(), ex.response()?.errorBody())
+                    }
+                    is JsonSyntaxException -> {
+                        ApiResponse.OnErrorResponse(false, null, null)
                     }
                     else -> {
                         ApiResponse.OnErrorResponse(true, null, null)

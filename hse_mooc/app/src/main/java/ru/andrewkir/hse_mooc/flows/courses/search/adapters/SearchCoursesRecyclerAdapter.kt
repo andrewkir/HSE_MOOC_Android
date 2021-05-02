@@ -1,5 +1,6 @@
 package ru.andrewkir.hse_mooc.flows.courses.search.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -62,6 +63,7 @@ class SearchCoursesRecyclerAdapter(
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         when (viewHolder.itemViewType) {
             COURSE_VIEW -> {
@@ -93,6 +95,11 @@ class SearchCoursesRecyclerAdapter(
                             data[position].rating.internal.averageScore.toFloat()
                         viewHolder.courseRatingCount?.text =
                             "(${data[position].rating.internal.countReviews})"
+                    }
+                    else -> {
+                        viewHolder.courseRating?.rating = 0f
+                        viewHolder.courseRatingCount?.text =
+                            "(0)"
                     }
                 }
 

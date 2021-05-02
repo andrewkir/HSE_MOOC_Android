@@ -39,6 +39,10 @@ fun Fragment.handleApiError(
         return
     }
 
+    if (error.body == null && error.code == null) {
+        requireView().createRetrySnackbar("Ошибка на стороне сервера")
+    }
+
     val parsedError = try {
         if (error.body == null) ""
         else {

@@ -6,6 +6,6 @@ import android.os.Parcelable
 
 @Parcelize
 data class External(
-    val averageScore: Int,
+    val averageScore: Double,
     val countReviews: Int
 ) : Parcelable
