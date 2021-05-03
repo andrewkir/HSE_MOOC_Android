@@ -2,6 +2,7 @@
     <string name="app_name">hse_mooc</string>
 
     <string name="check_internet">Проверьте интеренет соединение</string>
+    <string name="server_error">Ошибка на стороне сервера</string>
 
     <string name="auth_i_already_have_an_account"><u>У меня уже есть аккаунт</u></string>
     <string name="auth_i_dont_have_an_account">Ещё нет аккаунта? <u>Зарегистрируйтесь</u></string>

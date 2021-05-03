@@ -65,7 +65,7 @@ fun Fragment.handleApiError(
     }
 
     if (parsedError.isNotEmpty()) requireView().createRetrySnackbar(parsedError)
-    else requireView().createRetrySnackbar(error.body?.string().toString())
+    else requireView().createRetrySnackbar("Ошибка на стороне сервера")
 }
 
 fun View.createRetrySnackbar(msg: String, retry: (() -> Unit)? = null) {

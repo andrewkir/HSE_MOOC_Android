@@ -11,7 +11,7 @@ import ru.andrewkir.hse_mooc.repository.UserPrefsManager
 
 class ApiProvider {
     companion object {
-        private const val BASE_URL = "https://mooc.ij.je/"
+        private const val BASE_URL = "https://api.mooc.ij.je/"
     }
 
     fun <Api> provideApi(

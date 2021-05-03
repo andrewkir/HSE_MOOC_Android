@@ -152,8 +152,8 @@ class RegisterFragment :
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResponse.OnSuccessResponse -> {
-                    userPrefsManager.saveAccessToken(it.value.access_token)
-                    userPrefsManager.saveRefreshToken(it.value.refresh_token)
+                    userPrefsManager.accessToken = it.value.access_token
+                    userPrefsManager.refreshToken = it.value.refresh_token
                     requireActivity().startActivityClearBackStack(CoursesActivity::class.java)
                 }
                 is ApiResponse.OnErrorResponse -> handleApiError(it)

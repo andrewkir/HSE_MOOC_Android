@@ -20,17 +20,14 @@ class JWTAuthenticator(
 
     override fun authenticate(route: Route?, response: Response): Request? {
         return runBlocking {
-            val refreshToken = prefsManager.obtainRefreshToken()
+            val refreshToken = prefsManager.refreshToken
             when (val tokensResponse =
                 protectedApiCall { tokensApi.refreshAccessToken(refreshToken!!) }
-                ) {
+            ) {
                 is ApiResponse.OnSuccessResponse -> {
-                    prefsManager.saveAccessToken(
-                        tokensResponse.value.access_token
-                    )
-                    prefsManager.saveRefreshToken(
-                        tokensResponse.value.refresh_token
-                    )
+                    prefsManager.accessToken = tokensResponse.value.access_token
+
+                    prefsManager.refreshToken = tokensResponse.value.refresh_token
 
                     response.request.newBuilder()
                         .header("Authorization", "Bearer ${tokensResponse.value.access_token}")

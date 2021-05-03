@@ -25,7 +25,7 @@ class CoursesMainFragment :
             apiProvider.provideApi(
                 CoursesApi::class.java,
                 requireContext(),
-                userPrefsManager.obtainAccessToken()
+                userPrefsManager.accessToken
             )
         )
     }

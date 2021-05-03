@@ -108,8 +108,9 @@ class LoginFragment : BaseFragment<LoginViewModel, AuthRepository, FragmentLogin
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResponse.OnSuccessResponse -> {
-                    userPrefsManager.saveAccessToken(it.value.access_token)
-                    userPrefsManager.saveRefreshToken(it.value.refresh_token)
+                    userPrefsManager.accessToken = it.value.access_token
+                    userPrefsManager.refreshToken = it.value.refresh_token
+                    userPrefsManager.username = it.value.user.username
                     requireActivity().startActivityClearBackStack(CoursesActivity::class.java)
                 }
                 is ApiResponse.OnErrorResponse -> handleApiError(it) {

@@ -2,9 +2,11 @@ package ru.andrewkir.hse_mooc.network.api
 
 import okhttp3.ResponseBody
 import retrofit2.http.*
+import ru.andrewkir.hse_mooc.network.requests.ReviewRequest
 import ru.andrewkir.hse_mooc.network.responses.Categories.CategoriesResponse
 import ru.andrewkir.hse_mooc.network.responses.Course.CourseResponse
 import ru.andrewkir.hse_mooc.network.responses.CoursesPreview.CoursesPreviewResponse
+import ru.andrewkir.hse_mooc.network.responses.Reviews.ReviewsResponse
 
 interface CoursesApi : BaseApi {
     @GET("courses")
@@ -38,6 +40,22 @@ interface CoursesApi : BaseApi {
     @DELETE("/users/viewed")
     suspend fun deleteFromViewed(
         @Query("id") courseId: String
+    ): ResponseBody
+
+    @GET("/reviews")
+    suspend fun getReviews(
+        @Query("id") courseId: String
+    ): ReviewsResponse
+
+    @POST("/reviews")
+    suspend fun postReview(
+        @Query("id") courseId: String,
+        @Body body: ReviewRequest
+    ): ResponseBody
+
+    @DELETE("/reviews")
+    suspend fun deleteReview(
+        @Query("reviewId") reviewId: String
     ): ResponseBody
 
     @POST("/auth/auth-test")

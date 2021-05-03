@@ -39,12 +39,12 @@ abstract class BaseFragment<viewModel : BaseViewModel, repo : BaseRepository, vi
     }
 
     fun userLogout() = lifecycleScope.launch {
-        val refreshToken = userPrefsManager.obtainRefreshToken()
+        val refreshToken = userPrefsManager.refreshToken
         val api = apiProvider.provideApi(AuthApi::class.java, requireContext(), null, refreshToken)
 
         viewModel.logoutUser(api)
 
-        userPrefsManager.clearTokens()
+        userPrefsManager.clearUser()
         requireActivity().startActivityClearBackStack(AuthActivity::class.java)
     }
 

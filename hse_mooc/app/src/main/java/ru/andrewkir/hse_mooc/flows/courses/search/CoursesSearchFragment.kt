@@ -33,6 +33,7 @@ class CoursesSearchFragment :
 
     private lateinit var recyclerAdapter: SearchCoursesRecyclerAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
+
     private var currentPage = 1
     private var isLoading = true
     private var query = ""
@@ -47,7 +48,7 @@ class CoursesSearchFragment :
             apiProvider.provideApi(
                 CoursesApi::class.java,
                 requireContext(),
-                userPrefsManager.obtainAccessToken()
+                userPrefsManager.accessToken
             )
         )
     }

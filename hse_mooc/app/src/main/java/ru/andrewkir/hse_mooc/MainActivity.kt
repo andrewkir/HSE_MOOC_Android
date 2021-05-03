@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val prefs = UserPrefsManager(this)
-        if (prefs.obtainAccessToken() != null) {
+        if (prefs.accessToken != null) {
             startActivity(Intent(this, CoursesActivity::class.java))
         } else {
             startActivity(Intent(this, AuthActivity::class.java))

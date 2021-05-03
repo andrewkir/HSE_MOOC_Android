@@ -3,6 +3,7 @@ package ru.andrewkir.hse_mooc.network.responses.Course
 
 import kotlinx.android.parcel.Parcelize
 import android.os.Parcelable
+import ru.andrewkir.hse_mooc.network.responses.Reviews.Review
 
 @Parcelize
 data class Course(
@@ -18,6 +19,7 @@ data class Course(
     val previewImageLink: String,
     val price: Price,
     val rating: Rating,
+    val reviews: List<Review>,
     val shortDescription: String,
     val vendor: Vendor
 ) : Parcelable

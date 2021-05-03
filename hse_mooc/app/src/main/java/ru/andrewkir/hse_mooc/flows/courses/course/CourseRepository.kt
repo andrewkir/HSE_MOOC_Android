@@ -2,6 +2,7 @@ package ru.andrewkir.hse_mooc.flows.courses.course
 
 import ru.andrewkir.hse_mooc.common.BaseRepository
 import ru.andrewkir.hse_mooc.network.api.CoursesApi
+import ru.andrewkir.hse_mooc.network.requests.ReviewRequest
 
 class CourseRepository(
     private val coursesApi: CoursesApi
@@ -20,4 +21,10 @@ class CourseRepository(
         if (isViewed) coursesApi.addToViewed(id)
         else coursesApi.deleteFromViewed(id)
     }
+
+    suspend fun getReviews(courseId: String) = protectedApiCall { coursesApi.getReviews(courseId) }
+
+    suspend fun postReview(courseId: String, review: ReviewRequest) = protectedApiCall { coursesApi.postReview(courseId, review) }
+
+    suspend fun removeReview(reviewId: String) = protectedApiCall { coursesApi.deleteReview(reviewId) }
 }

@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import ru.andrewkir.hse_mooc.common.BaseViewModel
 import ru.andrewkir.hse_mooc.flows.auth.AuthRepository
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
-import ru.andrewkir.hse_mooc.network.responses.LoginResponse
+import ru.andrewkir.hse_mooc.network.responses.Login.LoginResponse
 
 class LoginViewModel(
     private val repo: AuthRepository

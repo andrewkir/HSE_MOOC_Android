@@ -1,13 +1,10 @@
 package ru.andrewkir.hse_mooc.flows.auth
 
-import kotlinx.coroutines.delay
 import ru.andrewkir.hse_mooc.common.BaseRepository
 import ru.andrewkir.hse_mooc.network.api.AuthApi
 import ru.andrewkir.hse_mooc.network.requests.LoginEmailRequest
 import ru.andrewkir.hse_mooc.network.requests.LoginUsernameRequest
 import ru.andrewkir.hse_mooc.network.requests.RegisterRequest
-import ru.andrewkir.hse_mooc.network.responses.ApiResponse
-import ru.andrewkir.hse_mooc.network.responses.LoginResponse
 
 class AuthRepository(
     private val api: AuthApi

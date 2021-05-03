@@ -1,34 +1,42 @@
 package ru.andrewkir.hse_mooc.flows.courses.course
 
-import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_course_page.*
 import kotlinx.android.synthetic.main.fragment_login.*
+import per.wsj.library.AndRatingBar
 import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.common.openLink
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursePageBinding
-import ru.andrewkir.hse_mooc.flows.courses.search.CoursesSearchRepository
-import ru.andrewkir.hse_mooc.flows.courses.search.CoursesSearchViewModel
+import ru.andrewkir.hse_mooc.flows.courses.course.adapters.CourseCommentsAdapter
 import ru.andrewkir.hse_mooc.network.api.CoursesApi
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
-import ru.andrewkir.hse_mooc.network.responses.Course.Course
 import ru.andrewkir.hse_mooc.network.responses.Course.CourseResponse
+import ru.andrewkir.hse_mooc.network.responses.Reviews.Review
 import java.text.DecimalFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CourseFragment :
     BaseFragment<CourseViewModel, CourseRepository, FragmentCoursePageBinding>() {
+
+    private lateinit var recyclerAdapter: CourseCommentsAdapter
+    private lateinit var linearLayoutManager: LinearLayoutManager
+
+    private var myCurrentReview: Review? = null
 
     companion object {
         const val COURSE_TAG = "courseItem"
@@ -51,7 +59,7 @@ class CourseFragment :
             apiProvider.provideApi(
                 CoursesApi::class.java,
                 requireContext(),
-                userPrefsManager.obtainAccessToken()
+                userPrefsManager.accessToken
             )
         )
     }
@@ -70,9 +78,14 @@ class CourseFragment :
         if (viewModel.courseResponse.value == null) viewModel.init(courseId)
 
         setupInteractButtons()
+        setupRecyclerView()
         subscribeToCourse()
         subscribeToLoading()
         subscribeToInteract()
+        subscribeToReview()
+        subscribeToError()
+
+        //TODO обновлять рейтинг после добавления/удаления комментария
     }
 
     private fun subscribeToCourse() {
@@ -100,7 +113,7 @@ class CourseFragment :
     }
 
     private fun updateUi(course: CourseResponse) {
-        course.let {
+        course.let { it ->
             bind.courseName.text = it.course.courseName
 
             Glide.with(requireContext())
@@ -168,7 +181,15 @@ class CourseFragment :
 
             viewModel.isLiked.value = it.isFavourite
             viewModel.isViewed.value = it.isViewed
+
+            viewModel.reviews.value = it.course.reviews.toList()
         }
+    }
+
+    private fun subscribeToError() {
+        viewModel.errorResponse.observe(viewLifecycleOwner, Observer {
+            handleApiError(it)
+        })
     }
 
     private fun subscribeToLoading() {
@@ -190,13 +211,73 @@ class CourseFragment :
         })
     }
 
+    private fun subscribeToReview() {
+        viewModel.reviews.observe(viewLifecycleOwner, Observer {
+            val reviewList = ArrayList<Review>()
+            val username = userPrefsManager.username
+
+            myCurrentReview = null
+            for (review in it) {
+                if (review.user.username == username) {
+                    reviewList.add(0, review.also { r -> r.isMyReview = true })
+                    myCurrentReview = review
+                } else reviewList.add(review)
+            }
+            if(reviewList.size == 0) bind.reviewPlaceHolder.visibility = View.VISIBLE
+            else bind.reviewPlaceHolder.visibility = View.GONE
+
+            recyclerAdapter.data = reviewList
+        })
+    }
+
     private fun setupInteractButtons() {
         bind.likeButton.setOnClickListener {
-            viewModel.toggleLike(courseId)
+            viewModel.toggleLike()
         }
 
         bind.alreadySawButton.setOnClickListener {
-            viewModel.toggleViewed(courseId)
+            viewModel.toggleViewed()
         }
+
+        bind.editReviewButton.setOnClickListener {
+            showDialogNewReview()
+        }
+    }
+
+    private fun setupRecyclerView() {
+        recyclerAdapter = CourseCommentsAdapter(requireContext()) {
+            viewModel.deleteReview(it.id)
+        }
+        linearLayoutManager = LinearLayoutManager(requireContext())
+
+        bind.courseCommentsRecycler.run {
+            overScrollMode = View.OVER_SCROLL_NEVER
+            layoutManager = linearLayoutManager
+            adapter = recyclerAdapter
+        }
+    }
+
+    private fun showDialogNewReview() {
+        val dialog = AlertDialog.Builder(requireContext())
+
+        val view = layoutInflater.inflate(R.layout.dialog_new_review, null)
+        dialog.setView(view)
+        val ratingBar = view.findViewById<AndRatingBar>(R.id.reviewDialogRating)
+        val reviewText = view.findViewById<EditText>(R.id.reviewDialogText)
+
+        myCurrentReview?.let {
+            ratingBar.rating = it.rating.toFloat()
+            reviewText.setText(it.text)
+        }
+
+        dialog
+            .setTitle("Отзыв на курс")
+            .setPositiveButton("Ок") { dialog, which ->
+                if(ratingBar.rating < 1f) Toast.makeText(requireContext(), "Рейтинг не может быть меньше 1", Toast.LENGTH_SHORT).show()
+                else viewModel.postReview(ratingBar.rating, reviewText.text.toString())
+            }
+            .setNeutralButton("Отмена") { dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
     }
 }
