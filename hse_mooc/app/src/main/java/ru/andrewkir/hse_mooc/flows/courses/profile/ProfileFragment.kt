@@ -1,5 +1,6 @@
 package ru.andrewkir.hse_mooc.flows.courses.profile
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,13 +10,10 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.andrewkir.hse_mooc.common.BaseFragment
-import ru.andrewkir.hse_mooc.databinding.FragmentCoursesSearchBinding
+import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.databinding.FragmentProfileBinding
 import ru.andrewkir.hse_mooc.flows.course.CourseActivity
 import ru.andrewkir.hse_mooc.flows.courses.profile.adapters.ProfileCourseRecyclerAdapter
-import ru.andrewkir.hse_mooc.flows.courses.search.CoursesSearchRepository
-import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchCoursesRecyclerAdapter
-import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchScrollListener
 import ru.andrewkir.hse_mooc.network.api.CoursesApi
 
 class ProfileFragment :
@@ -50,8 +48,12 @@ class ProfileFragment :
 
         setupRecyclerViews()
         setupExpandButtons()
+        setupSwipeToRefresh()
+        setupLogout()
         subscribeToFavorites()
         subscribeToViewed()
+        subscribeToError()
+        subscribeToLoading()
 
         bind.profileEmail.text = userPrefsManager.email
         bind.profileUsername.text = userPrefsManager.username
@@ -88,42 +90,103 @@ class ProfileFragment :
             //TODO fix animation with loading
             if (bind.expandFavorites.rotation == 0f) {
                 viewModel.getFavorites()
-                bind.expandFavorites.animate()
-                    .rotation(90f).interpolator =
-                    AccelerateDecelerateInterpolator()
-                bind.profileFavoritesRecyclerView.visibility = View.VISIBLE
 
             } else {
-                bind.expandFavorites.animate().rotation(0f).interpolator =
-                    AccelerateDecelerateInterpolator()
-                bind.profileFavoritesRecyclerView.visibility = View.GONE
+                viewModel.favoritesCourses.value = null
             }
         }
 
         bind.expandViewed.setOnClickListener {
             if (bind.expandViewed.rotation == 0f) {
                 viewModel.getViewed()
-                bind.expandViewed.animate()
-                    .rotation(90f).interpolator =
-                    AccelerateDecelerateInterpolator()
-                bind.profileViewedRecyclerView.visibility = View.VISIBLE
             } else {
-                bind.expandViewed.animate().rotation(0f).interpolator =
-                    AccelerateDecelerateInterpolator()
-                bind.profileViewedRecyclerView.visibility = View.GONE
+                viewModel.viewedCourses.value = null
             }
         }
     }
 
-    private fun subscribeToFavorites(){
+    private fun setupSwipeToRefresh() {
+        bind.profileSwipeRefresh.setOnRefreshListener {
+            updateVisibleCourses()
+        }
+    }
+
+    private fun setupLogout() {
+        bind.profileLogoutButton.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Выход из приложения")
+                .setMessage("Вы действительно хотите выйти из приложения?")
+                .setNeutralButton("Отмена") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton("Да") { _, _ ->
+                    userLogout()
+                }
+                .show()
+        }
+    }
+
+    private fun updateVisibleCourses() {
+        if (bind.expandFavorites.rotation == 0f && bind.expandViewed.rotation == 0f) {
+            bind.profileSwipeRefresh.isRefreshing = false
+            return
+        }
+        if (bind.expandFavorites.rotation == 90f) {
+            viewModel.getFavorites()
+        }
+        if (bind.expandViewed.rotation == 90f) {
+            viewModel.getViewed()
+        }
+    }
+
+    private fun subscribeToViewed() {
         viewModel.viewedCourses.observe(viewLifecycleOwner, Observer {
-            recyclerViewedAdapter.data = it
+            if (it == null) {
+                bind.expandViewed.animate().rotation(0f).interpolator =
+                    AccelerateDecelerateInterpolator()
+                bind.profileViewedRecyclerView.visibility = View.GONE
+            } else {
+                recyclerViewedAdapter.data = it
+                bind.expandViewed.animate()
+                    .rotation(90f).interpolator =
+                    AccelerateDecelerateInterpolator()
+                bind.profileViewedRecyclerView.visibility = View.VISIBLE
+            }
         })
     }
 
-    private fun subscribeToViewed(){
+    private fun subscribeToFavorites() {
         viewModel.favoritesCourses.observe(viewLifecycleOwner, Observer {
-            recyclerFavoritesAdapter.data = it
+            if (it == null) {
+                bind.expandFavorites.animate().rotation(0f).interpolator =
+                    AccelerateDecelerateInterpolator()
+                bind.profileFavoritesRecyclerView.visibility = View.GONE
+            } else {
+                recyclerFavoritesAdapter.data = it
+                bind.expandFavorites.animate()
+                    .rotation(90f).interpolator =
+                    AccelerateDecelerateInterpolator()
+                bind.profileFavoritesRecyclerView.visibility = View.VISIBLE
+            }
         })
+    }
+
+    private fun subscribeToLoading() {
+        viewModel.loading.observe(viewLifecycleOwner, Observer {
+            bind.profileSwipeRefresh.isRefreshing = it
+        })
+    }
+
+    private fun subscribeToError() {
+        viewModel.errorResponse.observe(viewLifecycleOwner, Observer {
+            handleApiError(it) {
+                updateVisibleCourses()
+            }
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateVisibleCourses()
     }
 }
