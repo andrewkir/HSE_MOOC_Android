@@ -24,7 +24,7 @@ interface CoursesApi : BaseApi {
         @Path(value = "id", encoded = true) id: String
     ): CourseResponse
 
-    @GET("/users/favorite")
+    @GET("/users/favourite")
     suspend fun getFavorites(): FavoriteCoursesResponse
 
     @POST("/users/favourite")

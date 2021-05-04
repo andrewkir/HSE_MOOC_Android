@@ -7,7 +7,6 @@ import ru.andrewkir.hse_mooc.common.BaseViewModel
 import ru.andrewkir.hse_mooc.common.SingleLiveEvent
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 import ru.andrewkir.hse_mooc.network.responses.CoursesPreview.CoursePreview
-import ru.andrewkir.hse_mooc.network.responses.ViewedCoursesResponse
 import ru.andrewkir.hse_mooc.network.responses.FavoriteCoursesResponse
 
 class ProfileViewModel(

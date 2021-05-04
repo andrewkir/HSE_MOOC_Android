@@ -91,9 +91,12 @@ class ProfileFragment :
                 bind.expandFavorites.animate()
                     .rotation(90f).interpolator =
                     AccelerateDecelerateInterpolator()
+                bind.profileFavoritesRecyclerView.visibility = View.VISIBLE
+
             } else {
                 bind.expandFavorites.animate().rotation(0f).interpolator =
                     AccelerateDecelerateInterpolator()
+                bind.profileFavoritesRecyclerView.visibility = View.GONE
             }
         }
 
@@ -103,9 +106,11 @@ class ProfileFragment :
                 bind.expandViewed.animate()
                     .rotation(90f).interpolator =
                     AccelerateDecelerateInterpolator()
+                bind.profileViewedRecyclerView.visibility = View.VISIBLE
             } else {
                 bind.expandViewed.animate().rotation(0f).interpolator =
                     AccelerateDecelerateInterpolator()
+                bind.profileViewedRecyclerView.visibility = View.GONE
             }
         }
     }
