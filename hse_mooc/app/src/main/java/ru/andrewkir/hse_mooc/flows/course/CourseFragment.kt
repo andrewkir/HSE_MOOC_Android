@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.flows.courses.course
+package ru.andrewkir.hse_mooc.flows.course
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -6,21 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_course_page.*
-import kotlinx.android.synthetic.main.fragment_login.*
 import per.wsj.library.AndRatingBar
 import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.common.openLink
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursePageBinding
-import ru.andrewkir.hse_mooc.flows.courses.course.adapters.CourseCommentsAdapter
+import ru.andrewkir.hse_mooc.flows.course.adapters.CourseCommentsAdapter
 import ru.andrewkir.hse_mooc.network.api.CoursesApi
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 import ru.andrewkir.hse_mooc.network.responses.Course.CourseResponse
@@ -84,8 +82,6 @@ class CourseFragment :
         subscribeToInteract()
         subscribeToReview()
         subscribeToError()
-
-        //TODO обновлять рейтинг после добавления/удаления комментария
     }
 
     private fun subscribeToCourse() {
@@ -164,6 +160,9 @@ class CourseFragment :
 
             categoryHeaderText.text =
                 if (it.course.categories.size > 1) "Категории" else "Категория"
+
+            bind.categoriesChipGroup.removeAllViews()
+
             for (category in it.course.categories) {
                 val chip =
                     this.layoutInflater.inflate(
@@ -223,7 +222,7 @@ class CourseFragment :
                     myCurrentReview = review
                 } else reviewList.add(review)
             }
-            if(reviewList.size == 0) bind.reviewPlaceHolder.visibility = View.VISIBLE
+            if (reviewList.size == 0) bind.reviewPlaceHolder.visibility = View.VISIBLE
             else bind.reviewPlaceHolder.visibility = View.GONE
 
             recyclerAdapter.data = reviewList
@@ -270,14 +269,35 @@ class CourseFragment :
             reviewText.setText(it.text)
         }
 
-        dialog
+        val alertDialog = dialog
             .setTitle("Отзыв на курс")
-            .setPositiveButton("Ок") { dialog, which ->
-                if(ratingBar.rating < 1f) Toast.makeText(requireContext(), "Рейтинг не может быть меньше 1", Toast.LENGTH_SHORT).show()
-                else viewModel.postReview(ratingBar.rating, reviewText.text.toString())
-            }
+            .setPositiveButton("Ок") { _, _ -> }
             .setNeutralButton("Отмена") { dialog, _ -> dialog.dismiss() }
             .create()
-            .show()
+
+        alertDialog.show()
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            var closeDialog = false
+            if (ratingBar.rating < 1f) {
+                Toast.makeText(
+                    requireContext(),
+                    "Рейтинг не может быть меньше 1",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (reviewText.text.isBlank()) {
+                Toast.makeText(
+                    requireContext(),
+                    "Отзыв не может быть пустым",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                closeDialog = true
+                viewModel.postReview(
+                    ratingBar.rating, reviewText.text.toString()
+                )
+            }
+            if (closeDialog) alertDialog.dismiss()
+        }
     }
 }

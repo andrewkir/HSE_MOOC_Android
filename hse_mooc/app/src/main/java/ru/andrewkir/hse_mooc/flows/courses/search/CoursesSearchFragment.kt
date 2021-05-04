@@ -4,24 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
-import androidx.core.view.MotionEventCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.handleApiError
-import ru.andrewkir.hse_mooc.common.openLink
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursesSearchBinding
-import ru.andrewkir.hse_mooc.flows.courses.course.CourseActivity
+import ru.andrewkir.hse_mooc.flows.course.CourseActivity
 import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchCoursesRecyclerAdapter
 import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchScrollListener
 import ru.andrewkir.hse_mooc.network.api.CoursesApi
@@ -34,7 +29,6 @@ class CoursesSearchFragment :
     private lateinit var recyclerAdapter: SearchCoursesRecyclerAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
 
-    private var currentPage = 1
     private var isLoading = true
     private var query = ""
     private var lastPage = true
@@ -71,7 +65,6 @@ class CoursesSearchFragment :
         subscribeToLoading()
 
         viewModel.initCourses()
-        viewModel.getCategories()
     }
 
     private fun subscribeToCourses() {
@@ -82,7 +75,7 @@ class CoursesSearchFragment :
     }
 
     private fun subscribeToError() {
-        viewModel.errorLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.error.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 handleApiError(it) {
                     if (bind.swipeRefresh.isRefreshing) viewModel.refreshCourses(checkedChipsIds)
@@ -94,13 +87,13 @@ class CoursesSearchFragment :
     }
 
     private fun subscribeToLastPage() {
-        viewModel.isLastPageLiveData.observe(viewLifecycleOwner, Observer {
-            if (it) {
+        viewModel.isLastPage.observe(viewLifecycleOwner, Observer {
+            lastPage = if (it) {
                 recyclerAdapter.removeLoading()
-                lastPage = true
+                true
             } else {
                 recyclerAdapter.addLoading()
-                lastPage = false
+                false
             }
         })
     }
@@ -108,7 +101,7 @@ class CoursesSearchFragment :
     private fun setupRecyclerView() {
         recyclerAdapter = SearchCoursesRecyclerAdapter(requireContext()) {
             val intent = Intent(requireContext(), CourseActivity::class.java)
-            intent.putExtra("COURSE_ITEM", it)
+            intent.putExtra("COURSE_ID", it.id)
             startActivity(intent)
         }
         linearLayoutManager = LinearLayoutManager(requireContext())
@@ -140,6 +133,7 @@ class CoursesSearchFragment :
         bind.swipeRefresh.run {
             setOnRefreshListener {
                 viewModel.refreshCourses(checkedChipsIds)
+                if (bind.chipGroup.childCount <= 1) viewModel.getCategories()
             }
         }
 
@@ -161,15 +155,14 @@ class CoursesSearchFragment :
             if (!bind.chipGroup.isShown) {
                 bind.chipGroup.visibility = View.VISIBLE
                 bind.filterCover.visibility = View.VISIBLE
-            }
-            else {
+            } else {
                 bind.chipGroup.visibility = View.GONE
                 bind.filterCover.visibility = View.GONE
             }
         }
 
         bind.filterCover.setOnClickListener {
-            if(bind.chipGroup.isShown) bind.chipGroup.visibility = View.GONE
+            if (bind.chipGroup.isShown) bind.chipGroup.visibility = View.GONE
             bind.filterCover.visibility = View.GONE
         }
     }
@@ -190,6 +183,8 @@ class CoursesSearchFragment :
         viewModel.categoryResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResponse.OnSuccessResponse -> {
+                    bind.expandButton.visibility = View.VISIBLE
+
                     if (viewModel.categories.isNotEmpty()) checkedChipsIds =
                         viewModel.categories.toMutableSet()
 
@@ -221,6 +216,10 @@ class CoursesSearchFragment :
                         if (checkedChipsIds.contains(category.id)) chip.isChecked = true
                         bind.chipGroup.addView(chip)
                     }
+                }
+                else -> {
+                    bind.expandButton.visibility = View.INVISIBLE
+                    bind.chipGroup.removeAllViews()
                 }
             }
         })

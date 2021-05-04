@@ -19,14 +19,13 @@ class CoursesSearchViewModel(
     val coursesLiveData: LiveData<List<CoursePreview>>
         get() = mutableCoursesLiveData
 
-    private val mutableError: MutableLiveData<ApiResponse.OnErrorResponse> = MutableLiveData()
+    val error: MutableLiveData<ApiResponse.OnErrorResponse?> by lazy {
+        MutableLiveData<ApiResponse.OnErrorResponse?>()
+    }
 
-    val errorLiveData: LiveData<ApiResponse.OnErrorResponse?>
-        get() = mutableError
-
-    private val isLastPage: MutableLiveData<Boolean> = MutableLiveData()
-    val isLastPageLiveData: LiveData<Boolean>
-        get() = isLastPage
+    val isLastPage: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
 
     val categoryResponse: MutableLiveData<ApiResponse<CategoriesResponse>> = MutableLiveData()
 
@@ -42,7 +41,7 @@ class CoursesSearchViewModel(
     private fun fetchCourses(query: String, currentPage: Int) {
         if (isLastPage.value!!) return
 
-        mutableError.value = null
+        error.value = null
         viewModelScope.launch {
             mutableLoading.value = true
             when (val result = searchRepository.getCoursesFromServer(
@@ -51,7 +50,7 @@ class CoursesSearchViewModel(
                 categories.joinToString(",")
             )) {
                 is ApiResponse.OnSuccessResponse -> {
-                    mutableError.value = null
+                    error.value = null
 
                     if (result.value.courses.isEmpty()) {
                         page--
@@ -62,7 +61,7 @@ class CoursesSearchViewModel(
                 }
                 is ApiResponse.OnErrorResponse -> {
                     page--
-                    mutableError.value = result
+                    error.value = result
                 }
             }
             mutableLoading.value = false
@@ -73,6 +72,7 @@ class CoursesSearchViewModel(
         if (isFirstInit) {
             isFirstInit = false
             refreshCourses()
+            getCategories()
         }
     }
 
@@ -85,7 +85,7 @@ class CoursesSearchViewModel(
             categories = categoriesQuery.toMutableSet()
 
             refreshCourses()
-        } else if (mutableCoursesLiveData.value == null) {
+        } else {
             refreshCourses()
         }
     }
@@ -98,7 +98,7 @@ class CoursesSearchViewModel(
     fun refreshCourses(categoriesQuery: Set<Int>? = null) {
         if (categoriesQuery != null) categories = categoriesQuery.toMutableSet()
 
-        mutableError.value = null
+        error.value = null
         page = 1
 
         viewModelScope.launch {
@@ -106,7 +106,6 @@ class CoursesSearchViewModel(
             when (val result =
                 searchRepository.getCoursesFromServer(query, 1, categories.joinToString(","))) {
                 is ApiResponse.OnSuccessResponse -> {
-                    mutableError.value = null
                     mutableCourses.clear()
                     isLastPage.value =
                         result.value.courses.isEmpty() || result.value.courses.size < 30
@@ -114,7 +113,7 @@ class CoursesSearchViewModel(
                     mutableCoursesLiveData.value = mutableCourses
                 }
                 is ApiResponse.OnErrorResponse -> {
-                    mutableError.value = result
+                    error.value = result
                 }
             }
             mutableLoading.value = false

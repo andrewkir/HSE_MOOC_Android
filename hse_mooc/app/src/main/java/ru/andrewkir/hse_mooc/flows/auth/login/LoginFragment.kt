@@ -111,6 +111,8 @@ class LoginFragment : BaseFragment<LoginViewModel, AuthRepository, FragmentLogin
                     userPrefsManager.accessToken = it.value.access_token
                     userPrefsManager.refreshToken = it.value.refresh_token
                     userPrefsManager.username = it.value.user.username
+                    userPrefsManager.email = it.value.user.email
+
                     requireActivity().startActivityClearBackStack(CoursesActivity::class.java)
                 }
                 is ApiResponse.OnErrorResponse -> handleApiError(it) {

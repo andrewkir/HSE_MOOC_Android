@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.flows.courses.course
+package ru.andrewkir.hse_mooc.flows.course
 
 import ru.andrewkir.hse_mooc.common.BaseRepository
 import ru.andrewkir.hse_mooc.network.api.CoursesApi

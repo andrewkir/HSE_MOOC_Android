@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.flows.courses.course
+package ru.andrewkir.hse_mooc.flows.course
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -100,11 +100,12 @@ public class CourseViewModel(
         }
     }
 
-    fun updateReviews() {
+    private fun updateReviews() {
         viewModelScope.launch {
             when (val result = courseRepository.getReviews(courseId)) {
                 is ApiResponse.OnSuccessResponse -> {
                     reviews.value = result.value.reviews
+                    init(courseId)
                 }
                 is ApiResponse.OnErrorResponse -> {
                     errorResponse.value = result

@@ -14,4 +14,8 @@
         android:id="@+id/search"
         android:name="ru.andrewkir.hse_mooc.flows.courses.search.CoursesSearchFragment"
         android:label="CoursesSearchFragment" />
+    <save_state_fragment
+        android:id="@+id/profile"
+        android:name="ru.andrewkir.hse_mooc.flows.courses.profile.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>

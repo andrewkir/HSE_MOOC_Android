@@ -15,7 +15,7 @@
             android:name="ru.andrewkir.hse_mooc.flows.courses.CoursesActivity"
              />
         <activity android:name="ru.andrewkir.hse_mooc.flows.auth.AuthActivity" />
-        <activity android:name="ru.andrewkir.hse_mooc.flows.courses.course.CourseActivity" />
+        <activity android:name="ru.andrewkir.hse_mooc.flows.course.CourseActivity" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

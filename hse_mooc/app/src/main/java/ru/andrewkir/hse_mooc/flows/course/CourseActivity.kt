@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.flows.courses.course
+package ru.andrewkir.hse_mooc.flows.course
 
 import android.graphics.Color
 import android.os.Bundle
@@ -6,8 +6,6 @@ import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import ru.andrewkir.hse_mooc.R
-import ru.andrewkir.hse_mooc.network.responses.Course.Course
-import ru.andrewkir.hse_mooc.network.responses.CoursesPreview.CoursePreview
 
 class CourseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,12 +19,12 @@ class CourseActivity : AppCompatActivity() {
             statusBarColor = Color.parseColor("#20111111")
         }
 
-        val item = intent.getParcelableExtra<CoursePreview>("COURSE_ITEM")!!
+        val id = intent.getStringExtra("COURSE_ID")!!
 
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fragment_container_view, CourseFragment.newInstance(item.id)) //TODO fix
+                .replace(R.id.fragment_container_view, CourseFragment.newInstance(id))
                 .commit()
         }
     }

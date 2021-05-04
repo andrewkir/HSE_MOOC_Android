@@ -164,8 +164,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/coursePageLoading"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:background="@drawable/course_image_overlay"
                 android:elevation="10dp"
                 android:visibility="gone"

@@ -55,4 +55,12 @@ class UserPrefsManager(
             editor.putString(USERNAME, value)
             editor.apply()
         }
+
+    var email: String?
+        get() = prefs.getString(USERNAME, null)
+        set(value) {
+            val editor = prefs.edit()
+            editor.putString(USERNAME, value)
+            editor.apply()
+        }
 }

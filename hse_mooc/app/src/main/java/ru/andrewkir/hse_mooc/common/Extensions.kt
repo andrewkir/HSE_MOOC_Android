@@ -40,7 +40,7 @@ fun Fragment.handleApiError(
     }
 
     if (error.body == null && error.code == null) {
-        requireView().createRetrySnackbar("Ошибка на стороне сервера")
+        requireView().createRetrySnackbar(getString(R.string.server_error))
     }
 
     val parsedError = try {
@@ -56,22 +56,22 @@ fun Fragment.handleApiError(
     if (error.code == 401) {
         if (this is LoginFragment) {
             if (parsedError.isNotEmpty()) requireView().createRetrySnackbar(parsedError)
-            else requireView().createRetrySnackbar("Попробуйте ещё раз")
+            else requireView().createRetrySnackbar(getString(R.string.error_try_again))
         } else {
-            Toast.makeText(requireContext(), "Необходимо повторить вход", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.error_retry_signin), Toast.LENGTH_SHORT).show()
             (this as BaseFragment<*, *, *>).userLogout()
         }
         return
     }
 
     if (parsedError.isNotEmpty()) requireView().createRetrySnackbar(parsedError)
-    else requireView().createRetrySnackbar("Ошибка на стороне сервера")
+    else requireView().createRetrySnackbar(getString(R.string.error_server_error))
 }
 
 fun View.createRetrySnackbar(msg: String, retry: (() -> Unit)? = null) {
     val snack = Snackbar.make(this, msg, Snackbar.LENGTH_LONG)
     retry?.let {
-        snack.setAction("Повторить") {
+        snack.setAction(context.getString(R.string.error_retry_text)) {
             it()
         }
     }

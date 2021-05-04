@@ -6,7 +6,9 @@ import ru.andrewkir.hse_mooc.network.requests.ReviewRequest
 import ru.andrewkir.hse_mooc.network.responses.Categories.CategoriesResponse
 import ru.andrewkir.hse_mooc.network.responses.Course.CourseResponse
 import ru.andrewkir.hse_mooc.network.responses.CoursesPreview.CoursesPreviewResponse
+import ru.andrewkir.hse_mooc.network.responses.FavoriteCoursesResponse
 import ru.andrewkir.hse_mooc.network.responses.Reviews.ReviewsResponse
+import ru.andrewkir.hse_mooc.network.responses.ViewedCoursesResponse
 
 interface CoursesApi : BaseApi {
     @GET("courses")
@@ -22,6 +24,9 @@ interface CoursesApi : BaseApi {
         @Path(value = "id", encoded = true) id: String
     ): CourseResponse
 
+    @GET("/users/favorite")
+    suspend fun getFavorites(): FavoriteCoursesResponse
+
     @POST("/users/favourite")
     suspend fun addToFavourites(
         @Query("id") courseId: String
@@ -31,6 +36,9 @@ interface CoursesApi : BaseApi {
     suspend fun deleteFromFavourites(
         @Query("id") courseId: String
     ): ResponseBody
+
+    @GET("/users/viewed")
+    suspend fun getViewed(): ViewedCoursesResponse
 
     @POST("/users/viewed")
     suspend fun addToViewed(

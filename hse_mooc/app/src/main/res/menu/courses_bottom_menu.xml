@@ -10,7 +10,7 @@
         android:icon="@drawable/ic_home"
         android:title="@string/bottom_menu_main"/>
     <item
-        android:id="@+id/profileItem"
+        android:id="@+id/profile"
         android:enabled="true"
         android:icon="@drawable/ic_person"
         android:title="@string/bottom_menu_profile"/>

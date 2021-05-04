@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.flows.courses.course.adapters
+package ru.andrewkir.hse_mooc.flows.course.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import per.wsj.library.AndRatingBar
 import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.network.responses.Reviews.Review
 import java.text.SimpleDateFormat
+
 
 class CourseCommentsAdapter(
     private val context: Context,
@@ -42,16 +44,27 @@ class CourseCommentsAdapter(
         val date = formatter.parse(data[position].creationDate)
 
         viewHolder.commentDate?.text = SimpleDateFormat("dd-MM-yyyy").format(date).toString()
-        if(data[position].isMyReview == true){
+        if (data[position].isMyReview == true) {
             viewHolder.removeButton?.visibility = View.VISIBLE
             viewHolder.removeButton?.setOnClickListener { onCommentClick?.invoke(data[position]) }
         } else {
             viewHolder.removeButton?.visibility = View.GONE
         }
+
+        viewHolder.itemView.setOnClickListener {
+            if (viewHolder.commentContent?.maxLines == 3) {
+                viewHolder.commentContent?.maxLines = 100
+            } else {
+                viewHolder.commentContent?.maxLines = 3
+            }
+            notifyDataSetChanged()
+        }
     }
 
 
     inner class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var reviewRoot: CardView? = null
+
         var commentRating: AndRatingBar? = null
         var commentUsername: TextView? = null
         var commentContent: TextView? = null
@@ -60,6 +73,8 @@ class CourseCommentsAdapter(
         var removeButton: ImageButton? = null
 
         init {
+            reviewRoot = view.findViewById(R.id.reviewRoot)
+
             commentRating = view.findViewById(R.id.reviewRating)
             commentUsername = view.findViewById(R.id.reviewAuthor)
             commentContent = view.findViewById(R.id.reviewContent)
