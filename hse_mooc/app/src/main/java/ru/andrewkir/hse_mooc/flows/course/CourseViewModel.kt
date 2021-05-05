@@ -22,10 +22,6 @@ public class CourseViewModel(
         MutableLiveData<List<Review>>()
     }
 
-    val errorResponse: SingleLiveEvent<ApiResponse.OnErrorResponse> by lazy {
-        SingleLiveEvent<ApiResponse.OnErrorResponse>()
-    }
-
     val isViewed: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }

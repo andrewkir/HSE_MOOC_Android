@@ -5,19 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
+import ru.andrewkir.hse_mooc.common.adapters.CoursePreviewRecyclerViewAdapter
+import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursesMainBinding
 import ru.andrewkir.hse_mooc.flows.course.CourseActivity
-import ru.andrewkir.hse_mooc.flows.courses.main.adapters.MainCoursesAdapter
 import ru.andrewkir.hse_mooc.flows.courses.main.adapters.TrendingCoursesButtonAdapter
 import ru.andrewkir.hse_mooc.flows.courses.main.model.TrendingButton
 import ru.andrewkir.hse_mooc.network.api.CoursesApi
-import ru.andrewkir.hse_mooc.network.responses.CoursesPreview.CoursePreview
 
 class CoursesMainFragment :
     BaseFragment<CoursesMainViewModel, CoursesMainRepository, FragmentCoursesMainBinding>() {
@@ -26,7 +24,7 @@ class CoursesMainFragment :
     lateinit var trendingButtonsAdapter: TrendingCoursesButtonAdapter
 
     lateinit var coursesLinearLayoutManager: LinearLayoutManager
-    lateinit var coursesAdapter: MainCoursesAdapter
+    lateinit var coursesAdapter: CoursePreviewRecyclerViewAdapter
 
     override fun provideViewModelClass() = CoursesMainViewModel::class.java
 
@@ -53,6 +51,7 @@ class CoursesMainFragment :
         setupRefresh()
         subscribeToCourses()
         subscribeToLoading()
+        subscribeToError()
 
         fillData()
     }
@@ -76,7 +75,7 @@ class CoursesMainFragment :
     }
 
     private fun setupCoursesRecycler() {
-        coursesAdapter = MainCoursesAdapter(requireContext()) {
+        coursesAdapter = CoursePreviewRecyclerViewAdapter(requireContext()) {
             val intent = Intent(requireContext(), CourseActivity::class.java)
             intent.putExtra("COURSE_ID", it.id)
             startActivity(intent)
@@ -95,7 +94,7 @@ class CoursesMainFragment :
         bind.mainSwipeRefresh.setOnRefreshListener {
             //TODO снова получаем рекомендуемые курсы
             coursesAdapter.data = ArrayList()
-            bind.featuredCoursesTextView.text = "Рекомендуемые курсы"
+            bind.featuredCoursesTextView.text = getString(R.string.profile_featured_courses_text)
             bind.mainSwipeRefresh.isRefreshing = false
         }
     }
@@ -126,7 +125,15 @@ class CoursesMainFragment :
 
     private fun subscribeToLoading() {
         viewModel.loading.observe(viewLifecycleOwner, Observer {
-            //bind.mainSwipeRefresh.isRefreshing = it
+            bind.mainSwipeRefresh.isRefreshing = it
+        })
+    }
+
+    private fun subscribeToError(){
+        viewModel.errorResponse.observe(viewLifecycleOwner, Observer {
+            handleApiError(it){
+                //TODO viewModel.init()
+            }
         })
     }
 }

@@ -19,10 +19,6 @@ class CoursesMainViewModel(
         MutableLiveData<List<CoursePreview>>()
     }
 
-    val errorResponse: SingleLiveEvent<ApiResponse.OnErrorResponse> by lazy {
-        SingleLiveEvent<ApiResponse.OnErrorResponse>()
-    }
-
     fun getTrending(url: String){
         viewModelScope.launch {
             mutableLoading.value = true

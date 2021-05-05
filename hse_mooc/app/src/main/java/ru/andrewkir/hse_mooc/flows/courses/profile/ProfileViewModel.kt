@@ -21,10 +21,6 @@ class ProfileViewModel(
         MutableLiveData<List<CoursePreview>>()
     }
 
-    val errorResponse: SingleLiveEvent<ApiResponse.OnErrorResponse> by lazy {
-        SingleLiveEvent<ApiResponse.OnErrorResponse>()
-    }
-
     fun getFavorites(){
         viewModelScope.launch {
             mutableLoading.value = true

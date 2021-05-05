@@ -46,4 +46,5 @@
     <string name="error_retry_signin">Необходимо повторить вход</string>
     <string name="error_server_error">Ошибка на стороне сервера</string>
     <string name="error_retry_text">Повторить</string>
+    <string name="profile_featured_courses_text">Рекомендуемые курсы</string>
 </resources>

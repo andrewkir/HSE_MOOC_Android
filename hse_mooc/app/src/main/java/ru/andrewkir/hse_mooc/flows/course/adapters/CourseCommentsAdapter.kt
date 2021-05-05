@@ -51,13 +51,20 @@ class CourseCommentsAdapter(
             viewHolder.removeButton?.visibility = View.GONE
         }
 
-        viewHolder.itemView.setOnClickListener {
-            if (viewHolder.commentContent?.maxLines == 3) {
-                viewHolder.commentContent?.maxLines = 100
+        viewHolder.itemView.post {
+            if (viewHolder.commentContent?.lineCount!! >= 3) {
+                viewHolder.itemView.isClickable = true
+                viewHolder.itemView.setOnClickListener {
+                    if (viewHolder.commentContent?.maxLines == 3) {
+                        viewHolder.commentContent?.maxLines = 100
+                    } else {
+                        viewHolder.commentContent?.maxLines = 3
+                    }
+                    notifyDataSetChanged()
+                }
             } else {
-                viewHolder.commentContent?.maxLines = 3
+                viewHolder.itemView.isClickable = false
             }
-            notifyDataSetChanged()
         }
     }
 

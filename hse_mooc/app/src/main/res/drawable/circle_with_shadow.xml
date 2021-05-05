@@ -74,13 +74,4 @@
             <corners android:radius="3dp" />
         </shape>
     </item>
-
-<!--    <item>-->
-<!--        <shape-->
-<!--            android:shape="oval">-->
-<!--            <stroke android:width="2dp"-->
-<!--                android:color="@color/black"/>-->
-<!--        </shape>-->
-<!--    </item>-->
-
 </layer-list>

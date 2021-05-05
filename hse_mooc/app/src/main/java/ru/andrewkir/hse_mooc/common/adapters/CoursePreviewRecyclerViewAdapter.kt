@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.flows.courses.main.adapters
+package ru.andrewkir.hse_mooc.common.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -20,12 +20,11 @@ import ru.andrewkir.hse_mooc.network.responses.CoursesPreview.CoursePreview
 import java.text.DecimalFormat
 import java.util.*
 
-//TODO вынести в общий адаптер
-class MainCoursesAdapter(
+class CoursePreviewRecyclerViewAdapter(
     private val context: Context,
     private val onCourseClick: ((CoursePreview) -> Unit)? = null
 ) :
-    RecyclerView.Adapter<MainCoursesAdapter.CourseViewHolder>() {
+    RecyclerView.Adapter<CoursePreviewRecyclerViewAdapter.CourseViewHolder>() {
 
     var data: List<CoursePreview> = listOf()
         set(value) {

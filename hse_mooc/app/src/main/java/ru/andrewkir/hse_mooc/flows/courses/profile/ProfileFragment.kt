@@ -10,19 +10,19 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.andrewkir.hse_mooc.common.BaseFragment
+import ru.andrewkir.hse_mooc.common.adapters.CoursePreviewRecyclerViewAdapter
 import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.databinding.FragmentProfileBinding
 import ru.andrewkir.hse_mooc.flows.course.CourseActivity
-import ru.andrewkir.hse_mooc.flows.courses.profile.adapters.ProfileCourseRecyclerAdapter
 import ru.andrewkir.hse_mooc.network.api.CoursesApi
 
 class ProfileFragment :
     BaseFragment<ProfileViewModel, ProfileRepository, FragmentProfileBinding>() {
 
-    private lateinit var recyclerFavoritesAdapter: ProfileCourseRecyclerAdapter
+    private lateinit var recyclerFavoritesAdapter: CoursePreviewRecyclerViewAdapter
     private lateinit var linearFavoritesLayoutManager: LinearLayoutManager
 
-    private lateinit var recyclerViewedAdapter: ProfileCourseRecyclerAdapter
+    private lateinit var recyclerViewedAdapter: CoursePreviewRecyclerViewAdapter
     private lateinit var linearViewedLayoutManager: LinearLayoutManager
 
 
@@ -60,7 +60,7 @@ class ProfileFragment :
     }
 
     private fun setupRecyclerViews() {
-        recyclerFavoritesAdapter = ProfileCourseRecyclerAdapter(requireContext()) {
+        recyclerFavoritesAdapter = CoursePreviewRecyclerViewAdapter(requireContext()) {
             val intent = Intent(requireContext(), CourseActivity::class.java)
             intent.putExtra("COURSE_ID", it.id)
             startActivity(intent)
@@ -72,7 +72,7 @@ class ProfileFragment :
             adapter = recyclerFavoritesAdapter
         }
 
-        recyclerViewedAdapter = ProfileCourseRecyclerAdapter(requireContext()) {
+        recyclerViewedAdapter = CoursePreviewRecyclerViewAdapter(requireContext()) {
             val intent = Intent(requireContext(), CourseActivity::class.java)
             intent.putExtra("COURSE_ID", it.id)
             startActivity(intent)

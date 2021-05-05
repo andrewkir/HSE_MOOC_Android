@@ -11,10 +11,10 @@ import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 
 abstract class BaseViewModel(
     private val repository: BaseRepository
-): ViewModel() {
+) : ViewModel() {
 
     suspend fun logoutUser(api: AuthApi): ApiResponse<ResponseBody> {
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             repository.userLogout(api)
         }
     }
@@ -23,4 +23,9 @@ abstract class BaseViewModel(
 
     val loading: LiveData<Boolean>
         get() = mutableLoading
+
+
+    val errorResponse: SingleLiveEvent<ApiResponse.OnErrorResponse> by lazy {
+        SingleLiveEvent<ApiResponse.OnErrorResponse>()
+    }
 }
