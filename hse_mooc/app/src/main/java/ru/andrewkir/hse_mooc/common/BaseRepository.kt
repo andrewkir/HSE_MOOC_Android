@@ -8,6 +8,7 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.HttpException
 import ru.andrewkir.hse_mooc.network.api.AuthApi
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
+import java.net.SocketTimeoutException
 
 abstract class BaseRepository {
 
@@ -21,6 +22,9 @@ abstract class BaseRepository {
                 when (ex) {
                     is HttpException -> {
                         ApiResponse.OnErrorResponse(false, ex.code(), ex.response()?.errorBody())
+                    }
+                    is SocketTimeoutException -> {
+                        ApiResponse.OnErrorResponse(false, null, null)
                     }
                     is JsonSyntaxException -> {
                         ApiResponse.OnErrorResponse(false, null, null)

@@ -9,7 +9,7 @@
         android:id="@+id/main"
         android:name="ru.andrewkir.hse_mooc.flows.courses.main.CoursesMainFragment"
         android:label="fragment_courses"
-        tools:layout="@layout/fragment_courses" />
+        tools:layout="@layout/fragment_courses_main" />
     <save_state_fragment
         android:id="@+id/search"
         android:name="ru.andrewkir.hse_mooc.flows.courses.search.CoursesSearchFragment"

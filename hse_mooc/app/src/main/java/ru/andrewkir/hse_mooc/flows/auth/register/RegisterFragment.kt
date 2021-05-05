@@ -154,6 +154,7 @@ class RegisterFragment :
                 is ApiResponse.OnSuccessResponse -> {
                     userPrefsManager.accessToken = it.value.access_token
                     userPrefsManager.refreshToken = it.value.refresh_token
+
                     userPrefsManager.username = it.value.user.username
                     userPrefsManager.email = it.value.user.email
 

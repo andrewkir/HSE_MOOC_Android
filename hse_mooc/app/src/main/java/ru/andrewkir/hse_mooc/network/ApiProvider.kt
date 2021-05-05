@@ -8,6 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.andrewkir.hse_mooc.BuildConfig
 import ru.andrewkir.hse_mooc.network.api.TokensApi
 import ru.andrewkir.hse_mooc.repository.UserPrefsManager
+import java.util.concurrent.TimeUnit
 
 class ApiProvider {
     companion object {
@@ -44,6 +45,9 @@ class ApiProvider {
         refreshToken: String? = null
     ): OkHttpClient {
         return OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
             .addInterceptor { chain ->
                 chain.proceed(
                     chain.request().newBuilder().also {

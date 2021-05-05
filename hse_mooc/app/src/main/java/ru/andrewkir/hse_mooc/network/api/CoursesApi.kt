@@ -19,56 +19,56 @@ interface CoursesApi : BaseApi {
         @Query("categories") categories: String = ""
     ): CoursesPreviewResponse
 
-    @GET("/courses/{id}")
+    @GET("courses/{id}")
     suspend fun getCourse(
         @Path(value = "id", encoded = true) id: String
     ): CourseResponse
 
-    @GET("/users/favourite")
+    @GET("users/favourite")
     suspend fun getFavorites(): FavoriteCoursesResponse
 
-    @POST("/users/favourite")
+    @POST("users/favourite")
     suspend fun addToFavourites(
         @Query("id") courseId: String
     ): ResponseBody
 
-    @DELETE("/users/favourite")
+    @DELETE("users/favourite")
     suspend fun deleteFromFavourites(
         @Query("id") courseId: String
     ): ResponseBody
 
-    @GET("/users/viewed")
+    @GET("users/viewed")
     suspend fun getViewed(): ViewedCoursesResponse
 
-    @POST("/users/viewed")
+    @POST("users/viewed")
     suspend fun addToViewed(
         @Query("id") courseId: String
     ): ResponseBody
 
-    @DELETE("/users/viewed")
+    @DELETE("users/viewed")
     suspend fun deleteFromViewed(
         @Query("id") courseId: String
     ): ResponseBody
 
-    @GET("/reviews")
+    @GET("reviews")
     suspend fun getReviews(
         @Query("id") courseId: String
     ): ReviewsResponse
 
-    @POST("/reviews")
+    @POST("reviews")
     suspend fun postReview(
         @Query("id") courseId: String,
         @Body body: ReviewRequest
     ): ResponseBody
 
-    @DELETE("/reviews")
+    @DELETE("reviews")
     suspend fun deleteReview(
         @Query("reviewId") reviewId: String
     ): ResponseBody
 
-    @POST("/auth/auth-test")
-    suspend fun testAuth(): ResponseBody
-
     @GET("categories")
     suspend fun getCategories(): CategoriesResponse
+
+    @GET
+    suspend fun getTrending(@Url url: String): CoursesPreviewResponse
 }

@@ -87,7 +87,6 @@ class ProfileFragment :
 
     private fun setupExpandButtons() {
         bind.expandFavorites.setOnClickListener {
-            //TODO fix animation with loading
             if (bind.expandFavorites.rotation == 0f) {
                 viewModel.getFavorites()
 

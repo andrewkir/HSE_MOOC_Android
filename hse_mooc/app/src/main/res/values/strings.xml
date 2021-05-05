@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">hse_mooc</string>
+    <string name="app_name">MOOC</string>
 
     <string name="check_internet">Проверьте интеренет соединение</string>
     <string name="server_error">Ошибка на стороне сервера</string>
