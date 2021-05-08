@@ -15,15 +15,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.flows.courses.main.model.TrendingButton
+import ru.andrewkir.hse_mooc.network.responses.Compilations.CompilationsResponseItem
 
 
 class TrendingCoursesButtonAdapter(
     private val context: Context,
-    private val onButtonClick: ((TrendingButton) -> Unit)? = null
+    private val onButtonClick: ((CompilationsResponseItem) -> Unit)? = null
 ) :
     RecyclerView.Adapter<TrendingCoursesButtonAdapter.CourseViewHolder>() {
 
-    var data: List<TrendingButton> = listOf()
+    var data: List<CompilationsResponseItem> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -38,13 +39,14 @@ class TrendingCoursesButtonAdapter(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(viewHolder: CourseViewHolder, position: Int) {
-        viewHolder.name?.text = data[position].name
+        viewHolder.name?.text = data[position].name.ru
 
         Glide.with(context)
             .load(data[position].icon)
 //            .apply(RequestOptions().override(350.px, 120.px))
 //            .transform(CenterCrop(), GranularRoundedCorners(25f, 25f, 0f, 0f))
 //            .placeholder(R.drawable.circle_with_shadow)
+            .circleCrop()
             .into(viewHolder.button!!)
 
         viewHolder.button?.setOnClickListener { onButtonClick?.invoke(data[position]) }

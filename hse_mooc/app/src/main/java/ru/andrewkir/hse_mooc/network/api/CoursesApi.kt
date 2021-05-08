@@ -4,6 +4,7 @@ import okhttp3.ResponseBody
 import retrofit2.http.*
 import ru.andrewkir.hse_mooc.network.requests.ReviewRequest
 import ru.andrewkir.hse_mooc.network.responses.Categories.CategoriesResponse
+import ru.andrewkir.hse_mooc.network.responses.Compilations.CompilationsResponse
 import ru.andrewkir.hse_mooc.network.responses.Course.CourseResponse
 import ru.andrewkir.hse_mooc.network.responses.CoursesPreview.CoursesPreviewResponse
 import ru.andrewkir.hse_mooc.network.responses.FavoriteCoursesResponse
@@ -68,6 +69,12 @@ interface CoursesApi : BaseApi {
 
     @GET("categories")
     suspend fun getCategories(): CategoriesResponse
+
+    @GET("courses/main")
+    suspend fun getMainCourses(): CoursesPreviewResponse
+
+    @GET("/compilations/")
+    suspend fun getCompilations(): CompilationsResponse
 
     @GET
     suspend fun getTrending(@Url url: String): CoursesPreviewResponse

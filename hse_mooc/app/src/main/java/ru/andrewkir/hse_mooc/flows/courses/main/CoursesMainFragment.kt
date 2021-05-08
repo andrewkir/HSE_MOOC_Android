@@ -52,16 +52,20 @@ class CoursesMainFragment :
         subscribeToCourses()
         subscribeToLoading()
         subscribeToError()
+        subscribeToCompilations()
 
-        fillData()
+        if(viewModel.compilations.value.isNullOrEmpty() || viewModel.trendingCourses.value.isNullOrEmpty()){
+            bind.mainSwipeRefresh.isRefreshing = true
+            viewModel.init()
+        }
     }
 
     private fun setupTrendingRecycler() {
         trendingButtonsAdapter = TrendingCoursesButtonAdapter(requireContext()) {
-            if (bind.featuredCoursesTextView.text != it.name) {
+            if (bind.featuredCoursesTextView.text != it.name.ru) {
                 bind.mainCoursesRecycler.visibility = View.GONE
                 viewModel.getTrending(it.link)
-                bind.featuredCoursesTextView.text = it.name
+                bind.featuredCoursesTextView.text = it.name.ru
             }
         }
         horizontalLinearLayoutManager =
@@ -92,26 +96,10 @@ class CoursesMainFragment :
 
     private fun setupRefresh() {
         bind.mainSwipeRefresh.setOnRefreshListener {
-            //TODO снова получаем рекомендуемые курсы
-            coursesAdapter.data = ArrayList()
+            viewModel.getMainCourses()
             bind.featuredCoursesTextView.text = getString(R.string.profile_featured_courses_text)
             bind.mainSwipeRefresh.isRefreshing = false
         }
-    }
-
-    private fun fillData() {
-        val data = ArrayList<TrendingButton>()
-        for (i in 1..10) {
-            data.add(
-                TrendingButton(
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Kotlin_Icon.svg/768px-Kotlin_Icon.svg.png",
-                    "Button $i",
-                    "https://api.mooc.ij.je/courses/?pageNumber=$i&pageSize=10"
-                )
-            )
-        }
-        trendingButtonsAdapter.data = data
-        bind.trendindCoursesButtonsRecycler.visibility = View.VISIBLE
     }
 
     private fun subscribeToCourses() {
@@ -132,8 +120,15 @@ class CoursesMainFragment :
     private fun subscribeToError(){
         viewModel.errorResponse.observe(viewLifecycleOwner, Observer {
             handleApiError(it){
-                //TODO viewModel.init()
+                viewModel.init()
             }
+        })
+    }
+
+    private fun subscribeToCompilations(){
+        viewModel.compilations.observe(viewLifecycleOwner, Observer {
+            trendingButtonsAdapter.data = it
+            bind.trendindCoursesButtonsRecycler.visibility = View.VISIBLE
         })
     }
 }

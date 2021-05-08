@@ -11,4 +11,12 @@ class CoursesMainRepository(
     suspend fun getTrendingCourses(url: String) = protectedApiCall{
         coursesApi.getTrending(url)
     }
+
+    suspend fun getCoursesMain() = protectedApiCall {
+        coursesApi.getMainCourses()
+    }
+
+    suspend fun getCompilations() = protectedApiCall {
+        coursesApi.getCompilations()
+    }
 }
