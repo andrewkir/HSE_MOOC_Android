@@ -32,19 +32,19 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView20"
+                android:id="@+id/mainTitleTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Добрый день, Андрей!"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+                app:layout_constraintTop_toBottomOf="@+id/textView19"
+                tools:text="Добрый день, Андрей!" />
 
             <TextView
                 android:id="@+id/textView21"
@@ -54,10 +54,10 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
                 android:fontFamily="@font/roboto_light"
-                android:text="Давайте посмотрим, что мы можем найти для вас сегодня..."
+                android:text="@string/courses_main_second_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView20" />
+                app:layout_constraintTop_toBottomOf="@+id/mainTitleTextView" />
 
             <TextView
                 android:id="@+id/textView22"
@@ -67,7 +67,7 @@
                 android:layout_marginTop="24dp"
                 android:animateLayoutChanges="true"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Популярные курсы"
+                android:text="@string/courses_main_compilations"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +80,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Рекомендуемые курсы"
+                android:text="@string/courses_main_featured"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"

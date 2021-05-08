@@ -10,7 +10,7 @@ import ru.andrewkir.hse_mooc.network.responses.ApiResponse
 import ru.andrewkir.hse_mooc.network.responses.Course.CourseResponse
 import ru.andrewkir.hse_mooc.network.responses.Reviews.Review
 
-public class CourseViewModel(
+class CourseViewModel(
     private val courseRepository: CourseRepository
 ) : BaseViewModel(courseRepository) {
 

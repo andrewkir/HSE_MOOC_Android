@@ -96,7 +96,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barLayout">
+        app:layout_constraintTop_toBottomOf="@+id/barLayout"
+        tools:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchCoursesRecyclerView"
@@ -107,5 +108,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <ImageView
+        android:id="@+id/cantFindImage"
+        android:layout_width="0dp"
+        android:layout_height="253dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cantFindText"
+        app:layout_constraintVertical_bias="0.16000003"
+        app:srcCompat="@drawable/search" />
+
+    <TextView
+        android:id="@+id/cantFindText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="@string/courses_search_text_placeholder"
+        android:textSize="16sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/cantFindImage"
+        app:layout_constraintStart_toStartOf="@+id/cantFindImage"
+        app:layout_constraintTop_toBottomOf="@+id/barLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

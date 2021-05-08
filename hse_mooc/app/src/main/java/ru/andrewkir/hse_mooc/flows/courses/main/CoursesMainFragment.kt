@@ -1,5 +1,6 @@
 package ru.andrewkir.hse_mooc.flows.courses.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +15,6 @@ import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursesMainBinding
 import ru.andrewkir.hse_mooc.flows.course.CourseActivity
 import ru.andrewkir.hse_mooc.flows.courses.main.adapters.TrendingCoursesButtonAdapter
-import ru.andrewkir.hse_mooc.flows.courses.main.model.TrendingButton
 import ru.andrewkir.hse_mooc.network.api.CoursesApi
 
 class CoursesMainFragment :
@@ -43,9 +43,29 @@ class CoursesMainFragment :
         container: ViewGroup?
     ): FragmentCoursesMainBinding = FragmentCoursesMainBinding.inflate(inflater, container, false)
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("MAIN_TRENDING_TITLE", featuredCoursesTitle)
+    }
+
+    private var featuredCoursesTitle = "Рекомендуемые курсы"
+
+    private fun restoreSavedState(savedInstanceState: Bundle?) {
+        savedInstanceState?.let {
+            bind.featuredCoursesTextView.text = savedInstanceState.getString(
+                "MAIN_TRENDING_TITLE",
+                "Рекомендуемые курсы"
+            )
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        restoreSavedState(savedInstanceState)
+        bind.mainSwipeRefresh.isRefreshing = true
+
+        setupContentText()
         setupTrendingRecycler()
         setupCoursesRecycler()
         setupRefresh()
@@ -54,18 +74,23 @@ class CoursesMainFragment :
         subscribeToError()
         subscribeToCompilations()
 
-        if(viewModel.compilations.value.isNullOrEmpty() || viewModel.trendingCourses.value.isNullOrEmpty()){
-            bind.mainSwipeRefresh.isRefreshing = true
+        if (viewModel.compilations.value.isNullOrEmpty() || viewModel.trendingCourses.value.isNullOrEmpty()) {
             viewModel.init()
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupContentText() {
+        bind.mainTitleTextView.text = "Добрый день, ${userPrefsManager.username}!"
     }
 
     private fun setupTrendingRecycler() {
         trendingButtonsAdapter = TrendingCoursesButtonAdapter(requireContext()) {
             if (bind.featuredCoursesTextView.text != it.name.ru) {
                 bind.mainCoursesRecycler.visibility = View.GONE
-                viewModel.getTrending(it.link)
+                viewModel.obtainTrendingCourses(it.link)
                 bind.featuredCoursesTextView.text = it.name.ru
+                featuredCoursesTitle = it.name.ru
             }
         }
         horizontalLinearLayoutManager =
@@ -96,15 +121,15 @@ class CoursesMainFragment :
 
     private fun setupRefresh() {
         bind.mainSwipeRefresh.setOnRefreshListener {
-            viewModel.getMainCourses()
+            bind.mainCoursesRecycler.visibility = View.GONE
+            viewModel.obtainMainCourses()
             bind.featuredCoursesTextView.text = getString(R.string.profile_featured_courses_text)
-            bind.mainSwipeRefresh.isRefreshing = false
         }
     }
 
     private fun subscribeToCourses() {
         viewModel.trendingCourses.observe(viewLifecycleOwner, Observer {
-            if(it.isNotEmpty()) {
+            if (it.isNotEmpty()) {
                 coursesAdapter.data = it
                 bind.mainCoursesRecycler.visibility = View.VISIBLE
             }
@@ -117,15 +142,15 @@ class CoursesMainFragment :
         })
     }
 
-    private fun subscribeToError(){
+    private fun subscribeToError() {
         viewModel.errorResponse.observe(viewLifecycleOwner, Observer {
-            handleApiError(it){
+            handleApiError(it) {
                 viewModel.init()
             }
         })
     }
 
-    private fun subscribeToCompilations(){
+    private fun subscribeToCompilations() {
         viewModel.compilations.observe(viewLifecycleOwner, Observer {
             trendingButtonsAdapter.data = it
             bind.trendindCoursesButtonsRecycler.visibility = View.VISIBLE

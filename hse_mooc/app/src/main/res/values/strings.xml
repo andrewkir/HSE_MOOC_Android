@@ -39,12 +39,20 @@
     <string name="course_page_internal_rating">Внутренний рейтинг</string>
     <string name="course_page_description">Описание:</string>
     <string name="course_page_button">Перейти на страницу курса</string>
+
     <string name="bottom_menu_search">Поиск</string>
     <string name="bottom_menu_main">Главная</string>
     <string name="bottom_menu_profile">Профиль</string>
+
     <string name="error_try_again">Попробуйте ещё раз</string>
     <string name="error_retry_signin">Необходимо повторить вход</string>
     <string name="error_server_error">Ошибка на стороне сервера</string>
     <string name="error_retry_text">Повторить</string>
+
     <string name="profile_featured_courses_text">Рекомендуемые курсы</string>
+
+    <string name="courses_main_second_title">Давайте посмотрим, что мы можем найти для вас сегодня…</string>
+    <string name="courses_main_featured">Рекомендуемые курсы</string>
+    <string name="courses_main_compilations">Популярные курсы</string>
+    <string name="courses_search_text_placeholder">Не удалось найти курсы по данному запросу</string>
 </resources>

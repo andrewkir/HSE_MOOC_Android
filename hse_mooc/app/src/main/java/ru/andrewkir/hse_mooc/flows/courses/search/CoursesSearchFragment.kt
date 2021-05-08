@@ -69,6 +69,17 @@ class CoursesSearchFragment :
 
     private fun subscribeToCourses() {
         viewModel.coursesLiveData.observe(viewLifecycleOwner, Observer {
+            if(it.isEmpty()){
+                bind.cantFindImage.visibility = View.VISIBLE
+                bind.cantFindText.visibility = View.VISIBLE
+
+                bind.searchCoursesRecyclerView.visibility = View.GONE
+            } else {
+                bind.cantFindImage.visibility = View.GONE
+                bind.cantFindText.visibility = View.GONE
+
+                bind.searchCoursesRecyclerView.visibility = View.VISIBLE
+            }
             recyclerAdapter.data = it
             isLoading = false
         })
