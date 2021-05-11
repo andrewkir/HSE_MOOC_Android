@@ -7,7 +7,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.andrewkir.hse_mooc.BuildConfig
 import ru.andrewkir.hse_mooc.network.api.TokensApi
-import ru.andrewkir.hse_mooc.repository.UserPrefsManager
 import java.util.concurrent.TimeUnit
 
 class ApiProvider {

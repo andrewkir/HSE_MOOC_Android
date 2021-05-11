@@ -1,9 +1,7 @@
-package ru.andrewkir.hse_mooc.repository
+package ru.andrewkir.hse_mooc.common
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import ru.andrewkir.hse_mooc.R
 
 
@@ -24,6 +22,7 @@ class UserPrefsManager(
         private const val ACCESS_TOKEN = "access_token"
         private const val REFRESH_TOKEN = "refresh_token"
         private const val USERNAME = "username"
+        private const val EMAIL = "email"
     }
 
     fun clearUser() {
@@ -57,10 +56,10 @@ class UserPrefsManager(
         }
 
     var email: String?
-        get() = prefs.getString(USERNAME, null)
+        get() = prefs.getString(EMAIL, null)
         set(value) {
             val editor = prefs.edit()
-            editor.putString(USERNAME, value)
+            editor.putString(EMAIL, value)
             editor.apply()
         }
 }

@@ -40,7 +40,7 @@
                 android:id="@+id/imageView3"
                 android:layout_width="83dp"
                 android:layout_height="73dp"
-                android:layout_marginStart="60dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="40dp"
                 android:src="@drawable/ic_user"
                 app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,7 @@
                 android:id="@+id/textView17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/roboto_light"
                 android:text="Почта:"
@@ -67,7 +67,8 @@
                 android:fontFamily="@font/roboto"
                 android:text="test@test"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView17"
                 app:layout_constraintStart_toEndOf="@+id/textView17"
                 app:layout_constraintTop_toTopOf="@+id/textView17" />
 
@@ -91,7 +92,8 @@
                 android:fontFamily="@font/roboto"
                 android:text="Test"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView15"
                 app:layout_constraintStart_toEndOf="@+id/textView17"
                 app:layout_constraintTop_toTopOf="@+id/textView15" />
 

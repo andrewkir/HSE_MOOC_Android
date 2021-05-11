@@ -9,7 +9,7 @@ import okhttp3.Route
 import ru.andrewkir.hse_mooc.common.BaseRepository
 import ru.andrewkir.hse_mooc.network.api.TokensApi
 import ru.andrewkir.hse_mooc.network.responses.ApiResponse
-import ru.andrewkir.hse_mooc.repository.UserPrefsManager
+import ru.andrewkir.hse_mooc.common.UserPrefsManager
 
 class JWTAuthenticator(
     context: Context,

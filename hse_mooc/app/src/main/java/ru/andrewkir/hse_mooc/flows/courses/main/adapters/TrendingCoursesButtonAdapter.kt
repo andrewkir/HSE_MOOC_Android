@@ -1,20 +1,15 @@
 package ru.andrewkir.hse_mooc.flows.courses.main.adapters
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.andrewkir.hse_mooc.R
-import ru.andrewkir.hse_mooc.flows.courses.main.model.TrendingButton
 import ru.andrewkir.hse_mooc.network.responses.Compilations.CompilationsResponseItem
 
 
@@ -43,9 +38,6 @@ class TrendingCoursesButtonAdapter(
 
         Glide.with(context)
             .load(data[position].icon)
-//            .apply(RequestOptions().override(350.px, 120.px))
-//            .transform(CenterCrop(), GranularRoundedCorners(25f, 25f, 0f, 0f))
-//            .placeholder(R.drawable.circle_with_shadow)
             .circleCrop()
             .into(viewHolder.button!!)
 
