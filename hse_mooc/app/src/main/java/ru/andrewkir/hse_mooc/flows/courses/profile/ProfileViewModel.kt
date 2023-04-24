@@ -4,10 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.andrewkir.hse_mooc.common.BaseViewModel
-import ru.andrewkir.hse_mooc.common.SingleLiveEvent
-import ru.andrewkir.hse_mooc.network.responses.ApiResponse
-import ru.andrewkir.hse_mooc.network.responses.CoursesPreview.CoursePreview
-import ru.andrewkir.hse_mooc.network.responses.FavoriteCoursesResponse
+import ru.andrewkir.hse_mooc.domain.model.ApiResponse
+import ru.andrewkir.hse_mooc.data.network.responses.CoursesPreview.CoursePreview
+import ru.andrewkir.hse_mooc.data.repositories.ProfileRepository
 
 class ProfileViewModel(
     private val profileRepository: ProfileRepository

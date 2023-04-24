@@ -12,7 +12,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.flows.auth.login.LoginFragment
-import ru.andrewkir.hse_mooc.network.responses.ApiResponse
+import ru.andrewkir.hse_mooc.domain.model.ApiResponse
 
 
 fun <activity : Activity> Activity.startActivityClearBackStack(activityClass: Class<activity>) {

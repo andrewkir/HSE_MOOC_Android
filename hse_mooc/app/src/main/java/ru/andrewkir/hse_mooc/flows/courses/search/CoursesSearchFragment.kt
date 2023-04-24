@@ -19,12 +19,11 @@ import ru.andrewkir.hse_mooc.databinding.FragmentCoursesSearchBinding
 import ru.andrewkir.hse_mooc.flows.course.CourseActivity
 import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchCoursesRecyclerAdapter
 import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchScrollListener
-import ru.andrewkir.hse_mooc.network.api.CoursesApi
-import ru.andrewkir.hse_mooc.network.responses.ApiResponse
+import ru.andrewkir.hse_mooc.domain.model.ApiResponse
 
 
 class CoursesSearchFragment :
-    BaseFragment<CoursesSearchViewModel, CoursesSearchRepository, FragmentCoursesSearchBinding>() {
+    BaseFragment<CoursesSearchViewModel, ru.andrewkir.hse_mooc.data.repositories.CoursesSearchRepository, FragmentCoursesSearchBinding>() {
 
     private lateinit var recyclerAdapter: SearchCoursesRecyclerAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -37,10 +36,10 @@ class CoursesSearchFragment :
 
     override fun provideViewModelClass() = CoursesSearchViewModel::class.java
 
-    override fun provideRepository(): CoursesSearchRepository {
-        return CoursesSearchRepository(
+    override fun provideRepository(): ru.andrewkir.hse_mooc.data.repositories.CoursesSearchRepository {
+        return ru.andrewkir.hse_mooc.data.repositories.CoursesSearchRepository(
             apiProvider.provideApi(
-                CoursesApi::class.java,
+                ru.andrewkir.hse_mooc.data.network.api.CoursesApi::class.java,
                 requireContext(),
                 userPrefsManager.accessToken
             )

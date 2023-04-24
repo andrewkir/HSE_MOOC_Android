@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ru.andrewkir.hse_mooc.flows.auth.AuthActivity
 import ru.andrewkir.hse_mooc.flows.courses.CoursesActivity
-import ru.andrewkir.hse_mooc.common.UserPrefsManager
+import ru.andrewkir.hse_mooc.data.common.UserPrefsManager
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

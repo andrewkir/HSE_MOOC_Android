@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import ru.andrewkir.hse_mooc.common.BaseViewModel
-import ru.andrewkir.hse_mooc.flows.auth.AuthRepository
-import ru.andrewkir.hse_mooc.network.responses.ApiResponse
-import ru.andrewkir.hse_mooc.network.responses.Login.LoginResponse
+import ru.andrewkir.hse_mooc.data.repositories.AuthRepository
+import ru.andrewkir.hse_mooc.domain.model.ApiResponse
+import ru.andrewkir.hse_mooc.data.network.responses.Login.LoginResponse
 
 class RegisterViewModel(
     private val repo: AuthRepository

@@ -4,11 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.andrewkir.hse_mooc.common.BaseViewModel
-import ru.andrewkir.hse_mooc.common.SingleLiveEvent
-import ru.andrewkir.hse_mooc.network.requests.ReviewRequest
-import ru.andrewkir.hse_mooc.network.responses.ApiResponse
-import ru.andrewkir.hse_mooc.network.responses.Course.CourseResponse
-import ru.andrewkir.hse_mooc.network.responses.Reviews.Review
+import ru.andrewkir.hse_mooc.data.network.requests.ReviewRequest
+import ru.andrewkir.hse_mooc.domain.model.ApiResponse
+import ru.andrewkir.hse_mooc.data.network.responses.Course.CourseResponse
+import ru.andrewkir.hse_mooc.data.network.responses.Reviews.Review
+import ru.andrewkir.hse_mooc.data.repositories.CourseRepository
 
 class CourseViewModel(
     private val courseRepository: CourseRepository

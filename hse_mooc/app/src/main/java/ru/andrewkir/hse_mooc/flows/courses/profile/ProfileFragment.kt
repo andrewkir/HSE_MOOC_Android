@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.adapters.CoursePreviewRecyclerViewAdapter
 import ru.andrewkir.hse_mooc.common.handleApiError
+import ru.andrewkir.hse_mooc.data.network.api.CoursesApi
+import ru.andrewkir.hse_mooc.data.repositories.ProfileRepository
 import ru.andrewkir.hse_mooc.databinding.FragmentProfileBinding
 import ru.andrewkir.hse_mooc.flows.course.CourseActivity
-import ru.andrewkir.hse_mooc.network.api.CoursesApi
 
 class ProfileFragment :
     BaseFragment<ProfileViewModel, ProfileRepository, FragmentProfileBinding>() {

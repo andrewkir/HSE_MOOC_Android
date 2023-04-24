@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
-import ru.andrewkir.hse_mooc.network.api.AuthApi
-import ru.andrewkir.hse_mooc.network.responses.ApiResponse
+import ru.andrewkir.hse_mooc.data.network.api.AuthApi
+import ru.andrewkir.hse_mooc.data.repositories.BaseRepository
+import ru.andrewkir.hse_mooc.domain.model.ApiResponse
 
 abstract class BaseViewModel(
     private val repository: BaseRepository

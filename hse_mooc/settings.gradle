@@ -1,2 +1,5 @@
 include ':app'
 rootProject.name = "hse_mooc"
+include ':domain'
+include ':data'
+include ':domain'

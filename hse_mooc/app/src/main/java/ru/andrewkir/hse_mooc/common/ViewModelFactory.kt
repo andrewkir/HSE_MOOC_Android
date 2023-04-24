@@ -2,16 +2,17 @@ package ru.andrewkir.hse_mooc.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import ru.andrewkir.hse_mooc.data.repositories.BaseRepository
 import ru.andrewkir.hse_mooc.flows.auth.login.LoginViewModel
-import ru.andrewkir.hse_mooc.flows.auth.AuthRepository
+import ru.andrewkir.hse_mooc.data.repositories.AuthRepository
 import ru.andrewkir.hse_mooc.flows.auth.register.RegisterViewModel
-import ru.andrewkir.hse_mooc.flows.course.CourseRepository
+import ru.andrewkir.hse_mooc.data.repositories.CourseRepository
 import ru.andrewkir.hse_mooc.flows.course.CourseViewModel
-import ru.andrewkir.hse_mooc.flows.courses.main.CoursesMainRepository
+import ru.andrewkir.hse_mooc.data.repositories.CoursesMainRepository
 import ru.andrewkir.hse_mooc.flows.courses.main.CoursesMainViewModel
-import ru.andrewkir.hse_mooc.flows.courses.profile.ProfileRepository
+import ru.andrewkir.hse_mooc.data.repositories.ProfileRepository
 import ru.andrewkir.hse_mooc.flows.courses.profile.ProfileViewModel
-import ru.andrewkir.hse_mooc.flows.courses.search.CoursesSearchRepository
+import ru.andrewkir.hse_mooc.data.repositories.CoursesSearchRepository
 import ru.andrewkir.hse_mooc.flows.courses.search.CoursesSearchViewModel
 
 class ViewModelFactory(

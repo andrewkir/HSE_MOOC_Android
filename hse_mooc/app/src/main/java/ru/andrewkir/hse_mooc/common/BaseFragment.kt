@@ -9,9 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import kotlinx.coroutines.launch
+import ru.andrewkir.hse_mooc.data.common.UserPrefsManager
 import ru.andrewkir.hse_mooc.flows.auth.AuthActivity
-import ru.andrewkir.hse_mooc.network.ApiProvider
-import ru.andrewkir.hse_mooc.network.api.AuthApi
+import ru.andrewkir.hse_mooc.data.network.ApiProvider
+import ru.andrewkir.hse_mooc.data.repositories.BaseRepository
 
 
 abstract class BaseFragment<viewModel : BaseViewModel, repo : BaseRepository, viewBinding : ViewBinding> :
@@ -39,7 +40,7 @@ abstract class BaseFragment<viewModel : BaseViewModel, repo : BaseRepository, vi
 
     fun userLogout() = lifecycleScope.launch {
         val refreshToken = userPrefsManager.refreshToken
-        val api = apiProvider.provideApi(AuthApi::class.java, requireContext(), null, refreshToken)
+        val api = apiProvider.provideApi(ru.andrewkir.hse_mooc.data.network.api.AuthApi::class.java, requireContext(), null, refreshToken)
 
         viewModel.logoutUser(api)
 

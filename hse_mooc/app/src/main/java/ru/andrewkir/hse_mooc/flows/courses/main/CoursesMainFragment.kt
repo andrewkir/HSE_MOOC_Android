@@ -12,10 +12,11 @@ import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.adapters.CoursePreviewRecyclerViewAdapter
 import ru.andrewkir.hse_mooc.common.handleApiError
+import ru.andrewkir.hse_mooc.data.network.api.CoursesApi
+import ru.andrewkir.hse_mooc.data.repositories.CoursesMainRepository
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursesMainBinding
 import ru.andrewkir.hse_mooc.flows.course.CourseActivity
 import ru.andrewkir.hse_mooc.flows.courses.main.adapters.TrendingCoursesButtonAdapter
-import ru.andrewkir.hse_mooc.network.api.CoursesApi
 
 class CoursesMainFragment :
     BaseFragment<CoursesMainViewModel, CoursesMainRepository, FragmentCoursesMainBinding>() {

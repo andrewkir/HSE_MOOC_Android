@@ -11,11 +11,11 @@ import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.common.startActivityClearBackStack
+import ru.andrewkir.hse_mooc.data.network.api.AuthApi
 import ru.andrewkir.hse_mooc.flows.courses.CoursesActivity
 import ru.andrewkir.hse_mooc.databinding.FragmentLoginBinding
-import ru.andrewkir.hse_mooc.flows.auth.AuthRepository
-import ru.andrewkir.hse_mooc.network.api.AuthApi
-import ru.andrewkir.hse_mooc.network.responses.ApiResponse
+import ru.andrewkir.hse_mooc.data.repositories.AuthRepository
+import ru.andrewkir.hse_mooc.domain.model.ApiResponse
 
 class LoginFragment : BaseFragment<LoginViewModel, AuthRepository, FragmentLoginBinding>() {
 
