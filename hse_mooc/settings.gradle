@@ -3,3 +3,9 @@ rootProject.name = "hse_mooc"
 include ':domain'
 include ':data'
 include ':domain'
+
+dependencyResolutionManagement{
+    repositories{
+        maven { url "https://jitpack.io" }
+    }
+}

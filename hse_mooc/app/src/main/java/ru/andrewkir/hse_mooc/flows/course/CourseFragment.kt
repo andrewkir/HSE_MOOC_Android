@@ -1,5 +1,6 @@
 package ru.andrewkir.hse_mooc.flows.course
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
-import kotlinx.android.synthetic.main.fragment_course_page.*
 import per.wsj.library.AndRatingBar
 import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
@@ -109,6 +109,7 @@ class CourseFragment :
         })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateUi(course: CourseResponse) {
         course.let { it ->
             bind.courseName.text = it.course.courseName
@@ -159,7 +160,7 @@ class CourseFragment :
 
             bind.courseDescription.text = it.course.description
 
-            categoryHeaderText.text =
+            bind.categoryHeaderText.text =
                 if (it.course.categories.size > 1) "Категории" else "Категория"
 
             bind.categoriesChipGroup.removeAllViews()

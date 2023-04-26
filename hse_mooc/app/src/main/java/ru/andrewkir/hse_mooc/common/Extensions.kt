@@ -46,7 +46,7 @@ fun Fragment.handleApiError(
     val parsedError = try {
         if (error.body == null) ""
         else {
-            val jsonObj = JSONObject(error.body.string())
+            val jsonObj = JSONObject(error.body!!.string())
             jsonObj.getString("error")
         }
     } catch (ex: JSONException) {
