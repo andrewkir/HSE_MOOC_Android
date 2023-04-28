@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.data.network
+package ru.andrewkir.hse_mooc.domain.network
 
 import android.content.Context
 import kotlinx.coroutines.runBlocking
@@ -6,10 +6,10 @@ import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
-import ru.andrewkir.hse_mooc.data.common.UserPrefsManager
-import ru.andrewkir.hse_mooc.data.network.api.TokensApi
-import ru.andrewkir.hse_mooc.data.repositories.BaseRepository
+import ru.andrewkir.hse_mooc.domain.common.UserPrefsManager
 import ru.andrewkir.hse_mooc.domain.model.ApiResponse
+import ru.andrewkir.hse_mooc.domain.network.api.TokensApi
+import ru.andrewkir.hse_mooc.domain.repositories.BaseRepository
 
 class JWTAuthenticator(
     context: Context,
@@ -24,7 +24,7 @@ class JWTAuthenticator(
             when (val tokensResponse =
                 protectedApiCall { tokensApi.refreshAccessToken(refreshToken!!) }
             ) {
-                is ApiResponse.OnSuccessResponse -> {
+                is ApiResponse.OnSuccessResponse<*> -> {
                     prefsManager.accessToken = tokensResponse.value.access_token
 
                     prefsManager.refreshToken = tokensResponse.value.refresh_token

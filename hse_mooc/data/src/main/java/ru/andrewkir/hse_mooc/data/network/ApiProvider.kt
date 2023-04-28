@@ -1,12 +1,12 @@
-package ru.andrewkir.hse_mooc.data.network
+package ru.andrewkir.hse_mooc.domain.network
 
 import android.content.Context
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.andrewkir.hse_mooc.data.BuildConfig
-import ru.andrewkir.hse_mooc.data.network.api.TokensApi
+import ru.andrewkir.hse_mooc.domain.BuildConfig
+import ru.andrewkir.hse_mooc.domain.network.api.TokensApi
 import java.util.concurrent.TimeUnit
 
 class ApiProvider {
@@ -20,9 +20,10 @@ class ApiProvider {
         accessToken: String? = null,
         refreshToken: String? = null
     ): Api {
-        val authenticator = JWTAuthenticator(context, provideTokensApi())
+        val authenticator =
+            ru.andrewkir.hse_mooc.domain.network.JWTAuthenticator(context, provideTokensApi())
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(ru.andrewkir.hse_mooc.domain.network.ApiProvider.Companion.BASE_URL)
             .client(provideOkHTPPClient(authenticator, accessToken, refreshToken))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -31,7 +32,7 @@ class ApiProvider {
 
     private fun provideTokensApi(): TokensApi {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(ru.andrewkir.hse_mooc.domain.network.ApiProvider.Companion.BASE_URL)
             .client(provideOkHTPPClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -39,7 +40,7 @@ class ApiProvider {
     }
 
     private fun provideOkHTPPClient(
-        authenticator: JWTAuthenticator? = null,
+        authenticator: ru.andrewkir.hse_mooc.domain.network.JWTAuthenticator? = null,
         accessToken: String? = null,
         refreshToken: String? = null
     ): OkHttpClient {

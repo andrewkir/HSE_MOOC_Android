@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.data.network.api
+package ru.andrewkir.hse_mooc.domain.network.api
 
 import retrofit2.http.Header
 import retrofit2.http.POST
