@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import ru.andrewkir.hse_mooc.App
 import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
+import ru.andrewkir.hse_mooc.common.ViewModelFactory
 import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.common.startActivityClearBackStack
 import ru.andrewkir.hse_mooc.data.network.api.AuthApi
@@ -16,10 +19,17 @@ import ru.andrewkir.hse_mooc.data.repositories.AuthRepositoryImpl
 import ru.andrewkir.hse_mooc.databinding.FragmentLoginBinding
 import ru.andrewkir.hse_mooc.domain.model.ApiResponse
 import ru.andrewkir.hse_mooc.flows.courses.CoursesActivity
+import javax.inject.Inject
 
 class LoginFragment : BaseFragment<LoginViewModel, AuthRepositoryImpl, FragmentLoginBinding>() {
 
-    override fun provideViewModelClass(): Class<LoginViewModel> = LoginViewModel::class.java
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    override fun provideViewModel(): LoginViewModel {
+        (requireContext().applicationContext as App).appComponent.inject(this)
+        return ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
+    }
 
     override fun provideRepository(): AuthRepositoryImpl =
         AuthRepositoryImpl(

@@ -21,7 +21,7 @@ abstract class BaseFragment<viewModel : BaseViewModel, repo : BaseRepository, vi
     protected lateinit var bind: viewBinding
     protected lateinit var viewModel: viewModel
 
-    protected var apiProvider = ApiProvider()
+    protected val apiProvider = ApiProvider()
     protected lateinit var userPrefsManager: UserPrefsManager
 
     override fun onCreateView(
@@ -31,9 +31,7 @@ abstract class BaseFragment<viewModel : BaseViewModel, repo : BaseRepository, vi
     ): View? {
         bind = provideBinding(inflater, container)
         userPrefsManager = UserPrefsManager(requireContext())
-
-        val viewModelFactory = ViewModelFactory(provideRepository())
-        viewModel = ViewModelProvider(this, viewModelFactory).get(provideViewModelClass())
+        viewModel = provideViewModel()
 
         return bind.root
     }
@@ -49,7 +47,7 @@ abstract class BaseFragment<viewModel : BaseViewModel, repo : BaseRepository, vi
     }
 
 
-    abstract fun provideViewModelClass(): Class<viewModel>
+    abstract fun provideViewModel(): viewModel
 
     abstract fun provideRepository(): repo
 

@@ -8,9 +8,10 @@ import ru.andrewkir.hse_mooc.data.repositories.CoursesMainRepositoryImpl
 import ru.andrewkir.hse_mooc.domain.model.ApiResponse
 import ru.andrewkir.hse_mooc.domain.network.responses.CoursesPreview.CoursePreview
 import ru.andrewkir.hse_mooc.domain.responses.Compilations.CompilationsResponse
+import javax.inject.Inject
 
 
-class CoursesMainViewModel(
+class CoursesMainViewModel @Inject constructor(
     private val mainCoursesRepository: CoursesMainRepositoryImpl
 ) : BaseViewModel(mainCoursesRepository) {
 

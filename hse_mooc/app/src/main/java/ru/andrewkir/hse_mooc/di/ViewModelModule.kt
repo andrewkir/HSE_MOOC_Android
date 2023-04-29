@@ -21,30 +21,30 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
-    abstract fun viewModel(viewModel: ProfileViewModel): ViewModel
+    abstract fun profileViewModel(viewModel: ProfileViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(LoginViewModel::class)
-    abstract fun viewModel(viewModel: LoginViewModel): ViewModel
+    abstract fun loginViewModel(viewModel: LoginViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(RegisterViewModel::class)
-    abstract fun viewModel(viewModel: RegisterViewModel): ViewModel
+    abstract fun registerViewModel(viewModel: RegisterViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(CourseViewModel::class)
-    abstract fun viewModel(viewModel: CourseViewModel): ViewModel
+    abstract fun courseViewModel(viewModel: CourseViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(CoursesSearchViewModel::class)
-    abstract fun viewModel(viewModel: CoursesSearchViewModel): ViewModel
+    abstract fun coursesSearchViewModel(viewModel: CoursesSearchViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(CoursesMainViewModel::class)
-    abstract fun viewModel(viewModel: CoursesMainViewModel): ViewModel
+    abstract fun coursesMainViewModel(viewModel: CoursesMainViewModel): ViewModel
 }

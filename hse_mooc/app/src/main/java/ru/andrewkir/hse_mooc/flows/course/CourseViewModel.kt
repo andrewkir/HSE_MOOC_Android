@@ -9,8 +9,9 @@ import ru.andrewkir.hse_mooc.domain.model.ApiResponse
 import ru.andrewkir.hse_mooc.data.repositories.CourseRepositoryImpl
 import ru.andrewkir.hse_mooc.domain.network.responses.Course.CourseResponse
 import ru.andrewkir.hse_mooc.domain.network.responses.Reviews.Review
+import javax.inject.Inject
 
-class CourseViewModel(
+class CourseViewModel @Inject constructor(
     private val courseRepository: CourseRepositoryImpl
 ) : BaseViewModel(courseRepository) {
 

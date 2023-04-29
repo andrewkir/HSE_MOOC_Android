@@ -7,8 +7,9 @@ import ru.andrewkir.hse_mooc.common.BaseViewModel
 import ru.andrewkir.hse_mooc.data.repositories.ProfileRepositoryImpl
 import ru.andrewkir.hse_mooc.domain.model.ApiResponse
 import ru.andrewkir.hse_mooc.domain.network.responses.CoursesPreview.CoursePreview
+import javax.inject.Inject
 
-class ProfileViewModel(
+class ProfileViewModel @Inject constructor(
     private val profileRepository: ProfileRepositoryImpl
 ) : BaseViewModel(profileRepository) {
 
@@ -20,10 +21,10 @@ class ProfileViewModel(
         MutableLiveData<List<CoursePreview>>()
     }
 
-    fun getFavorites(){
+    fun getFavorites() {
         viewModelScope.launch {
             mutableLoading.value = true
-            when(val result = profileRepository.getFavoritesCourses()){
+            when (val result = profileRepository.getFavoritesCourses()) {
                 is ApiResponse.OnSuccessResponse -> {
                     favoritesCourses.value = result.value.favouriteCourses
                 }
@@ -35,10 +36,10 @@ class ProfileViewModel(
         }
     }
 
-    fun getViewed(){
+    fun getViewed() {
         viewModelScope.launch {
             mutableLoading.value = true
-            when(val result = profileRepository.getViewedCourses()){
+            when (val result = profileRepository.getViewedCourses()) {
                 is ApiResponse.OnSuccessResponse -> {
                     viewedCourses.value = result.value.viewedCourses
                 }

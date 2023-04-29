@@ -8,8 +8,9 @@ import ru.andrewkir.hse_mooc.common.BaseViewModel
 import ru.andrewkir.hse_mooc.data.repositories.AuthRepositoryImpl
 import ru.andrewkir.hse_mooc.domain.model.ApiResponse
 import ru.andrewkir.hse_mooc.domain.network.responses.Login.LoginResponse
+import javax.inject.Inject
 
-class LoginViewModel(
+class LoginViewModel @Inject constructor(
     private val repo: AuthRepositoryImpl
 ) : BaseViewModel(repo) {
 
