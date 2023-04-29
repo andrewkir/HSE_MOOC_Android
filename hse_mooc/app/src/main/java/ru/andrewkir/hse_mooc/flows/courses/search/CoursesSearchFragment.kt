@@ -15,15 +15,17 @@ import com.google.android.material.chip.ChipDrawable
 import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.handleApiError
+import ru.andrewkir.hse_mooc.data.repositories.CoursesSearchRepositoryImpl
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursesSearchBinding
 import ru.andrewkir.hse_mooc.flows.course.CourseActivity
 import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchCoursesRecyclerAdapter
 import ru.andrewkir.hse_mooc.flows.courses.search.adapters.SearchScrollListener
 import ru.andrewkir.hse_mooc.domain.model.ApiResponse
+import ru.andrewkir.hse_mooc.domain.network.api.CoursesApi
 
 
 class CoursesSearchFragment :
-    BaseFragment<CoursesSearchViewModel, ru.andrewkir.hse_mooc.data.repositories.CoursesSearchRepository, FragmentCoursesSearchBinding>() {
+    BaseFragment<CoursesSearchViewModel, CoursesSearchRepositoryImpl, FragmentCoursesSearchBinding>() {
 
     private lateinit var recyclerAdapter: SearchCoursesRecyclerAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -36,10 +38,10 @@ class CoursesSearchFragment :
 
     override fun provideViewModelClass() = CoursesSearchViewModel::class.java
 
-    override fun provideRepository(): ru.andrewkir.hse_mooc.data.repositories.CoursesSearchRepository {
-        return ru.andrewkir.hse_mooc.data.repositories.CoursesSearchRepository(
+    override fun provideRepository(): CoursesSearchRepositoryImpl {
+        return CoursesSearchRepositoryImpl(
             apiProvider.provideApi(
-                ru.andrewkir.hse_mooc.data.network.api.CoursesApi::class.java,
+                CoursesApi::class.java,
                 requireContext(),
                 userPrefsManager.accessToken
             )

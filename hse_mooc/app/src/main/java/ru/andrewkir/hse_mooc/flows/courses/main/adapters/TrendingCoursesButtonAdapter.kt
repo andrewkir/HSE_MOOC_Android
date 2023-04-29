@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.andrewkir.hse_mooc.R
-import ru.andrewkir.hse_mooc.data.network.responses.Compilations.CompilationsResponseItem
+import ru.andrewkir.hse_mooc.domain.responses.Compilations.CompilationsResponseItem
 
 
 class TrendingCoursesButtonAdapter(

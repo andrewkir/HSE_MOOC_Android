@@ -12,18 +12,18 @@ import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.common.startActivityClearBackStack
 import ru.andrewkir.hse_mooc.data.network.api.AuthApi
+import ru.andrewkir.hse_mooc.data.repositories.AuthRepositoryImpl
 import ru.andrewkir.hse_mooc.flows.courses.CoursesActivity
 import ru.andrewkir.hse_mooc.databinding.FragmentRegisterBinding
-import ru.andrewkir.hse_mooc.data.repositories.AuthRepository
 import ru.andrewkir.hse_mooc.domain.model.ApiResponse
 
 class RegisterFragment :
-    BaseFragment<RegisterViewModel, AuthRepository, FragmentRegisterBinding>() {
+    BaseFragment<RegisterViewModel, AuthRepositoryImpl, FragmentRegisterBinding>() {
 
     override fun provideViewModelClass(): Class<RegisterViewModel> = RegisterViewModel::class.java
 
-    override fun provideRepository(): AuthRepository =
-        AuthRepository(
+    override fun provideRepository(): AuthRepositoryImpl =
+        AuthRepositoryImpl(
             apiProvider.provideApi(
                 AuthApi::class.java,
                 requireContext()

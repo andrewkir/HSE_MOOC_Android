@@ -17,9 +17,10 @@ import com.bumptech.glide.request.RequestOptions
 import per.wsj.library.AndRatingBar
 import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.px
-import ru.andrewkir.hse_mooc.data.network.responses.CoursesPreview.CoursePreview
+import ru.andrewkir.hse_mooc.domain.network.responses.CoursesPreview.CoursePreview
 import java.text.DecimalFormat
 import java.util.*
+
 
 class SearchCoursesRecyclerAdapter(
     private val context: Context,

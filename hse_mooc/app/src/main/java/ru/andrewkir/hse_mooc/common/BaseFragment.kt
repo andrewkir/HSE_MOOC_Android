@@ -11,8 +11,8 @@ import androidx.viewbinding.ViewBinding
 import kotlinx.coroutines.launch
 import ru.andrewkir.hse_mooc.data.common.UserPrefsManager
 import ru.andrewkir.hse_mooc.flows.auth.AuthActivity
-import ru.andrewkir.hse_mooc.data.network.ApiProvider
 import ru.andrewkir.hse_mooc.data.repositories.BaseRepository
+import ru.andrewkir.hse_mooc.domain.network.ApiProvider
 
 
 abstract class BaseFragment<viewModel : BaseViewModel, repo : BaseRepository, viewBinding : ViewBinding> :

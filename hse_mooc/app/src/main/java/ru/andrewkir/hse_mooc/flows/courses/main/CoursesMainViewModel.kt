@@ -4,14 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.andrewkir.hse_mooc.common.BaseViewModel
+import ru.andrewkir.hse_mooc.data.repositories.CoursesMainRepositoryImpl
 import ru.andrewkir.hse_mooc.domain.model.ApiResponse
-import ru.andrewkir.hse_mooc.data.network.responses.Compilations.CompilationsResponse
-import ru.andrewkir.hse_mooc.data.network.responses.CoursesPreview.CoursePreview
-import ru.andrewkir.hse_mooc.data.repositories.CoursesMainRepository
+import ru.andrewkir.hse_mooc.domain.network.responses.CoursesPreview.CoursePreview
+import ru.andrewkir.hse_mooc.domain.responses.Compilations.CompilationsResponse
 
 
 class CoursesMainViewModel(
-    private val mainCoursesRepository: CoursesMainRepository
+    private val mainCoursesRepository: CoursesMainRepositoryImpl
 ) : BaseViewModel(mainCoursesRepository) {
 
     val trendingCourses: MutableLiveData<List<CoursePreview>> by lazy {

@@ -17,20 +17,20 @@ import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.common.openLink
-import ru.andrewkir.hse_mooc.data.network.api.CoursesApi
+import ru.andrewkir.hse_mooc.data.repositories.CourseRepositoryImpl
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursePageBinding
 import ru.andrewkir.hse_mooc.flows.course.adapters.CourseCommentsAdapter
 import ru.andrewkir.hse_mooc.domain.model.ApiResponse
-import ru.andrewkir.hse_mooc.data.network.responses.Course.CourseResponse
-import ru.andrewkir.hse_mooc.data.network.responses.Reviews.Review
-import ru.andrewkir.hse_mooc.data.repositories.CourseRepository
+import ru.andrewkir.hse_mooc.domain.network.api.CoursesApi
+import ru.andrewkir.hse_mooc.domain.network.responses.Course.CourseResponse
+import ru.andrewkir.hse_mooc.domain.network.responses.Reviews.Review
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 class CourseFragment :
-    BaseFragment<CourseViewModel, CourseRepository, FragmentCoursePageBinding>() {
+    BaseFragment<CourseViewModel, CourseRepositoryImpl, FragmentCoursePageBinding>() {
 
     private lateinit var recyclerAdapter: CourseCommentsAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -53,8 +53,8 @@ class CourseFragment :
 
     override fun provideViewModelClass() = CourseViewModel::class.java
 
-    override fun provideRepository(): CourseRepository {
-        return CourseRepository(
+    override fun provideRepository(): CourseRepositoryImpl {
+        return CourseRepositoryImpl(
             apiProvider.provideApi(
                 CoursesApi::class.java,
                 requireContext(),

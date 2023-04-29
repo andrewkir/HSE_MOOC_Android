@@ -12,14 +12,14 @@ import ru.andrewkir.hse_mooc.R
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.adapters.CoursePreviewRecyclerViewAdapter
 import ru.andrewkir.hse_mooc.common.handleApiError
-import ru.andrewkir.hse_mooc.data.network.api.CoursesApi
-import ru.andrewkir.hse_mooc.data.repositories.CoursesMainRepository
+import ru.andrewkir.hse_mooc.data.repositories.CoursesMainRepositoryImpl
 import ru.andrewkir.hse_mooc.databinding.FragmentCoursesMainBinding
+import ru.andrewkir.hse_mooc.domain.network.api.CoursesApi
 import ru.andrewkir.hse_mooc.flows.course.CourseActivity
 import ru.andrewkir.hse_mooc.flows.courses.main.adapters.TrendingCoursesButtonAdapter
 
 class CoursesMainFragment :
-    BaseFragment<CoursesMainViewModel, CoursesMainRepository, FragmentCoursesMainBinding>() {
+    BaseFragment<CoursesMainViewModel, CoursesMainRepositoryImpl, FragmentCoursesMainBinding>() {
 
     lateinit var horizontalLinearLayoutManager: LinearLayoutManager
     lateinit var trendingButtonsAdapter: TrendingCoursesButtonAdapter
@@ -29,8 +29,8 @@ class CoursesMainFragment :
 
     override fun provideViewModelClass() = CoursesMainViewModel::class.java
 
-    override fun provideRepository(): CoursesMainRepository {
-        return CoursesMainRepository(
+    override fun provideRepository(): CoursesMainRepositoryImpl {
+        return CoursesMainRepositoryImpl(
             apiProvider.provideApi(
                 CoursesApi::class.java,
                 requireContext(),

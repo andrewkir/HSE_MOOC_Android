@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.andrewkir.hse_mooc.common.BaseViewModel
-import ru.andrewkir.hse_mooc.data.repositories.AuthRepository
+import ru.andrewkir.hse_mooc.data.repositories.AuthRepositoryImpl
 import ru.andrewkir.hse_mooc.domain.model.ApiResponse
-import ru.andrewkir.hse_mooc.data.network.responses.Login.LoginResponse
+import ru.andrewkir.hse_mooc.domain.network.responses.Login.LoginResponse
 
 class LoginViewModel(
-    private val repo: AuthRepository
+    private val repo: AuthRepositoryImpl
 ) : BaseViewModel(repo) {
 
     private val mutableLoginResponse: MutableLiveData<ApiResponse<LoginResponse>> =

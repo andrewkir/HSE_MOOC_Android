@@ -4,12 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.andrewkir.hse_mooc.common.BaseViewModel
+import ru.andrewkir.hse_mooc.data.repositories.ProfileRepositoryImpl
 import ru.andrewkir.hse_mooc.domain.model.ApiResponse
-import ru.andrewkir.hse_mooc.data.network.responses.CoursesPreview.CoursePreview
-import ru.andrewkir.hse_mooc.data.repositories.ProfileRepository
+import ru.andrewkir.hse_mooc.domain.network.responses.CoursesPreview.CoursePreview
 
 class ProfileViewModel(
-    private val profileRepository: ProfileRepository
+    private val profileRepository: ProfileRepositoryImpl
 ) : BaseViewModel(profileRepository) {
 
     val favoritesCourses: MutableLiveData<List<CoursePreview>> by lazy {

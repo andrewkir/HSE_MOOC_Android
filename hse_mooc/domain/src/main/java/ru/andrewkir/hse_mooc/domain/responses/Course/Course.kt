@@ -3,7 +3,7 @@ package ru.andrewkir.hse_mooc.domain.network.responses.Course
 
 import kotlinx.android.parcel.Parcelize
 import android.os.Parcelable
-import ru.andrewkir.hse_mooc.data.network.responses.Reviews.Review
+import ru.andrewkir.hse_mooc.domain.network.responses.Reviews.Review
 
 @Parcelize
 data class Course(

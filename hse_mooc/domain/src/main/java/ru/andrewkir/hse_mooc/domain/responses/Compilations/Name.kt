@@ -1,4 +1,4 @@
-package ru.andrewkir.hse_mooc.domain.network.responses.Compilations
+package ru.andrewkir.hse_mooc.domain.responses.Compilations
 
 
 import kotlinx.android.parcel.Parcelize

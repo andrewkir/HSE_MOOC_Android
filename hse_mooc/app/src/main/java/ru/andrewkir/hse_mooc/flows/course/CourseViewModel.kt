@@ -6,12 +6,12 @@ import kotlinx.coroutines.launch
 import ru.andrewkir.hse_mooc.common.BaseViewModel
 import ru.andrewkir.hse_mooc.data.network.requests.ReviewRequest
 import ru.andrewkir.hse_mooc.domain.model.ApiResponse
-import ru.andrewkir.hse_mooc.data.network.responses.Course.CourseResponse
-import ru.andrewkir.hse_mooc.data.network.responses.Reviews.Review
-import ru.andrewkir.hse_mooc.data.repositories.CourseRepository
+import ru.andrewkir.hse_mooc.data.repositories.CourseRepositoryImpl
+import ru.andrewkir.hse_mooc.domain.network.responses.Course.CourseResponse
+import ru.andrewkir.hse_mooc.domain.network.responses.Reviews.Review
 
 class CourseViewModel(
-    private val courseRepository: CourseRepository
+    private val courseRepository: CourseRepositoryImpl
 ) : BaseViewModel(courseRepository) {
 
     val courseResponse: MutableLiveData<ApiResponse<CourseResponse>> by lazy {

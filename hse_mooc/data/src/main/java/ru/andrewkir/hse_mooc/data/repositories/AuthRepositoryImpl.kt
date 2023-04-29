@@ -4,8 +4,9 @@ import ru.andrewkir.hse_mooc.data.network.api.AuthApi
 import ru.andrewkir.hse_mooc.data.network.requests.LoginEmailRequest
 import ru.andrewkir.hse_mooc.data.network.requests.LoginUsernameRequest
 import ru.andrewkir.hse_mooc.data.network.requests.RegisterRequest
+import ru.andrewkir.hse_mooc.domain.repositories.AuthRepository
 
-class AuthRepository(
+class AuthRepositoryImpl(
     private val api: AuthApi
 ) : AuthRepository, BaseRepository() {
 

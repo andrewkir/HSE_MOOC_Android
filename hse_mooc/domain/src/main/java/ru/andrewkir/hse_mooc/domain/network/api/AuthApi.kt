@@ -3,10 +3,10 @@ package ru.andrewkir.hse_mooc.data.network.api
 import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.POST
+import ru.andrewkir.hse_mooc.data.network.requests.LoginEmailRequest
+import ru.andrewkir.hse_mooc.data.network.requests.LoginUsernameRequest
+import ru.andrewkir.hse_mooc.data.network.requests.RegisterRequest
 import ru.andrewkir.hse_mooc.domain.network.responses.Login.LoginResponse
-import ru.andrewkir.hse_mooc.domain.requests.LoginEmailRequest
-import ru.andrewkir.hse_mooc.domain.requests.LoginUsernameRequest
-import ru.andrewkir.hse_mooc.domain.requests.RegisterRequest
 
 interface AuthApi : BaseApi {
 

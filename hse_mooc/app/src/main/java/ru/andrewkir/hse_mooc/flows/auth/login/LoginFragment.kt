@@ -12,17 +12,17 @@ import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.handleApiError
 import ru.andrewkir.hse_mooc.common.startActivityClearBackStack
 import ru.andrewkir.hse_mooc.data.network.api.AuthApi
-import ru.andrewkir.hse_mooc.flows.courses.CoursesActivity
+import ru.andrewkir.hse_mooc.data.repositories.AuthRepositoryImpl
 import ru.andrewkir.hse_mooc.databinding.FragmentLoginBinding
-import ru.andrewkir.hse_mooc.data.repositories.AuthRepository
 import ru.andrewkir.hse_mooc.domain.model.ApiResponse
+import ru.andrewkir.hse_mooc.flows.courses.CoursesActivity
 
-class LoginFragment : BaseFragment<LoginViewModel, AuthRepository, FragmentLoginBinding>() {
+class LoginFragment : BaseFragment<LoginViewModel, AuthRepositoryImpl, FragmentLoginBinding>() {
 
     override fun provideViewModelClass(): Class<LoginViewModel> = LoginViewModel::class.java
 
-    override fun provideRepository(): AuthRepository =
-        AuthRepository(
+    override fun provideRepository(): AuthRepositoryImpl =
+        AuthRepositoryImpl(
             apiProvider.provideApi(
                 AuthApi::class.java,
                 requireContext()

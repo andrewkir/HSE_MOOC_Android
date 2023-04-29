@@ -11,7 +11,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import per.wsj.library.AndRatingBar
 import ru.andrewkir.hse_mooc.R
-import ru.andrewkir.hse_mooc.data.network.responses.Reviews.Review
+import ru.andrewkir.hse_mooc.domain.network.responses.Reviews.Review
 import java.text.SimpleDateFormat
 
 

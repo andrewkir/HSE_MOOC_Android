@@ -1,20 +1,21 @@
 package ru.andrewkir.hse_mooc.data.repositories
 
-import ru.andrewkir.hse_mooc.data.network.api.CoursesApi
+import ru.andrewkir.hse_mooc.domain.network.api.CoursesApi
+import ru.andrewkir.hse_mooc.domain.repositories.CoursesMainRepository
 
-class CoursesMainRepository(
+class CoursesMainRepositoryImpl(
     private val coursesApi: CoursesApi
-) : BaseRepository() {
+) : CoursesMainRepository, BaseRepository() {
 
-    suspend fun getTrendingCourses(url: String) = protectedApiCall{
+    override suspend fun getTrendingCourses(url: String) = protectedApiCall{
         coursesApi.getTrending(url)
     }
 
-    suspend fun getCoursesMain() = protectedApiCall {
+    override suspend fun getCoursesMain() = protectedApiCall {
         coursesApi.getMainCourses()
     }
 
-    suspend fun getCompilations() = protectedApiCall {
+    override suspend fun getCompilations() = protectedApiCall {
         coursesApi.getCompilations()
     }
 }

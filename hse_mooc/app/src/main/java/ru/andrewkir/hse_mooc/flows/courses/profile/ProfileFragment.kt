@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.andrewkir.hse_mooc.common.BaseFragment
 import ru.andrewkir.hse_mooc.common.adapters.CoursePreviewRecyclerViewAdapter
 import ru.andrewkir.hse_mooc.common.handleApiError
-import ru.andrewkir.hse_mooc.data.network.api.CoursesApi
-import ru.andrewkir.hse_mooc.data.repositories.ProfileRepository
+import ru.andrewkir.hse_mooc.data.repositories.ProfileRepositoryImpl
 import ru.andrewkir.hse_mooc.databinding.FragmentProfileBinding
+import ru.andrewkir.hse_mooc.domain.network.api.CoursesApi
 import ru.andrewkir.hse_mooc.flows.course.CourseActivity
 
 class ProfileFragment :
-    BaseFragment<ProfileViewModel, ProfileRepository, FragmentProfileBinding>() {
+    BaseFragment<ProfileViewModel, ProfileRepositoryImpl, FragmentProfileBinding>() {
 
     private lateinit var recyclerFavoritesAdapter: CoursePreviewRecyclerViewAdapter
     private lateinit var linearFavoritesLayoutManager: LinearLayoutManager
@@ -29,8 +29,8 @@ class ProfileFragment :
 
     override fun provideViewModelClass() = ProfileViewModel::class.java
 
-    override fun provideRepository(): ProfileRepository {
-        return ProfileRepository(
+    override fun provideRepository(): ProfileRepositoryImpl {
+        return ProfileRepositoryImpl(
             apiProvider.provideApi(
                 CoursesApi::class.java,
                 requireContext(),

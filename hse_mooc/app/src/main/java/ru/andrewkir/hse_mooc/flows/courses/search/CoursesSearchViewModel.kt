@@ -5,13 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.andrewkir.hse_mooc.common.BaseViewModel
+import ru.andrewkir.hse_mooc.data.repositories.CoursesSearchRepositoryImpl
 import ru.andrewkir.hse_mooc.domain.model.ApiResponse
-import ru.andrewkir.hse_mooc.data.network.responses.Categories.CategoriesResponse
-import ru.andrewkir.hse_mooc.data.network.responses.CoursesPreview.CoursePreview
+import ru.andrewkir.hse_mooc.domain.network.responses.Categories.CategoriesResponse
+import ru.andrewkir.hse_mooc.domain.network.responses.CoursesPreview.CoursePreview
 
 
 class CoursesSearchViewModel(
-    private val searchRepository: ru.andrewkir.hse_mooc.data.repositories.CoursesSearchRepository
+    private val searchRepository: CoursesSearchRepositoryImpl
 ) : BaseViewModel(searchRepository) {
 
     private val mutableCourses = arrayListOf<CoursePreview>()
